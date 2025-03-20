@@ -1,0 +1,112 @@
+CREATE DATABASE IF NOT EXISTS vivere DEFAULT CHARACTER SET utf8;
+USE vivere;
+
+DROP TABLE IF EXISTS `book`;
+CREATE TABLE `book` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `consumerId` binary(1) DEFAULT NULL,
+  `concertId` bigint(20) DEFAULT NULL,
+  `paymentId` bigint(20) DEFAULT NULL,
+  `bookNum` varchar(1000) DEFAULT NULL,
+  `price` int(11) DEFAULT NULL,
+  `seatCnt` int(11) DEFAULT NULL,
+  `grade` varchar(1000) DEFAULT NULL,
+  `orderDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `card`;
+CREATE TABLE `card` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `consumerId` bigint(20) DEFAULT NULL,
+  `pw` varchar(1000) DEFAULT NULL,
+  `cardNum` int(11) DEFAULT NULL,
+  `createDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `concert`;
+CREATE TABLE `concert` (  
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `title` varchar(1000) DEFAULT NULL,
+  `hallType` int(11) DEFAULT NULL,
+  `performanceDate` datetime DEFAULT NULL,
+  `description` varchar(1000) DEFAULT NULL,
+  `categoryId` int(11) DEFAULT NULL,
+  `price` int(11) DEFAULT NULL,
+  `totalSeat` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `posterUrl` varchar(1000) DEFAULT NULL,
+  `seatNum` int(11) DEFAULT NULL,
+  `vip` int(11) DEFAULT NULL,
+  `r` int(11) DEFAULT NULL,
+  `s` int(11) DEFAULT NULL,
+  `a` int(11) DEFAULT NULL,
+  `createDate` datetime DEFAULT NULL,
+  `updateDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `consumer`;
+CREATE TABLE `consumer` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `userId` varchar(1000) DEFAULT NULL,
+  `pw` varchar(1000) DEFAULT NULL,
+  `name` varchar(1000) DEFAULT NULL,
+  `birth` varchar(1000) DEFAULT NULL,
+  `gender` enum('남','여') DEFAULT NULL,
+  `phone` varchar(1000) DEFAULT NULL,
+  `email` varchar(1000) DEFAULT NULL,
+  `receive` enum('AGREE','DISAGREE') DEFAULT NULL,
+  `address` varchar(1000) DEFAULT NULL,
+  `detailAddress` varchar(1000) DEFAULT NULL,
+  `grade` enum('BRONZE','SILVER','GOLD','DIAMOND','SUB_ADMIN','ADMIN') DEFAULT NULL,
+  `createDate` datetime DEFAULT NULL,
+  `updateDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `notice`;
+CREATE TABLE `notice` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `title` varchar(1000) DEFAULT NULL,
+  `content` varchar(1000) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `createDate` datetime DEFAULT NULL,
+  `updateDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `qna`;
+CREATE TABLE `qna` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT, 
+  `consumerId` bigint(20) DEFAULT NULL,
+  `title` varchar(1000) DEFAULT NULL,
+  `content` varchar(1000) DEFAULT NULL,
+  `createDate` datetime DEFAULT NULL,
+  `updateDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `qnarep`;
+CREATE TABLE `qnarep` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,  
+  `qnaId` bigint(20) DEFAULT NULL,
+  `title` varchar(1000) DEFAULT NULL,
+  `content` varchar(1000) DEFAULT NULL,
+  `createDate` datetime DEFAULT NULL,
+  `updateDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `review`; 
+CREATE TABLE `review` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `consumerId` bigint(20) DEFAULT NULL,
+  `concertId` bigint(20) DEFAULT NULL,
+  `rate` float DEFAULT NULL,
+  `content` varchar(1000) DEFAULT NULL,
+  `createDate` datetime DEFAULT NULL,
+  `updateDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

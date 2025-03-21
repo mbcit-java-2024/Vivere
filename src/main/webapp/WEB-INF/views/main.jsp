@@ -10,5 +10,7 @@
 
 <h1>VIVERE ART HALL</h1>
 
+<a href="/insertConcert">콘서트 등록</a>
+
 </body>
 </html>

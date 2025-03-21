@@ -7,7 +7,6 @@ public class ConcertVO {
     private int id;
     private String title;
     private int halfType;
-    private Date performanceDate;
     private String description;
     private int categoryId;
     private int price;

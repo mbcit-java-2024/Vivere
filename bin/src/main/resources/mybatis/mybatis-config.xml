@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+
+		<typeAlias alias="bookVO" type="com.mbcit.vivere.vo.BookVO"/>
+		<typeAlias alias="cardVO" type="com.mbcit.vivere.vo.CardVO"/>
+		<typeAlias alias="concertVO" type="com.mbcit.vivere.vo.ConcertVO"/>
+		<typeAlias alias="noticeVO" type="com.mbcit.vivere.vo.NoticeVO"/>
+		<typeAlias alias="qnaVO" type="com.mbcit.vivere.vo.QnaVO"/>
+		<typeAlias alias="qnarepVO" type="com.mbcit.vivere.vo.QnarepVO"/>
+		<typeAlias alias="reviewVO" type="com.mbcit.vivere.vo.ReviewVO"/>
+
+	</typeAliases>
+</configuration>

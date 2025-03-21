@@ -4,7 +4,14 @@
 
 <mapper namespace="com.mbcit.vivere.dao.ConcertDAO">
 
-
+	<select id="getConcertById" parameterType="int" resultType="ConcertVO">
+		select * from concert where id = ${id}
+	</select>
+	
+	<select id="getConcertTimes" parameterType="int" resultType="concertTimeVO">
+		select conT.* from concertTime conT join concert con on conT.concertId = con.id
+		where con.id = #{id}
+	</select>
 
 </mapper>
 

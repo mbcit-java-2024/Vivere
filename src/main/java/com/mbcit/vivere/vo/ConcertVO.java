@@ -2,6 +2,9 @@ package com.mbcit.vivere.vo;
 
 import java.util.Date;
 
+import lombok.Data;
+
+@Data
 public class ConcertVO {
 
     private int id;

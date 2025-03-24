@@ -4,14 +4,29 @@
 
 <mapper namespace="com.mbcit.vivere.dao.ConcertDAO">
 
-	<select id="getConcertById" parameterType="int" resultType="ConcertVO">
+	<select id="getConcertById" parameterType="int" resultType="concertVO">
 		select * from concert where id = ${id}
+	</select>
+	
+	<select id="selectByPosterUrl" parameterType="String" resultType="concertVO">
+		select * from concert where posterUrl = #{posterUrl} ORDER BY id DESC limit 1 
 	</select>
 	
 	<select id="getConcertTimes" parameterType="int" resultType="concertTimeVO">
 		select conT.* from concertTime conT join concert con on conT.concertId = con.id
 		where con.id = #{id}
 	</select>
+	
+	<insert id="insert" parameterType="concertVO">
+		insert into concert (title, hallType, description, categoryId, totalSeat, posterUrl, vipPrice,
+			rPrice, sPrice, aPrice, vipCount, rCount, sCount, aCount, createDate, equalPrice)
+		values (#{title}, #{hallType}, #{description}, #{categoryId}, #{totalSeat}, #{posterUrl}, #{vipPrice},
+			#{rPrice}, #{sPrice}, #{aPrice}, #{vipCount}, #{rCount}, #{sCount}, #{aCount}, now(), #{equalPrice})
+	</insert>
+	
+	<insert id="insertConcertTime" parameterType="concertTimeVO">
+		insert into concertTime (concertId, concertTime) values (#{concertId}, #{concertTime}) 
+	</insert>
 
 </mapper>
 

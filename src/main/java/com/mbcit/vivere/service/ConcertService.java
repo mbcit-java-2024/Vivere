@@ -1,11 +1,20 @@
 package com.mbcit.vivere.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mbcit.vivere.dao.ConcertDAO;
 import com.mbcit.vivere.vo.ConcertTimeVO;
@@ -19,6 +28,67 @@ public class ConcertService {
 	
 	@Autowired
 	private ConcertDAO concertDAO;
+	
+//	controller에서 file과 concertTitle을 받아 이름을 지정하고 poster 폴더에 저장한 후 그 경로를 반환하는 메소드 
+	public String imageToUrl(String uploadDir, MultipartFile file, String concertTitle) throws IllegalStateException, IOException {
+		log.info("uploadDir: " + uploadDir);
+		File uploadFolder = new File(uploadDir);
+		if (!uploadFolder.exists()) {
+			uploadFolder.mkdirs(); // 폴더가 없으면 생성
+		}
+
+		// 고유한 파일명 생성 후 저장
+		String fileName = concertTitle + "_" + file.getOriginalFilename();
+		String filePath = uploadDir + fileName;
+		log.info("fileName: " + fileName);
+		log.info("filePath: " + filePath);
+		file.transferTo(new File(filePath));
+
+		return filePath;
+	}
+
+//	controller에서 file과 request와 concertVO 1건을 받아 DB의 concert 테이블에 저장하는 메소드
+	public void saveConcert(HttpServletRequest request, ConcertVO vo, MultipartFile file) {
+
+		if (file.isEmpty()) {
+		}
+		try {
+//			이미지 경로 저장
+			String filePath = imageToUrl(request.getServletContext().getRealPath("/posters/"), file, vo.getTitle());
+			vo.setPosterUrl(filePath);
+			vo.setTotalSeat((int) vo.getTotalSeat());
+			concertDAO.insert(vo);
+		} catch (IOException e) {
+			e.printStackTrace();
+			log.info("콘서트 저장중 문제발생");
+		}
+		
+	}
+
+//	공연 날짜, 시간 저장하는 메소드
+	public void saveConcertTime(ConcertVO vo, String[] concertTimes) {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+		ConcertVO cvo = concertDAO.selectByPosterUrl(vo.getPosterUrl());
+		
+		for (int i = 0; i < concertTimes.length; i++) {
+			String dateTimeStr = concertTimes[i];  // "2024-03-25'T'14:30"
+			Date concertTime;
+			try {
+				concertTime = formatter.parse(dateTimeStr);
+				log.info("dateTimeStr: " + dateTimeStr);
+				log.info("concertTime: " + concertTime);
+				
+				ConcertTimeVO concertTimeVo = new ConcertTimeVO();
+				concertTimeVo.setConcertId(cvo.getId());
+				concertTimeVo.setConcertTime(concertTime);
+				concertDAO.insertConcertTime(concertTimeVo);
+
+			} catch (ParseException e) {
+				e.printStackTrace();
+				log.info("공연 시간 저장중 문제 발생");
+			} 		
+		}
+	}
 	
 	
 	public ConcertVO getConcertById(int id) {
@@ -79,6 +149,8 @@ public class ConcertService {
 		}
 		return fHall;
 	}
+
+
 	
 
 }

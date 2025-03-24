@@ -6,6 +6,7 @@
 		<typeAlias alias="bookVO" type="com.mbcit.vivere.vo.BookVO"/>
 		<typeAlias alias="cardVO" type="com.mbcit.vivere.vo.CardVO"/>
 		<typeAlias alias="concertVO" type="com.mbcit.vivere.vo.ConcertVO"/>
+		<typeAlias alias="concertTimeVO" type="com.mbcit.vivere.vo.ConcertTimeVO"/>
 		<typeAlias alias="noticeVO" type="com.mbcit.vivere.vo.NoticeVO"/>
 		<typeAlias alias="qnaVO" type="com.mbcit.vivere.vo.QnaVO"/>
 		<typeAlias alias="qnarepVO" type="com.mbcit.vivere.vo.QnarepVO"/>

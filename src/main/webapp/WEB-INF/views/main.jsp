@@ -10,7 +10,8 @@
 
 <h1>VIVERE ART HALL</h1>
 
-<a href="/insertConcert">콘서트 등록</a>
+<a href="/insertConcert">콘서트 등록</a><br/><br/>
+<a href="/book">공연 예약 book.jsp</a>
 
 </body>
 </html>

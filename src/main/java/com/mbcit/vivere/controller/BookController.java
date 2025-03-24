@@ -19,7 +19,6 @@ import com.mbcit.vivere.service.BookService;
 import com.mbcit.vivere.service.ConcertService;
 import com.mbcit.vivere.vo.ConcertTimeVO;
 import com.mbcit.vivere.vo.ConcertVO;
-import com.mbcit.vivere.vo.concertSeatVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -50,7 +49,7 @@ public class BookController {
 		
 		concertVO = new ConcertVO(); // ************ Test ************
 		concertVO.setTitle("지킬앤하이드"); // ************ Test ************
-		concertVO.setHallType(1); // ************ Test ************
+		concertVO.setHallType(0); // ************ Test ************
 		
 		List<ConcertTimeVO> conTimes = concertService.getFutureConcertTimes(concertId);
 		ConcertTimeVO conTVO1 = new ConcertTimeVO(); // ************ Test ************

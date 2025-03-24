@@ -4,7 +4,10 @@
 
 <mapper namespace="com.mbcit.vivere.dao.BookDAO">
 
-
+<!-- 이미 예약된 좌석의 모든 정보를 불러오는 쿼리 -->
+<select id="selectBookedSeats" parameterType="String" resultType="concertSeatVO">
+	select * from concertSeat where concertTimeId = #{conTimeId} and bookYN;
+</select>
 
 </mapper>
 

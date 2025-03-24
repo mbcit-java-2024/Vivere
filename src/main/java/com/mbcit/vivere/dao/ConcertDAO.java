@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.mbcit.vivere.vo.ConcertTimeVO;
 import com.mbcit.vivere.vo.ConcertVO;
+import com.mbcit.vivere.vo.concertSeatVO;
 
 @Mapper
 public interface ConcertDAO {
@@ -16,5 +17,6 @@ public interface ConcertDAO {
 	void insert(ConcertVO vo);
 	ConcertVO selectByPosterUrl(String posterUrl);
 	void insertConcertTime(ConcertTimeVO concertTimeVo);
+	void insertConcertSeat(concertSeatVO vo);
 
 }

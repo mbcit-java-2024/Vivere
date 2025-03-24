@@ -17,7 +17,7 @@
 	String nowTime = sdf2.format(new java.util.Date());
 %>
 <script>
-/* 공연 좌석 등급설정 */
+/* ===================================== 공연 좌석 등급설정 =================================== */
 $(document).ready(function() {
     $(".seatType").change(function() {
         let seatType = $(this).val();
@@ -82,7 +82,7 @@ $(document).ready(function() {
     });
 });
 
-/* 공연 시간 설정 */
+/* ====================== 공연 시간 설정 ================================== */
 function addTimeInput() {
     var div = document.createElement("div");
     div.innerHTML = `
@@ -95,6 +95,87 @@ function addTimeInput() {
 function removeInput(button) {
     button.parentElement.remove();
 }
+
+/* ====================== 등급별 좌석 번호 선택 ======================== */
+$(document).ready(function () {
+    let seatMap = {
+        gaudium: generateSeats("gaudium"), // 가우디움홀 (480석)
+        felice: generateSeats("felice") // 펠리체홀 (210석)
+    };
+    let selectedHall = ""; // 선택된 공연장
+    let seatTypeSelections = {}; // 각 좌석 등급별로 선택된 좌석 저장
+
+    // 🎭 **공연장 선택 시 좌석 리스트 변경**
+    $("input[name='hallType']").change(function () {
+        selectedHall = $(this).val() === "0" ? "gaudium" : "felice";
+        updateSeatSelectionUI();
+    });
+
+    // 🎟 **좌석 등급 선택 시 좌석 할당**
+    $(".seatType").change(function () {
+        let seatType = $(this).val();
+        if ($(this).is(":checked")) {
+            seatTypeSelections[seatType] = []; // 선택된 좌석 저장 배열
+        } else {
+            delete seatTypeSelections[seatType]; // 선택 해제 시 삭제
+        }
+        updateSeatSelectionUI();
+    });
+
+    // 🏷 **좌석 선택 UI 업데이트**
+    function updateSeatSelectionUI() {
+        let container = $("#seatSelectionContainer");
+        container.empty();
+
+        if (!selectedHall) {
+            container.append("<p>먼저 공연장을 선택하세요.</p>");
+            return;
+        }
+
+        for (let seatType in seatTypeSelections) {
+            let seats = seatMap[selectedHall]; // 공연장에 맞는 좌석 리스트 가져오기
+            let seatDiv = $("<div>").append("<strong>"+ seatType.toUpperCase() + "좌석</strong><br>");
+
+            seats.forEach((seat) => {
+                let seatCheckbox = $("<input type='checkbox' name='"+ seatType+"Seats' value='"+ seat +"'> " + seat );
+                seatCheckbox.change(function () {
+                    if (this.checked) {
+                        seatTypeSelections[seatType].push(this.value);
+                    } else {
+                        seatTypeSelections[seatType] = seatTypeSelections[seatType].filter(s => s !== this.value);
+                    }
+                });
+                seatDiv.append(seatCheckbox);
+            });
+
+            container.append(seatDiv);
+        }
+    }
+
+    // 🎫 **가우디움홀(480석) & 펠리체홀(210석) 좌석 생성 함수**
+    function generateSeats(hallType) {
+        let seats = [];
+        if (hallType === "gaudium") {
+            // A01~A24, B01~B24 ... T01~T24 (총 480석)
+            let rows = "ABCDEFGHIJKLMNOPQRST".split(""); // A~T (20줄)
+            for (let row of rows) {
+                for (let num = 1; num <= 24; num++) {
+                	seats.push(row + String(num).padStart(2, "0"));
+                }
+            }
+        } else {
+            // A01~O14 (총 210석)
+            let rows = "ABCDEFGHIJKLMNO".split(""); // A~O (15줄)
+            for (let row of rows) {
+                for (let num = 1; num <= 14; num++) {
+                	seats.push(row + String(num).padStart(2, "0"));
+                }
+            }
+        }
+    	console.log("홀 선택에 따른 좌석 생성 완료")
+        return seats;
+    }
+});
 </script>
 
 </head>
@@ -140,6 +221,12 @@ function removeInput(button) {
 		    <label><input type="checkbox" class="seatType" value="equal"> equal</label>
 		    <div id="seatContainer"></div>
  		</td>
+	</tr>
+	<tr>
+	    <td>좌석 선택</td>
+	    <td>
+	        <div id="seatSelectionContainer"></div> <!-- 동적 좌석 리스트 표시 -->
+	    </td>
 	</tr>
 	<tr>
 		<td>공연 날짜/시간</td>

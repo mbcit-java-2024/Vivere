@@ -27,6 +27,11 @@
 	<insert id="insertConcertTime" parameterType="concertTimeVO">
 		insert into concertTime (concertId, concertTime) values (#{concertId}, #{concertTime}) 
 	</insert>
+	
+	<insert id="insertConcertSeat" parameterType="concertSeatVO">
+		insert into concertSeat (concertId, concertTimeId, lineNum, seatNum, grade,	bookYN)
+		values (#{concertId}, #{concertTimeId}, #{lineNum}, #{seatNum}, #{grade}, false)
+	</insert>
 
 </mapper>
 

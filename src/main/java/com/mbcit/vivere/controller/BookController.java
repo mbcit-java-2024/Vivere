@@ -1,5 +1,6 @@
 package com.mbcit.vivere.controller;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mbcit.vivere.service.ConcertService;
 import com.mbcit.vivere.vo.ConcertTimeVO;
@@ -42,6 +42,7 @@ public class BookController {
 		
 		concertVO = new ConcertVO(); // ************ Test ************
 		concertVO.setTitle("지킬앤하이드"); // ************ Test ************
+		concertVO.setHallType(0); // ************ Test ************
 		
 		List<ConcertTimeVO> conTimes = concertService.getFutureConcertTimes(concertId);
 		ConcertTimeVO conTVO1 = new ConcertTimeVO(); // ************ Test ************
@@ -58,6 +59,11 @@ public class BookController {
 		log.info("conTimes: " + conTimes); // ************ Test ************
 		log.info("selectedTime: " + selectedTime); // ************ Test ************
 		
+		ArrayList<Character> gHall = concertService.getGHallLine();
+		ArrayList<Character> fHall = concertService.getFHallLine();
+		
+		model.addAttribute("gHall", gHall);
+		model.addAttribute("fHall", fHall);
 		model.addAttribute("concertVO", concertVO);
 		model.addAttribute("conTimes", conTimes);
 		model.addAttribute("selectedTime", selectedTime);

@@ -9,14 +9,13 @@ public class ConcertVO {
 
     private int id;
     private String title;
-    private int halfType;
+    private int hallType;
     private String description;
     private int categoryId;
     private int price;
     private int totalSeat;
     private int status;
     private String posterUrl;
-    private int seatNum;
     private int vipPrice;
     private int rPrice;
     private int sPrice;

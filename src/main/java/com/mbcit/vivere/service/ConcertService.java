@@ -1,5 +1,6 @@
 package com.mbcit.vivere.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -61,6 +62,22 @@ public class ConcertService {
 			}
 		}
 		return conTimes;
+	}
+
+	public ArrayList<Character> getGHallLine() {
+		ArrayList<Character> gHall = new ArrayList<>();
+		for (int i = 65; i < 85; i++) {
+			gHall.add((char) i);
+		}
+		return gHall;
+	}
+	
+	public ArrayList<Character> getFHallLine() {
+		ArrayList<Character> fHall = new ArrayList<>();
+		for (int i = 65; i < 80; i++) {
+			fHall.add((char) i);
+		}
+		return fHall;
 	}
 	
 

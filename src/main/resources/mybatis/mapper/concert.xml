@@ -18,10 +18,10 @@
 	</select>
 	
 	<insert id="insert" parameterType="concertVO">
-		insert into concert (title, hallType, description, categoryId, totalSeat, posterUrl, vipPrice,
-			rPrice, sPrice, aPrice, vipCount, rCount, sCount, aCount, createDate, equalPrice)
-		values (#{title}, #{hallType}, #{description}, #{categoryId}, #{totalSeat}, #{posterUrl}, #{vipPrice},
-			#{rPrice}, #{sPrice}, #{aPrice}, #{vipCount}, #{rCount}, #{sCount}, #{aCount}, now(), #{equalPrice})
+		insert into concert (title, hallType, description, categoryId, totalSeat, posterUrl, countVIP,
+			priceR, priceS, priceA, countVIP, countR, countS, countA, createDate, equalPrice)
+		values (#{title}, #{hallType}, #{description}, #{categoryId}, #{totalSeat}, #{posterUrl}, #{priceVIP},
+			#{priceR}, #{priceS}, #{priceA}, #{countVIP}, #{countR}, #{countS}, #{countA}, now(), #{equalPrice})
 	</insert>
 	
 	<insert id="insertConcertTime" parameterType="concertTimeVO">

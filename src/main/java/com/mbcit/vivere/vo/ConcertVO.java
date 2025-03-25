@@ -16,14 +16,14 @@ public class ConcertVO {
     private int status;
     private String posterUrl;
     private int equalPrice;
-    private int vipPrice;
-    private int rPrice;
-    private int sPrice;
-    private int aPrice;
-    private int vipCount;
-    private int rCount;
-    private int sCount;
-    private int aCount;
+    private int priceVIP;
+    private int priceR;
+    private int priceS;
+    private int priceA;
+    private int countVIP;
+    private int countR;
+    private int countS;
+    private int countA;
     private Date createDate;
     private Date updateDate;
 

@@ -4,7 +4,31 @@
 
 <mapper namespace="com.mbcit.vivere.dao.QnaDAO">
 
+	<select id="qnaList" parameterType="qnaVO" resultType="qnaVO">
+		SELECT b.qnaid
+		,b.title
+		,b.content
+		,b.createDate
+		,b.updateDate
+		,a.id AS qna_id
+		,a.consumerId
+		,a.title AS qna_title
+		,a.content AS qna_content
+		,a.createDate AS qna_createDate
+		,a.updateDate AS qna_updateDate
 
+		FROM qna a LEFT JOIN qnarep b ON a.id = b.qnaid
+		where 1=1
+		<if test="consumerId !=null and  consumerId !='' ">
+			consumerId = 1
+		</if>
+	</select>
+	<select id="managerQnaList" parameterType="qnaVO" resultType="qnaVO">
+		SELECT * FROM qna
+		where 1=1
+		<if test="consumerId ==null and  consumerId =='' ">
+		</if>
+	</select>
 
 </mapper>
 

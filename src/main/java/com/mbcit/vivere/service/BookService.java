@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mbcit.vivere.dao.BookDAO;
+import com.mbcit.vivere.vo.BookVO;
 import com.mbcit.vivere.vo.concertSeatVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,10 @@ public class BookService {
 			seats.add(seatName);
 		}
 		return seats;
+	}
+
+	public List<BookVO> pastBook(BookVO bookVO) {
+		return bookDAO.pastBook(bookVO);
 	}
 
 }

@@ -15,4 +15,9 @@ public class QnaVO {
     private String content;
     private Date createDate; 
     private Date updateDate;
+    
+    private String qna_title;
+    private String qna_content;
+    private Date qna_createDate; 
+    private Date qna_updateDate;
 }

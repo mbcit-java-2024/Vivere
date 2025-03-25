@@ -9,6 +9,28 @@
 	select * from concertSeat where concertTimeId = #{conTimeId} and bookYN;
 </select>
 
+
+<select id="pastBook"  parameterType="bookVO" resultType="bookVO">
+	SELECT a.id
+		, a.consumerId
+		, a.concertId
+		, a.paymentId
+		, a.bookNum
+		, a.price
+		, a.seatCnt
+		, a.seatNum
+		, a.grade
+		, a.orderDate
+		, a.concertTime
+		, b.title
+		, b.hallType
+		, b.categoryId 
+		, b.posterUrl
+	FROM book a LEFT JOIN concert b ON a.concertId  = b.id
+	where a.consumerId  = 1
+	and concertTime <![CDATA[<=]]> now()
+</select>
+
 </mapper>
 
 

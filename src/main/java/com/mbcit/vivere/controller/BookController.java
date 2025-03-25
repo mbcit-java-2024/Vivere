@@ -20,6 +20,7 @@ import com.mbcit.vivere.service.ConcertService;
 import com.mbcit.vivere.vo.ConcertTimeVO;
 import com.mbcit.vivere.vo.ConcertVO;
 
+import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -50,6 +51,11 @@ public class BookController {
 		concertVO = new ConcertVO(); // ************ Test ************
 		concertVO.setTitle("지킬앤하이드"); // ************ Test ************
 		concertVO.setHallType(0); // ************ Test ************
+		concertVO.setPriceVIP(150000); // ************ Test ************
+		concertVO.setPriceR(120000); // ************ Test ************
+		concertVO.setPriceS(90000); // ************ Test ************
+		concertVO.setPriceA(60000); // ************ Test ************
+		concertVO.setEqualPrice(0); // ************ Test ************
 		
 		List<ConcertTimeVO> conTimes = concertService.getFutureConcertTimes(concertId);
 		ConcertTimeVO conTVO1 = new ConcertTimeVO(); // ************ Test ************

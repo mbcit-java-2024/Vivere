@@ -34,8 +34,7 @@ public class ConcertController {
 	        @RequestParam("vipSeats") Optional<String[]> vipSeats,
 	        @RequestParam("rSeats") Optional<String[]> rSeats,
 	        @RequestParam("sSeats") Optional<String[]> sSeats,
-	        @RequestParam("aSeats") Optional<String[]> aSeats,
-	        @RequestParam("equalSeats") Optional<String[]> eSeats) {
+	        @RequestParam("aSeats") Optional<String[]> aSeats) {
 		
 //		콘서트 정보 1건을 저장
 		ConcertVO vo = concertVO;
@@ -48,7 +47,7 @@ public class ConcertController {
 		
 //		콘서트 시간별 좌석등급별 좌석번호 지정 내용을 저장
 		log.info("vipSeats: "+ vipSeats);
-		concertService.saveConcertSeats(vo, vipSeats, rSeats, sSeats, aSeats, eSeats);
+		concertService.saveConcertSeats(vo, vipSeats, rSeats, sSeats, aSeats);
 		
 		return "";
 	}

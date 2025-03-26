@@ -31,7 +31,7 @@ public class ConcertService {
 	@Autowired
 	private ConcertDAO concertDAO;
 	
-//	controller에서 file과 concertTitle을 받아 이름을 지정하고 poster 폴더에 저장한 후 그 경로를 반환하는 메소드 
+//	file과 concertTitle을 받아 이름을 지정하고 poster 폴더에 저장한 후 그 경로를 반환하는 메소드 
 	public String imageToUrl(String uploadDir, MultipartFile file, String concertTitle) throws IllegalStateException, IOException {
 		log.info("uploadDir: " + uploadDir);
 		File uploadFolder = new File(uploadDir);
@@ -58,8 +58,10 @@ public class ConcertService {
 //			이미지 경로 저장
 			String filePath = imageToUrl(request.getServletContext().getRealPath("/posters/"), file, vo.getTitle());
 			vo.setPosterUrl(filePath);
+			
 			vo.setTotalSeat((int) vo.getTotalSeat());
 			concertDAO.insert(vo);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 			log.info("콘서트 저장중 문제발생");
@@ -94,7 +96,7 @@ public class ConcertService {
 	
 //	공연 좌석등급별 좌석번호 지정 내용을 저장
 	public void saveConcertSeats(ConcertVO vo, Optional<String[]> vipOptionalSeats, Optional<String[]> rOptionalSeats,
-			Optional<String[]> sOptionalSeats, Optional<String[]> aOptionalSeats, Optional<String[]> eOptionalSeats) {
+			Optional<String[]> sOptionalSeats, Optional<String[]> aOptionalSeats) {
 		log.info("ConcertService 클래스의 saveConcertSeats() 메소드");
 		
 //		concertId 로 concertTime 객체 리스트를 받아온다. 
@@ -115,17 +117,47 @@ public class ConcertService {
 //		각 concertTime 마다 반복하며 좌석 객체들을 생성하여 저장한다.
 			for (ConcertTimeVO conTime : conTimes) {
 				saveSeats(conVo.getId(), conTime.getId(), "VIP", vipSeats);
-				saveSeats(conVo.getId(), conTime.getId(), "R",sSeats);
+				saveSeats(conVo.getId(), conTime.getId(), "R", sSeats);
 				saveSeats(conVo.getId(), conTime.getId(), "S", sSeats);
 				saveSeats(conVo.getId(), conTime.getId(), "A", aSeats);
 			}
 		
 		} else {
-			String[] eSeats = eOptionalSeats.isPresent() ? aOptionalSeats.get() : null;
+			String[] eSeats;
+			if (vo.getHallType() == 0) {
+				eSeats = generateSeats(0).toArray(new String[0]);
+			} else {
+				eSeats = generateSeats(1).toArray(new String[0]);
+			}
 			for (ConcertTimeVO conTime : conTimes) {
 				saveSeats(conVo.getId(), conTime.getId(), "equal", eSeats);
 			}
 		}
+	}
+	
+//	공연장 타입을 입력받아 좌석번호를 리스트로 생성하는 메소드
+	private List<String> generateSeats(int hallType) {
+		List<String> seats = null;
+		if (hallType == 0) {
+			String[] rows = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"};
+			for (String row : rows) {
+				for (int i = 1; i <= 24; i++ ) {
+					String seatNum = String.format("%02d", i);
+					String seat = row + seatNum;
+					seats.add(seat);
+				}
+			}
+		}else {
+			String[] rows = {"A", "B", "C", "D", "E", "F", "G"};
+			for (String row : rows) {
+				for (int i = 1; i <= 14; i++ ) {
+					String seatNum = String.format("%02d", i);
+					String seat = row + seatNum;
+					seats.add(seat);
+				}
+			}
+		}
+		return seats;
 	}
 	
 //	콘서트 아이디, 등급, 좌석번호배열들을 받아 db의 concertSeats 테이블에 저장하는 메소드
@@ -144,7 +176,6 @@ public class ConcertService {
 	    	}
     	}
     }
-	
 	public ConcertVO getConcertById(int id) {
 		System.out.println("ConcertService 클래스의 getConcertById() 메소드 실행");
 		ConcertVO concertVO = concertDAO.getConcertById(id);

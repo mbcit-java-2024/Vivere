@@ -11,7 +11,6 @@ public interface QnaDAO {
 
 	List<QnaVO> qnaList(QnaVO qnaVO);
 
-	List<QnaVO> managerQnaList(QnaVO qnaVO);
 
 
 }

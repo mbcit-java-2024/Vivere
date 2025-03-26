@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -11,74 +12,72 @@
 <title>관리자 페이지 - 문의 내용 리스트</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
-.qna-box {
-	background: #f1f1f1;
-	border: 1px solid #ccc;
-	padding: 15px;
-	margin-bottom: 20px;
-	border-radius: 8px;
-}
 
-.qna-header {
-	font-weight: bold;
-	margin-bottom: 5px;
-}
-
-.answer-btn {
-	float: right;
-	background: #ddd;
-	border: none;
-	padding: 5px 10px;
-	border-radius: 5px;
-	cursor: pointer;
-}
-
-.answer-form {
-	margin-top: 10px;
-	display: none;
-}
-
-textarea {
-	width: 100%;
-	height: 60px;
-	resize: none;
-}
-
-.save-btn {
-	margin-top: 5px;
-	float: right;
-}
 </style>
 </head>
 <body>
-	<h2>문의 리스트</h2>
+	<h2>문의 리스트 (관리자 화면)</h2>
 
-	<c:forEach var="qna" items="${managerQnaList}">
-		<div class="qna-box">
-			<div class="qna-header">
-				${qna.title}
-				<button class="answer-btn" onclick="toggleAnswerForm(${qna.id})">🖋
-					답변쓰기</button>
-			</div>
-			<div class="qna-content">${qna.content}</div>
+<c:forEach var="qna" items="${qnaList}">
+  <div class="qna-box">
 
-			<div class="answer-form" id="answerForm-${qna.id}">
-				<form action="/qnaRep/insert" method="post">
-					<input type="hidden" name="qnaId" value="${qna.id}" />
-					<textarea name="content" placeholder="답변 내용을 입력하세요"></textarea>
-					<button type="submit" class="save-btn">답변저장</button><br/><br/>
-				</form>
-			</div>
-		</div>
-	</c:forEach>
+    <!-- 문의 제목 -->
+    <div class="qna-header">
+      ${qna.qna_title}
+    </div>
+
+    <!-- 문의 내용 -->
+    <div class="qna-content">
+      ${qna.qna_content}
+    </div>
+
+    <!-- 답변 여부 분기 -->
+    <c:choose>
+      <c:when test="${not empty qna.content}">
+        <div class="answer-box">
+          <strong>${qna.title}</strong><br/>
+          ${qna.content}
+        </div>
+
+        <button class="answer-btn" onclick="toggleEditForm(${qna.qna_id})">✏ 답변수정</button>
+        <div class="answer-edit-form" id="editForm-${qna.qna_id}">
+          <form action="/qnaRep/update" method="post">
+            <input type="hidden" name="qnaId" value="${qna.qna_id}" />
+            <textarea name="content">${qna.content}</textarea>
+            <button type="submit">수정저장</button>
+          </form>
+        </div>
+      </c:when>
+
+      <c:otherwise>
+        <button class="answer-btn" onclick="toggleAnswerForm(${qna.qna_id})">🖋 답변쓰기</button>
+
+        <div class="answer-form" id="answerForm-${qna.qna_id}">
+          <form action="/qnaRep/insert" method="post">
+            <input type="hidden" name="qnaId" value="${qna.qna_id}" />
+            <textarea name="content" placeholder="답변 내용을 입력하세요"></textarea>
+            <button type="submit">답변저장</button>
+          </form>
+        </div>
+      </c:otherwise>
+    </c:choose>
+  </div>
+</c:forEach>
+<script>
+function toggleAnswerForm(id) {
+  $(".answer-form").not("#answerForm-" + id).slideUp();
+  $("#answerForm-" + id).slideToggle();
+  $(".answer-edit-form").slideUp(); // 수정 폼은 닫기
+}
+
+function toggleEditForm(id) {
+  $(".answer-edit-form").not("#editForm-" + id).slideUp();
+  $("#editForm-" + id).slideToggle();
+  $(".answer-form").slideUp(); // 답변쓰기 폼은 닫기
+}
+</script>
 
 
-	<script>
-	function toggleAnswerForm(id) {
-	    $(".answer-form").not("#answerForm-" + id).slideUp(); // 다른 폼 닫기
-	    $("#answerForm-" + id).slideToggle(); // 해당 폼 토글
-	  }
-	</script>
 </body>
 </html>
 

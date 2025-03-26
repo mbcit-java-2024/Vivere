@@ -11,6 +11,7 @@
 		,b.createDate
 		,b.updateDate
 		,a.id AS qna_id
+		,b.id AS rep_id
 		,a.consumerId
 		,a.title AS qna_title
 		,a.content AS qna_content
@@ -20,13 +21,7 @@
 		FROM qna a LEFT JOIN qnarep b ON a.id = b.qnaid
 		where 1=1
 		<if test="consumerId !=null and  consumerId !='' ">
-			consumerId = 1
-		</if>
-	</select>
-	<select id="managerQnaList" parameterType="qnaVO" resultType="qnaVO">
-		SELECT * FROM qna
-		where 1=1
-		<if test="consumerId ==null and  consumerId =='' ">
+			and consumerId = 1
 		</if>
 	</select>
 

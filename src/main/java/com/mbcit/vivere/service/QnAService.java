@@ -21,8 +21,5 @@ public class QnAService {
 		return qnaDAO.qnaList(qnaVO);
 	}
 
-	public List<QnaVO> managerQnaList(QnaVO qnaVO) {
-		return qnaDAO.managerQnaList(qnaVO);
-	}
 
 }

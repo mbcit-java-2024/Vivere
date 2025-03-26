@@ -47,6 +47,9 @@ public class ConcertController {
 		
 //		콘서트 시간별 좌석등급별 좌석번호 지정 내용을 저장
 		log.info("vipSeats: "+ vipSeats);
+		log.info("rSeats: "+ rSeats);
+		log.info("sSeats: "+ sSeats);
+		log.info("aSeats: "+ aSeats);
 		concertService.saveConcertSeats(vo, vipSeats, rSeats, sSeats, aSeats);
 		
 		return "";

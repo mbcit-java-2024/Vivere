@@ -28,7 +28,9 @@ let maxValue;
 function handleSeatSelection(seatName, isChecked, seatType) {
 	// 체크인 경우(isChecked == true): selectedSeats[seatType] 에 seatName을 추가한다.
 	if (isChecked) {
+		console.log("1. selectedSeats["+seatType+"]: "+ selectedSeats[seatType])
 		selectedSeats[seatType].push(seatName);
+		console.log("2. selectedSeats["+seatType+"]: "+ selectedSeats[seatType])
 	// 나머지 type의 체크박스(가 있는지 확인하고 있다면) 중 해당 value 를 disable 한다.
 	 for (let type in selectedSeats) {
 		 if (type !== seatType) {
@@ -38,7 +40,9 @@ function handleSeatSelection(seatName, isChecked, seatType) {
 	 }
 	// 해제인 경우(else (isChecked == false)): selectedSeats[해당type] 에서 해당 value를 제거한다.
 	} else {
+		console.log("1. selectedSeats["+seatType+"]: "+ selectedSeats[seatType])
 		selectedSeats[seatType] = selectedSeats[seatType].filter(seat => seat !== seatName);
+		console.log("2. selectedSeats["+seatType+"]: "+ selectedSeats[seatType])
 	// 나머지 type의 체크박스(가 있는지 확인하고 있다면 모든 체크박스) 중 해당 value disable을 해제한다.
 		for (let type in selectedSeats) {
 			if (selectedSeats[type].includes(seatName)) {
@@ -103,6 +107,11 @@ $(document).ready(function () {
                 $(".seatType").not(this).prop("checked", false).prop("disabled", true);
                 $("#seatContainer").empty().append("<div id='seat_equal'><span> 전좌석 동일가: </span> 가격: <input type='number' name='equalPrice' required></div>");
                 $("#seatSelectionContainer").empty(); // 기존 '좌석선택' 제거
+                for (let seatType in selectedSeats){
+					console.log("1. selectedSeats["+seatType+"]: "+ selectedSeats[seatType])
+                	selectedSeats[seatType] = [];
+					console.log("2. selectedSeats["+seatType+"]: "+ selectedSeats[seatType])
+                }
             } else {
                 $(".seatType").prop("disabled", false);
                 $("#seat_equal").remove();
@@ -322,16 +331,24 @@ function removeInput(button) {
 /* ========================== 제출전 조건 확인 ============================ */
 $(document).ready(function() {
 	  // submit 버튼 클릭 시 실행할 동작
-	  $('#submitBtn').click(function() {
+	$('#submitBtn').click(function() {
 	    // 제출을 막기 전에 조건을 검사하거나 추가 로직을 넣을 수 있음
 	    var isFormValid = confirmSubmit(); // 예시로 폼 유효성 검사 함수
 	    
 	    if (isFormValid) {
-	      $('#myForm')[0].submit(); // 실제로 제출하고 싶을 때는 이 코드 사용
+	// 조건 3: required 속성이 부여된 input에 값이 있는지 확인
+			if (!$('#myForm')[0].checkValidity()) {
+			   	alert("필수 입력 항목을 채워주세요.");
+			 	return false;
+			}else{
+				console.log("제출 조건 확인 함수 실행: 조건3 클리어")
+		      	$('#myForm')[0].submit(); // 실제로 제출하고 싶을 때는 이 코드 사용
+			}
 	    } else {
-	      alert("필수 입력 항목을 채워주세요.");
+	      alert("confirmSubmit()결과: false");
+	      event.preventDefault(); // 폼 제출을 막음
 	    }
-	  });
+  	});
 
 
 	/* ====================== 좌석 목록 생성 함수 ================= */
@@ -351,17 +368,11 @@ $(document).ready(function() {
 	/* ========================== 제출조건 확인 함수 ==========================*/
 	function confirmSubmit() {
 	    console.log("제출 조건 확인 함수 실행")
-	    
-        if (!$('#myForm')[0].checkValidity()) {
- 	    	return false;
-   		}
 	
 	    let selectedSeatTypes = $(".seatType:checked").map(function() {
 	        return this.value;
 	    }).get();
 	    console.log("selectedSeatTypes: "+ selectedSeatTypes);
-	    
-	    
 		
 	    if (typeof selectedHall === "undefined" || !selectedHall) {
 	        alert("공연장을 선택하세요.");
@@ -380,18 +391,30 @@ $(document).ready(function() {
 		
 	    if (selectedHall === "gaudium") {
 	    	allSeats = generateSeatList("A", "T", 24);
+		    console.log("allSeats: "+allSeats);
+		    console.log("allSelectedSeats: "+allSelectedSeats);
 	    	let areArraysEqual = JSON.stringify(allSelectedSeats.sort()) === JSON.stringify(allSeats.sort());
 			if (!areArraysEqual){
+			    console.log("allSeats: "+allSeats);
+			    console.log("allSelectedSeats: "+allSelectedSeats);
 		        alert("가우디움홀: 모든 좌석을 선택해주세요.");
 				return false;
+			} else {
+			    console.log("제출 조건 확인 함수 실행: 조건1 클리어")
 			}
 			
 	    } else {
 			allSeats = generateSeatList("A", "O", 14);
+		    console.log("allSeats1: "+allSeats);
+		    console.log("allSelectedSeats1: " + allSelectedSeats);
 	    	let areArraysEqual = JSON.stringify(allSelectedSeats.sort()) === JSON.stringify(allSeats.sort());
 			if (!areArraysEqual){
+			    console.log("allSeats2: "+allSeats);
+			    console.log("allSelectedSeats2: "+allSelectedSeats);
 		        alert("펠리체홀: 모든 좌석을 선택해주세요.");
 				return false;
+			} else {
+			    console.log("제출 조건 확인 함수 실행: 조건1 클리어")
 			} 	
 	    }
 	
@@ -411,8 +434,11 @@ $(document).ready(function() {
    		if (sum1 != totalSeatCount || sum2 != totalSeatCount) {
 	        alert("좌석 등급 별 좌석수를 확인해주십시오. \n 입력된 좌석수: "+sum2+", 총 좌석수: "+totalSeatCount);
 	        return false;
+	    } else {
+		    console.log("제출 조건 확인 함수 실행: 조건2 클리어")
 	    }
-   		return false;
+        
+   		return true;
 	}
 });
 </script>
@@ -449,7 +475,7 @@ $(document).ready(function() {
 	<table >
 		<tr>
 			<td>제목</td>
-			<td> <input type="text" name="title" placeholder="공연 제목입력"></td>
+			<td> <input type="text" name="title" placeholder="공연 제목입력" required></td>
 		</tr>
 		<tr>
 			<td>공연 장르</td>
@@ -458,7 +484,7 @@ $(document).ready(function() {
 				String[] category = {"클래식", "뮤지컬", "재즈", "대중음악", "연극", "무용", "기타"};
 				for (int i=0; i<category.length; i++){
 			%>
-			<input type="radio" name="categoryId" id="option<%=i%>" value="<%=i%>">
+			<input type="radio" name="categoryId" id="option<%=i%>" value="<%=i%>" required>
 			<label for="option<%=i%>"><%=category[i]%></label> 
 			<%
 				}
@@ -478,7 +504,7 @@ $(document).ready(function() {
 		<tr>
 			<td>좌석 등급</td>
 			<td>
-			    <label><input type="checkbox" class="seatType" value="vip"> VIP</label>
+			    <label><input type="checkbox" class="seatType" value="vip" required> VIP</label>
 			    <label><input type="checkbox" class="seatType" value="r"> R</label>
 			    <label><input type="checkbox" class="seatType" value="s"> S</label>
 			    <label><input type="checkbox" class="seatType" value="a"> A</label>

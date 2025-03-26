@@ -163,6 +163,9 @@ public class ConcertService {
 //	콘서트 아이디, 등급, 좌석번호배열들을 받아 db의 concertSeats 테이블에 저장하는 메소드
     private void saveSeats(int concertId, int concertTimeId, String seatType, String[] seats) {
     	log.info("ConcertService 클래스의 saveSeats() 메소드" + seatType);
+
+    	log.info("seatType: " + seatType);
+    	log.info("seatType: " + seats);
     	
     	if (seats != null) {
 	    	for (String seat : seats) {

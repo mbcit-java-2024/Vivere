@@ -20,7 +20,7 @@ public class BookService {
 	@Autowired
 	private BookDAO bookDAO;
 	
-	public List<String> getBookedSeats(String conTimeId) {
+	public List<String> getBookedSeats(int conTimeId) {
 		System.out.println("BookService 클래스의 getBookedSeats() 메소드 실행");
 		List<concertSeatVO> bookSeat = bookDAO.selectBookedSeats(conTimeId);
 		System.out.println("BookService 클래스의 bookSeat 생성");
@@ -39,7 +39,13 @@ public class BookService {
 	}
 
 	public List<BookVO> pastBook(BookVO bookVO) {
+		System.out.println("BookService 클래스의 pastBook() 메소드 실행");
 		return bookDAO.pastBook(bookVO);
+	}
+
+	public List<concertSeatVO> getConcertSeatByConTimeId(int conTimeId) {
+		List<concertSeatVO> conSeat = bookDAO.getConcertSeatByConTimeId(conTimeId);
+		return conSeat;
 	}
 
 }

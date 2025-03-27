@@ -10,8 +10,10 @@ import com.mbcit.vivere.vo.concertSeatVO;
 @Mapper
 public interface BookDAO {
 
-	List<concertSeatVO> selectBookedSeats(String conTimeId);
+	List<concertSeatVO> selectBookedSeats(int conTimeId);
 
 	List<BookVO> pastBook(BookVO bookVO);
+
+	List<concertSeatVO> getConcertSeatByConTimeId(int conTimeId);
 
 }

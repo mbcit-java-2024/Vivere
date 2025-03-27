@@ -202,8 +202,8 @@ public class ConcertService {
 		return conTimes;
 	}
 	
-//	지난 concertTime List를 가져오는 메소드
-	public List<ConcertTimeVO> getPastConcertTimes(int id) {
+//	아직 하지않은 공연의 concertTime List를 가져오는 메소드
+	public List<ConcertTimeVO> getFutureConcertTimes(int id) {
 		System.out.println("ConcertService 클래스의 getPastConcertTimes() 메소드 실행");
 		List<ConcertTimeVO> conTimes = getConcertTimes(id);
 		Date now = new Date();
@@ -217,8 +217,8 @@ public class ConcertService {
 		return conTimes;
 	}
 	
-//	아직 하지않은 공연의 concertTime List를 가져오는 메소드
-	public List<ConcertTimeVO> getFutureConcertTimes(int id) {
+//	지난 concertTime List를 가져오는 메소드
+	public List<ConcertTimeVO> getPastConcertTimes(int id) {
 		System.out.println("ConcertService 클래스의 getFutureConcertTimes() 메소드 실행");
 		List<ConcertTimeVO> conTimes = getConcertTimes(id);
 		Date now = new Date();

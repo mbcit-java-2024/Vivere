@@ -14,7 +14,7 @@
 	
 	<select id="getConcertTimes" parameterType="int" resultType="concertTimeVO">
 		select conT.* from concertTime conT join concert con on conT.concertId = con.id
-		where con.id = #{id}
+		where con.id = #{id} order by concertTime asc
 	</select>
 	
 	<insert id="insert" parameterType="concertVO">

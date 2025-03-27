@@ -102,17 +102,20 @@ public class ConcertService {
 //		concertId 로 concertTime 객체 리스트를 받아온다. 
 		ConcertVO conVo = concertDAO.selectByPosterUrl(vo.getPosterUrl());
 		List<ConcertTimeVO> conTimes = concertDAO.getConcertTimes(conVo.getId());
+		log.info("conVo: "+ conVo.toString());
 		log.info("conTimes: "+ conTimes);
+		log.info("equalPrice: "+ conVo.getEqualPrice());
 		
 		if (conVo.getEqualPrice() == 0) {
 			String[] vipSeats = vipOptionalSeats.isPresent() ? vipOptionalSeats.get() : null;
 			String[] rSeats = rOptionalSeats.isPresent() ? rOptionalSeats.get() : null;
 			String[] sSeats = sOptionalSeats.isPresent() ? sOptionalSeats.get() : null;
 			String[] aSeats = aOptionalSeats.isPresent() ? aOptionalSeats.get() : null;
-			log.info("vipSeats: "+ vipSeats);
-			log.info("rSeats: "+ rSeats);
-			log.info("sSeats: "+ sSeats);
-			log.info("aSeats: "+ aSeats);
+			log.info("vipSeats: "+ vipSeats, ", vipCount: "+ vipSeats.length);
+			log.info("rSeats: "+ rSeats + ", rCount: "+ rSeats.length);
+			log.info("sSeats: "+ sSeats + ", sCout: "+ sSeats.length);
+			log.info("aSeats: "+ aSeats + ", aCount: " + aSeats.length);
+			log.info("realTotalSeatCount: "+ vipSeats.length + rSeats.length + aSeats.length);
 			
 //		각 concertTime 마다 반복하며 좌석 객체들을 생성하여 저장한다.
 			for (ConcertTimeVO conTime : conTimes) {
@@ -123,12 +126,16 @@ public class ConcertService {
 			}
 		
 		} else {
+			log.info("equal Seats 저장");
+			log.info("hallType: "+conVo.getHallType());
 			String[] eSeats;
-			if (vo.getHallType() == 0) {
+			if (conVo.getHallType() == 0) {
 				eSeats = generateSeats(0).toArray(new String[0]);
+				log.info("eSeats: "+ eSeats.toString());
 			} else {
 				eSeats = generateSeats(1).toArray(new String[0]);
 			}
+//		각 concertTime 마다 반복하며 좌석 객체들을 생성하여 저장한다.
 			for (ConcertTimeVO conTime : conTimes) {
 				saveSeats(conVo.getId(), conTime.getId(), "equal", eSeats);
 			}
@@ -137,9 +144,11 @@ public class ConcertService {
 	
 //	공연장 타입을 입력받아 좌석번호를 리스트로 생성하는 메소드
 	private List<String> generateSeats(int hallType) {
-		List<String> seats = null;
+		log.info("Concert Service 클래스의 generateSeats 메소드 실행");
+		List<String> seats = new ArrayList<>();
 		if (hallType == 0) {
-			String[] rows = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"};
+			log.info("가우디움 좌석번호 배열 생성");
+			String[] rows = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L","M","N","O","P","Q","R","S","T"};
 			for (String row : rows) {
 				for (int i = 1; i <= 24; i++ ) {
 					String seatNum = String.format("%02d", i);
@@ -147,8 +156,9 @@ public class ConcertService {
 					seats.add(seat);
 				}
 			}
+			return seats;
 		}else {
-			String[] rows = {"A", "B", "C", "D", "E", "F", "G"};
+			String[] rows = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L","M","N","O"};
 			for (String row : rows) {
 				for (int i = 1; i <= 14; i++ ) {
 					String seatNum = String.format("%02d", i);
@@ -156,8 +166,8 @@ public class ConcertService {
 					seats.add(seat);
 				}
 			}
+			return seats;
 		}
-		return seats;
 	}
 	
 //	콘서트 아이디, 등급, 좌석번호배열들을 받아 db의 concertSeats 테이블에 저장하는 메소드

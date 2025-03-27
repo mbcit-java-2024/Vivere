@@ -379,63 +379,76 @@ $(document).ready(function() {
 	        return false;
 	    }
 	    
-	    // 조건 1: 생성된 체크박스(좌석)이 모두 선택되었는가?
-		let allSeats = [];
-		let allSelectedSeats = []
-	    .concat(
-	        selectedSeats["vip"] || [],
-	        selectedSeats["r"] || [],
-	        selectedSeats["s"] || [],
-	        selectedSeats["a"] || []
-	    );
-		
-	    if (selectedHall === "gaudium") {
-	    	allSeats = generateSeatList("A", "T", 24);
-		    console.log("allSeats: "+allSeats);
-		    console.log("allSelectedSeats: "+allSelectedSeats);
-	    	let areArraysEqual = JSON.stringify(allSelectedSeats.sort()) === JSON.stringify(allSeats.sort());
-			if (!areArraysEqual){
+	    if ($(".seatType:checked").val() == "equal") {
+	    	console.log("selectedSeatType: "+ $(".seatType:checked").val());
+	    	return true;
+	    }else{
+	    	
+		    // 조건 1: 생성된 체크박스(좌석)이 모두 선택되었는가?
+			let allSeats = [];
+			let allSelectedSeats = []
+		    .concat(
+		        selectedSeats["vip"] || [],
+		        selectedSeats["r"] || [],
+		        selectedSeats["s"] || [],
+		        selectedSeats["a"] || []
+		    );
+			
+		    if (selectedHall === "gaudium") {
+		    	allSeats = generateSeatList("A", "T", 24);
 			    console.log("allSeats: "+allSeats);
 			    console.log("allSelectedSeats: "+allSelectedSeats);
-		        alert("가우디움홀: 모든 좌석을 선택해주세요.");
-				return false;
-			} else {
-			    console.log("제출 조건 확인 함수 실행: 조건1 클리어")
-			}
-			
-	    } else {
-			allSeats = generateSeatList("A", "O", 14);
-		    console.log("allSeats1: "+allSeats);
-		    console.log("allSelectedSeats1: " + allSelectedSeats);
-	    	let areArraysEqual = JSON.stringify(allSelectedSeats.sort()) === JSON.stringify(allSeats.sort());
-			if (!areArraysEqual){
-			    console.log("allSeats2: "+allSeats);
-			    console.log("allSelectedSeats2: "+allSelectedSeats);
-		        alert("펠리체홀: 모든 좌석을 선택해주세요.");
-				return false;
-			} else {
-			    console.log("제출 조건 확인 함수 실행: 조건1 클리어")
-			} 	
-	    }
-	
-	    // 조건 2: 각 좌석등급 별 체크박스에 체크된 수(selectedSeats[type].length) 와 
-	    //	입력된 수량($(".seatCount[data-type=seatType]").val())이 같고 그 합이 전체좌석의 수와 같은가?
-	    let sum1 = 0; // 체크된 체크박스 개수
-	    let sum2 = 0; // 직접 입력된 좌석 등급별 좌석수 
-	    
-	    for (let seatType of selectedSeatTypes){
-	    	sum1 += selectedSeats[seatType].length;
-	    	sum2 += parseInt($(".seatCount[data-type=" + seatType + "]").val(), 10);
-	    }
-	    
-	    let totalSeatCount = $("#totalSeat").val();
-	    console.log("sum1: "+sum1 +", sum2: "+sum2+", totalSeat: "+ totalSeatCount);
-	
-   		if (sum1 != totalSeatCount || sum2 != totalSeatCount) {
-	        alert("좌석 등급 별 좌석수를 확인해주십시오. \n 입력된 좌석수: "+sum2+", 총 좌석수: "+totalSeatCount);
-	        return false;
-	    } else {
-		    console.log("제출 조건 확인 함수 실행: 조건2 클리어")
+		    	let areArraysEqual = JSON.stringify(allSelectedSeats.sort()) === JSON.stringify(allSeats.sort());
+				if (!areArraysEqual){
+				    //console.log("allSeats: "+allSeats);
+				    console.log("allSelectedSeats: "+allSelectedSeats);
+				    console.log("selectedTotalSeats: "+ allSelectedSeats.length)
+			        alert("가우디움홀: 모든 좌석을 선택해주세요.");
+					return false;
+				} else {
+				    console.log("selectedTotalSeats: "+ allSelectedSeats.length)
+				    for (let seatType in selectedSeats){
+					    console.log(selectedSeats[seatType])
+				    }
+				    console.log("제출 조건 확인 함수 실행: 조건1 클리어")
+				}
+				
+		    } else {
+				allSeats = generateSeatList("A", "O", 14);
+			    console.log("allSeats1: "+allSeats);
+			    console.log("allSelectedSeats1: " + allSelectedSeats);
+		    	let areArraysEqual = JSON.stringify(allSelectedSeats.sort()) === JSON.stringify(allSeats.sort());
+				if (!areArraysEqual){
+				    //console.log("allSeats2: "+allSeats);
+				    console.log("allSelectedSeats2: "+allSelectedSeats);
+				    console.log("selectedTotalSeats: "+ allSelectedSeats.length)
+			        alert("펠리체홀: 모든 좌석을 선택해주세요.");
+					return false;
+				} else {
+				    console.log("selectedTotalSeats: "+ allSelectedSeats.length)
+				    console.log("제출 조건 확인 함수 실행: 조건1 클리어")
+				} 	
+		    }
+		
+		    // 조건 2: 각 좌석등급 별 체크박스에 체크된 수(selectedSeats[type].length) 와 
+		    //	입력된 수량($(".seatCount[data-type=seatType]").val())이 같고 그 합이 전체좌석의 수와 같은가?
+		    let sum1 = 0; // 체크된 체크박스 개수
+		    let sum2 = 0; // 직접 입력된 좌석 등급별 좌석수 
+		    
+		    for (let seatType of selectedSeatTypes){
+		    	sum1 += selectedSeats[seatType].length;
+		    	sum2 += parseInt($(".seatCount[data-type=" + seatType + "]").val(), 10);
+		    }
+		    
+		    let totalSeatCount = $("#totalSeat").val();
+		    console.log("sum1: "+sum1 +", sum2: "+sum2+", totalSeat: "+ totalSeatCount);
+		
+	   		if (sum1 != totalSeatCount || sum2 != totalSeatCount) {
+		        alert("좌석 등급 별 좌석수를 확인해주십시오. \n 입력된 좌석수: "+sum2+", 총 좌석수: "+totalSeatCount);
+		        return false;
+		    } else {
+			    console.log("제출 조건 확인 함수 실행: 조건2 클리어")
+		    }
 	    }
         
    		return true;

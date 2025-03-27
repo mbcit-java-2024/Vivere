@@ -111,11 +111,11 @@ public class ConcertService {
 			String[] rSeats = rOptionalSeats.isPresent() ? rOptionalSeats.get() : null;
 			String[] sSeats = sOptionalSeats.isPresent() ? sOptionalSeats.get() : null;
 			String[] aSeats = aOptionalSeats.isPresent() ? aOptionalSeats.get() : null;
-			log.info("vipSeats: "+ vipSeats, ", vipCount: "+ vipSeats.length);
+			log.info("vipSeats: "+ vipSeats + ", vipCount: "+ vipSeats.length);
 			log.info("rSeats: "+ rSeats + ", rCount: "+ rSeats.length);
 			log.info("sSeats: "+ sSeats + ", sCout: "+ sSeats.length);
 			log.info("aSeats: "+ aSeats + ", aCount: " + aSeats.length);
-			log.info("realTotalSeatCount: "+ vipSeats.length + rSeats.length + aSeats.length);
+			log.info("realTotalSeatCount: "+ (vipSeats.length + rSeats.length + aSeats.length + sSeats.length));
 			
 //		각 concertTime 마다 반복하며 좌석 객체들을 생성하여 저장한다.
 			for (ConcertTimeVO conTime : conTimes) {
@@ -189,6 +189,8 @@ public class ConcertService {
 	    	}
     	}
     }
+    
+//  콘서트 아이디로 콘서트 객체 1개를 가져오는 메소드
 	public ConcertVO getConcertById(int id) {
 		System.out.println("ConcertService 클래스의 getConcertById() 메소드 실행");
 		ConcertVO concertVO = concertDAO.getConcertById(id);

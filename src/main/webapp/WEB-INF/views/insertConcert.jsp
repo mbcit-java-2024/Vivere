@@ -29,9 +29,7 @@ function handleSeatSelection(seatName, isChecked, seatType) {
 	// 체크인 경우(isChecked == true): selectedSeats[seatType] 에 seatName을 추가한다.
 	if (isChecked) {
 		console.log("1. selectedSeats["+seatType+"]: "+ selectedSeats[seatType])
-	    if (!selectedSeats[seatType].includes(seatName)) {
-	        selectedSeats[seatType].push(seatName); // 중복 방지 후 추가
-	    }
+		selectedSeats[seatType].push(seatName);
 		console.log("2. selectedSeats["+seatType+"]: "+ selectedSeats[seatType])
 	// 나머지 type의 체크박스(가 있는지 확인하고 있다면) 중 해당 value 를 disable 한다.
 	 for (let type in selectedSeats) {
@@ -81,6 +79,11 @@ $(document).ready(function () {
      	let selectedValue = $(this).val(); // 선택된 라디오 버튼 값
         maxValue = maxValues[selectedValue]; // 해당 좌석 등급의 최대값 가져오기
         $(".seatCount").attr("max", maxValue); // max 값 변경
+		
+        // 공연장 변경시 기존에 선택된 좌석들 초기화
+        for (let seatType in selectedSeats){
+        	selectedSeats[seatType] = [];
+        }
 	 });
 
     /* =========== 공연 좌석 등급설정 : class = "seatType" 인 input의 값이 바뀔때마다 실행 ========== */
@@ -93,7 +96,12 @@ $(document).ready(function () {
 	     	let selectedValue = $(this).val(); // 선택된 라디오 버튼 값
 	        maxValue = maxValues[selectedValue]; // 해당 좌석 등급의 최대값 가져오기
 	        $(".seatCount").attr("max", maxValue); // max 값 변경
-
+	        
+	        // selectedSeats 초기화
+	        for (let seatType in selectedSeats){
+	        	selectedSeats[seatType] = [];
+	        }
+	        
 		    updateSeatSelectionUI();
 		 });
 
@@ -402,15 +410,15 @@ $(document).ready(function() {
 			    console.log("allSelectedSeats: "+allSelectedSeats);
 		    	let areArraysEqual = JSON.stringify(allSelectedSeats.sort()) === JSON.stringify(allSeats.sort());
 				if (!areArraysEqual){
-				    //console.log("allSeats: "+allSeats); // 전체좌석번호
-				    console.log("allSelectedSeats: "+allSelectedSeats); // 선택된 전체좌석번호
-				    console.log("selectedTotalSeats: "+ allSelectedSeats.length) // 선택된 전체 좌석 개수
+				    //console.log("allSeats: "+allSeats);
+				    console.log("allSelectedSeats: "+allSelectedSeats);
+				    console.log("selectedTotalSeats: "+ allSelectedSeats.length)
 			        alert("가우디움홀: 모든 좌석을 선택해주세요.");
 					return false;
 				} else {
-				    console.log("selectedTotalSeats: "+ allSelectedSeats.length) // 선택된 전체좌석번호
+				    console.log("selectedTotalSeats: "+ allSelectedSeats.length)
 				    for (let seatType in selectedSeats){
-					    console.log(selectedSeats[seatType].length)
+					    console.log(selectedSeats[seatType])
 				    }
 				    console.log("제출 조건 확인 함수 실행: 조건1 클리어")
 				}
@@ -421,16 +429,13 @@ $(document).ready(function() {
 			    console.log("allSelectedSeats1: " + allSelectedSeats);
 		    	let areArraysEqual = JSON.stringify(allSelectedSeats.sort()) === JSON.stringify(allSeats.sort());
 				if (!areArraysEqual){
-				    //console.log("allSeats2: "+allSeats); // 전체좌석번호
-				    console.log("allSelectedSeats2: "+allSelectedSeats); // 선택된 전체좌석번호
-				    console.log("selectedTotalSeats: "+ allSelectedSeats.length) // 선택된 전체 좌석 개수
+				    //console.log("allSeats2: "+allSeats);
+				    console.log("allSelectedSeats2: "+allSelectedSeats);
+				    console.log("selectedTotalSeats: "+ allSelectedSeats.length)
 			        alert("펠리체홀: 모든 좌석을 선택해주세요.");
 					return false;
 				} else {
-				    console.log("selectedTotalSeats: "+ allSelectedSeats.length) // 선택된 전체좌석번호
-				    for (let seatType in selectedSeats){
-					    console.log(selectedSeats[seatType].length)
-				    }
+				    console.log("selectedTotalSeats: "+ allSelectedSeats.length)
 				    console.log("제출 조건 확인 함수 실행: 조건1 클리어")
 				} 	
 		    }

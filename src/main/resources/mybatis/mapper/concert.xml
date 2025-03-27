@@ -4,6 +4,7 @@
 
 <mapper namespace="com.mbcit.vivere.dao.ConcertDAO">
 
+	<!-- select -->
 	<select id="getConcertById" parameterType="int" resultType="concertVO">
 		select * from concert where id = ${id}
 	</select>
@@ -17,6 +18,23 @@
 		where con.id = #{id} order by concertTime asc
 	</select>
 	
+	<select id="getConcertListByTime" resultType="concertVO">
+		SELECT DISTINCT c.*
+		FROM concert c
+		JOIN concertTime ct ON c.id = ct.concertId
+		WHERE ct.concertTime > NOW();
+	</select>
+	
+	<select id="getConcertListByTimeAndCategoryId" parameterType="int" resultType="concertVO">
+		SELECT DISTINCT c.*
+		FROM concert c
+		JOIN concertTime ct ON c.id = ct.concertId
+		WHERE ct.concertTime > NOW()
+		AND c.categoryId = #{categoryId};
+	</select>
+	
+	
+	<!-- insert  -->
 	<insert id="insert" parameterType="concertVO">
 		insert into concert (title, hallType, description, categoryId, totalSeat, posterUrl, priceVIP,
 			priceR, priceS, priceA, countVIP, countR, countS, countA, createDate, equalPrice)

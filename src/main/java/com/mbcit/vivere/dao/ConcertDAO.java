@@ -1,6 +1,5 @@
 package com.mbcit.vivere.dao;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -18,5 +17,8 @@ public interface ConcertDAO {
 	ConcertVO selectByPosterUrl(String posterUrl);
 	void insertConcertTime(ConcertTimeVO concertTimeVo);
 	void insertConcertSeat(concertSeatVO vo);
+	List<ConcertVO> getConcertListByTime();
+	List<ConcertVO> getConcertListByTimeAndCategoryId(int categoryId);
+	
 
 }

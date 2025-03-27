@@ -190,6 +190,41 @@ public class ConcertService {
     	}
     }
     
+//	List<ConcertVO>를 받아 각 콘서트 객체의 공연시작일과 마지막일을 넣어주고 포스터url을 상대경로로 바꿔주는 메소드    
+    public List<ConcertVO> setTimeAndPoster (List<ConcertVO> concertList){
+    	// ConcertVO 마다 startDate와 endDate 값을 넣어준다.
+    	for (ConcertVO vo : concertList) {
+    		// 콘서트 아이디로 콘서트 시간 정보를 가져온다. 
+    		List<ConcertTimeVO> conTimes = concertDAO.getConcertTimes(vo.getId());
+    		vo.setStartDate(conTimes.get(0).getConcertTime());
+    		vo.setEndDate(conTimes.get(conTimes.size() - 1).getConcertTime());
+    	}
+    	
+    	// ConcertVO 마다 posterUrl 을 상대경로로 바꿔준다.
+    	for (ConcertVO vo : concertList) {
+    		File file = new File(vo.getPosterUrl());
+    		String fileName = file.getName(); // 파일명만 추출
+    		String relativePath = "/posters/" + fileName;
+    		log.info("이미지 상대 경로: " + relativePath);
+    		vo.setPosterUrl(relativePath);
+    	}
+    	return concertList;
+    }
+    
+//  현재 공연중인 콘서트 리스트를 가져와서 리턴하는 메소드
+	public List<ConcertVO> getConcertListByTime() {
+		List<ConcertVO> concertList = concertDAO.getConcertListByTime();
+		setTimeAndPoster(concertList);
+		return concertList;
+	}
+	
+//  카테고리 아이디를 받아서 현재 공연중인 콘서트 리스트를 가져와서 리턴하는 메소드
+	public List<ConcertVO> getConcertListByTimeAndCategoryId(int categoryId) {
+		List<ConcertVO> concertList = concertDAO.getConcertListByTimeAndCategoryId(categoryId);
+		setTimeAndPoster(concertList);
+		return concertList;
+	}
+    
 //  콘서트 아이디로 콘서트 객체 1개를 가져오는 메소드
 	public ConcertVO getConcertById(int id) {
 		System.out.println("ConcertService 클래스의 getConcertById() 메소드 실행");
@@ -249,6 +284,8 @@ public class ConcertService {
 		}
 		return fHall;
 	}
+
+
 
 
 

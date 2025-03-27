@@ -26,5 +26,7 @@ public class ConcertVO {
     private int countA;
     private Date createDate;
     private Date updateDate;
+    private Date startDate;
+    private Date endDate;
 
 }

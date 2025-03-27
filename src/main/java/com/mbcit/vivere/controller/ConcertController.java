@@ -1,11 +1,14 @@
 package com.mbcit.vivere.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,7 +24,6 @@ public class ConcertController {
 	
 	@Autowired
 	private ConcertService concertService;
-	
 	
 	@RequestMapping("/insertConcert")
 	public String insertConcert() {
@@ -55,4 +57,20 @@ public class ConcertController {
 		return "";
 	}
 
+	@RequestMapping("/concertList")
+	public String concertList(Model model, @RequestParam(value = "categoryId", required = false) Integer categoryId) {
+		log.info("ConcertController의 concertList() 메소드 실행");
+		List<ConcertVO> concertList = new ArrayList<>();
+		
+		if (categoryId == null) {
+//		현재 공연중인 공연 전체 목록 가져오기
+			concertList = concertService.getConcertListByTime();
+		} else {
+			concertList = concertService.getConcertListByTimeAndCategoryId(categoryId);
+		}
+		
+		model.addAttribute("concertList", concertList);
+		model.addAttribute("categoryId", categoryId);
+		return "/concertList";
+	}
 }

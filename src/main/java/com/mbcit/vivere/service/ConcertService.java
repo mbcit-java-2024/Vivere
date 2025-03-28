@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -107,6 +108,7 @@ public class ConcertService {
 		log.info("equalPrice: "+ conVo.getEqualPrice());
 		
 		if (conVo.getEqualPrice() == 0) {
+			// 좌석 등급별 좌석번호가 저장된 리스트를 배열로 받는다.
 			String[] vipSeats = vipOptionalSeats.isPresent() ? vipOptionalSeats.get() : null;
 			String[] rSeats = rOptionalSeats.isPresent() ? rOptionalSeats.get() : null;
 			String[] sSeats = sOptionalSeats.isPresent() ? sOptionalSeats.get() : null;
@@ -117,12 +119,25 @@ public class ConcertService {
 //			log.info("aSeats: "+ aSeats + ", aCount: " + aSeats.length);
 //			log.info("realTotalSeatCount: "+ (vipSeats.length + rSeats.length + aSeats.length + sSeats.length));
 			
-//		각 concertTime 마다 반복하며 좌석 객체들을 생성하여 저장한다.
-			for (ConcertTimeVO conTime : conTimes) {
-				saveSeats(conVo.getId(), conTime.getId(), "VIP", vipSeats);
-				saveSeats(conVo.getId(), conTime.getId(), "R", sSeats);
-				saveSeats(conVo.getId(), conTime.getId(), "S", sSeats);
-				saveSeats(conVo.getId(), conTime.getId(), "A", aSeats);
+//			// 배열들을 selectdSeatList에 저장한다.
+			String[] seatTypes = {"VIP", "R", "S", "A"};
+			List<String[]> selectedSeatList = Arrays.asList(vipSeats, rSeats, sSeats, aSeats);
+			
+			// null 이 아닌 배열들만 좌석 객체를 생성하여 저장한다.
+			int i = 0;
+			for (String[] seats : selectedSeatList) {
+				if(seats != null) {
+					for (String seatNum : seats) {
+						log.info(seatNum+" / ");
+					}
+					// 각 concertTime 마다 반복하며 좌석 객체들을 생성하여 저장한다.
+					for (ConcertTimeVO conTime : conTimes) {
+						saveSeats(conVo.getId(), conTime.getId(), seatTypes[i], seats);
+					}
+				} else {
+					log.info( seatTypes[i] +"등급은 선택되지 않음");
+				}
+				i++;
 			}
 		
 		} else {
@@ -172,10 +187,10 @@ public class ConcertService {
 	
 //	콘서트 아이디, 등급, 좌석번호배열들을 받아 db의 concertSeats 테이블에 저장하는 메소드
     private void saveSeats(int concertId, int concertTimeId, String seatType, String[] seats) {
-    	log.info("ConcertService 클래스의 saveSeats() 메소드" + seatType);
-
+    	log.info("ConcertService 클래스의 saveSeats() 메소드" + seatType + concertTimeId);
     	log.info("seatType: " + seatType);
-    	log.info("seatType: " + seats);
+    	
+  	log.info("seatList: " + seats.toString());
     	
     	if (seats != null) {
 	    	for (String seat : seats) {
@@ -190,23 +205,29 @@ public class ConcertService {
     	}
     }
     
-//	List<ConcertVO>를 받아 각 콘서트 객체의 공연시작일과 마지막일을 넣어주고 포스터url을 상대경로로 바꿔주는 메소드    
-    public List<ConcertVO> setTimeAndPoster (List<ConcertVO> concertList){
-    	// ConcertVO 마다 startDate와 endDate 값을 넣어준다.
-    	for (ConcertVO vo : concertList) {
-    		// 콘서트 아이디로 콘서트 시간 정보를 가져온다. 
-    		List<ConcertTimeVO> conTimes = concertDAO.getConcertTimes(vo.getId());
-    		vo.setStartDate(conTimes.get(0).getConcertTime());
-    		vo.setEndDate(conTimes.get(conTimes.size() - 1).getConcertTime());
-    	}
+//	ConcertVO를 받아 각 콘서트 객체의 공연시작일과 마지막일을 넣어주고 포스터url을 상대경로로 바꿔주는 메소드    
+    public ConcertVO setTimeAndPoster(ConcertVO vo){
+    	log.info("ConcertService 클래스의 setTimeAndPoster(ConcertVO) 메소드 실행");
+    	// 콘서트 아이디로 콘서트 시간 정보를 가져온다. 
+    	List<ConcertTimeVO> conTimes = concertDAO.getConcertTimes(vo.getId());
+    	vo.setStartDate(conTimes.get(0).getConcertTime());
+    	vo.setEndDate(conTimes.get(conTimes.size() - 1).getConcertTime());
     	
     	// ConcertVO 마다 posterUrl 을 상대경로로 바꿔준다.
+    	File file = new File(vo.getPosterUrl());
+    	String fileName = file.getName(); // 파일명만 추출
+    	String relativePath = "/posters/" + fileName;
+    	log.info("이미지 상대 경로: " + relativePath);
+    	vo.setPosterUrl(relativePath);
+    	
+    	return vo;
+    }
+//	List<ConcertVO>를 받아 각 콘서트 객체의 공연시작일과 마지막일을 넣어주고 포스터url을 상대경로로 바꿔주는 메소드    
+    public List<ConcertVO> setTimeAndPoster (List<ConcertVO> concertList){
+    	log.info("ConcertService 클래스의 setTimeAndPoster(List<ConcertVO>) 메소드 실행");
+    	// ConcertVO 마다 startDate와 endDate 값을 넣어준다.
     	for (ConcertVO vo : concertList) {
-    		File file = new File(vo.getPosterUrl());
-    		String fileName = file.getName(); // 파일명만 추출
-    		String relativePath = "/posters/" + fileName;
-    		log.info("이미지 상대 경로: " + relativePath);
-    		vo.setPosterUrl(relativePath);
+    		setTimeAndPoster(vo);
     	}
     	return concertList;
     }

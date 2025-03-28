@@ -29,7 +29,9 @@ function handleSeatSelection(seatName, isChecked, seatType) {
 	// 체크인 경우(isChecked == true): selectedSeats[seatType] 에 seatName을 추가한다.
 	if (isChecked) {
 		console.log("1. selectedSeats["+seatType+"]: "+ selectedSeats[seatType])
-		selectedSeats[seatType].push(seatName);
+	    if (!selectedSeats[seatType].includes(seatName)) {
+	        selectedSeats[seatType].push(seatName); // 중복 방지 후 추가
+	    }
 		console.log("2. selectedSeats["+seatType+"]: "+ selectedSeats[seatType])
 	// 나머지 type의 체크박스(가 있는지 확인하고 있다면) 중 해당 value 를 disable 한다.
 	 for (let type in selectedSeats) {
@@ -81,9 +83,9 @@ $(document).ready(function () {
         $(".seatCount").attr("max", maxValue); // max 값 변경
 		
         // 공연장 변경시 기존에 선택된 좌석들 초기화
-        for (let seatType in selectedSeats){
-        	selectedSeats[seatType] = [];
-        }
+        	for (let seatType in selectedSeats){
+        		selectedSeats[seatType] = [];
+       	 }
 	 });
 
     /* =========== 공연 좌석 등급설정 : class = "seatType" 인 input의 값이 바뀔때마다 실행 ========== */
@@ -96,15 +98,14 @@ $(document).ready(function () {
 	     	let selectedValue = $(this).val(); // 선택된 라디오 버튼 값
 	        maxValue = maxValues[selectedValue]; // 해당 좌석 등급의 최대값 가져오기
 	        $(".seatCount").attr("max", maxValue); // max 값 변경
-	        
-	        // selectedSeats 초기화
+
+			// selectedSeats 초기화
 	        for (let seatType in selectedSeats){
 	        	selectedSeats[seatType] = [];
 	        }
 	        
 		    updateSeatSelectionUI();
 		 });
-
 		
         if (!seatType) {
             console.error("seatType 값이 비어 있습니다!");
@@ -232,7 +233,7 @@ $(document).ready(function () {
 	                    type: "checkbox",
 	                    class: lineNum + " "+ seatType + " seat",
 	                    name: seatType+"Seats",
-	                    value: seatName,
+	                    value: seatName
 /* 	                    change: function () {
 	                    	// 좌석 체크박스가 체크/해제되면
 	                        let a = $(this).attr("name"); // name 에 있는 것을 꺼내와라 = 좌석 등급
@@ -355,7 +356,7 @@ $(document).ready(function() {
 		      	$('#myForm')[0].submit(); // 실제로 제출하고 싶을 때는 이 코드 사용
 			}
 	    } else {
-	      alert("confirmSubmit()결과: false");
+	      //  alert("confirmSubmit()결과: false");
 	      event.preventDefault(); // 폼 제출을 막음
 	    }
   	});
@@ -394,6 +395,16 @@ $(document).ready(function() {
 	    	return true;
 	    }else{
 	    	
+	    	// 조건 0: 좌석 등급이 선택되었는가?
+    	    var checkboxes = document.querySelectorAll(".seatType");
+		    var isChecked = Array.from(checkboxes).some(cb => cb.checked); // 하나라도 체크됐는지 확인
+		
+		    if (!isChecked) {
+		        alert("최소 하나의 좌석 유형을 선택해야 합니다.");
+		        event.preventDefault(); // 제출 방지
+		        return false;
+		    }
+	    	
 		    // 조건 1: 생성된 체크박스(좌석)이 모두 선택되었는가?
 			let allSeats = [];
 			let allSelectedSeats = []
@@ -410,15 +421,15 @@ $(document).ready(function() {
 			    console.log("allSelectedSeats: "+allSelectedSeats);
 		    	let areArraysEqual = JSON.stringify(allSelectedSeats.sort()) === JSON.stringify(allSeats.sort());
 				if (!areArraysEqual){
-				    //console.log("allSeats: "+allSeats);
-				    console.log("allSelectedSeats: "+allSelectedSeats);
-				    console.log("selectedTotalSeats: "+ allSelectedSeats.length)
+				    //console.log("allSeats: "+allSeats); // 전체좌석번호
+				    console.log("allSelectedSeats: "+allSelectedSeats); // 선택된 전체좌석번호
+				    console.log("selectedTotalSeats: "+ allSelectedSeats.length) // 선택된 전체 좌석 개수
 			        alert("가우디움홀: 모든 좌석을 선택해주세요.");
 					return false;
 				} else {
-				    console.log("selectedTotalSeats: "+ allSelectedSeats.length)
+				    console.log("selectedTotalSeats: "+ allSelectedSeats.length) // 선택된 전체좌석번호
 				    for (let seatType in selectedSeats){
-					    console.log(selectedSeats[seatType])
+					    console.log(selectedSeats[seatType].length)
 				    }
 				    console.log("제출 조건 확인 함수 실행: 조건1 클리어")
 				}
@@ -429,13 +440,16 @@ $(document).ready(function() {
 			    console.log("allSelectedSeats1: " + allSelectedSeats);
 		    	let areArraysEqual = JSON.stringify(allSelectedSeats.sort()) === JSON.stringify(allSeats.sort());
 				if (!areArraysEqual){
-				    //console.log("allSeats2: "+allSeats);
-				    console.log("allSelectedSeats2: "+allSelectedSeats);
-				    console.log("selectedTotalSeats: "+ allSelectedSeats.length)
+				    //console.log("allSeats2: "+allSeats); // 전체좌석번호
+				    console.log("allSelectedSeats2: "+allSelectedSeats); // 선택된 전체좌석번호
+				    console.log("selectedTotalSeats: "+ allSelectedSeats.length) // 선택된 전체 좌석 개수
 			        alert("펠리체홀: 모든 좌석을 선택해주세요.");
 					return false;
 				} else {
-				    console.log("selectedTotalSeats: "+ allSelectedSeats.length)
+				    console.log("selectedTotalSeats: "+ allSelectedSeats.length) // 선택된 전체좌석번호
+				    for (let seatType in selectedSeats){
+					    console.log(selectedSeats[seatType].length)
+				    }
 				    console.log("제출 조건 확인 함수 실행: 조건1 클리어")
 				} 	
 		    }
@@ -459,6 +473,7 @@ $(document).ready(function() {
 		    } else {
 			    console.log("제출 조건 확인 함수 실행: 조건2 클리어")
 		    }
+
 	    }
         
    		return true;
@@ -527,7 +542,7 @@ $(document).ready(function() {
 		<tr>
 			<td>좌석 등급</td>
 			<td>
-			    <label><input type="checkbox" class="seatType" value="vip" required> VIP</label>
+			    <label><input type="checkbox" class="seatType" value="vip"> VIP</label>
 			    <label><input type="checkbox" class="seatType" value="r"> R</label>
 			    <label><input type="checkbox" class="seatType" value="s"> S</label>
 			    <label><input type="checkbox" class="seatType" value="a"> A</label>

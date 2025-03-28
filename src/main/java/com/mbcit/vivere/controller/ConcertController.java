@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mbcit.vivere.service.ConcertService;
+import com.mbcit.vivere.vo.ConcertTimeVO;
 import com.mbcit.vivere.vo.ConcertVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +55,7 @@ public class ConcertController {
 		log.info("aSeats: "+ aSeats.toString());
 		concertService.saveConcertSeats(vo, vipSeats, rSeats, sSeats, aSeats);
 		
-		return "";
+		return "redirect:/concertList";
 	}
 
 	@RequestMapping("/concertList")
@@ -62,15 +63,33 @@ public class ConcertController {
 		log.info("ConcertController의 concertList() 메소드 실행");
 		List<ConcertVO> concertList = new ArrayList<>();
 		
+//		카테고리 아이디별로 다른 공연 목록 DB에서 가져오기
 		if (categoryId == null) {
-//		현재 공연중인 공연 전체 목록 가져오기
 			concertList = concertService.getConcertListByTime();
 		} else {
 			concertList = concertService.getConcertListByTimeAndCategoryId(categoryId);
 		}
 		
+//		공연 목록과 카테고리아이디를 model 에 담아 jsp 로 보낸다.
 		model.addAttribute("concertList", concertList);
 		model.addAttribute("categoryId", categoryId);
 		return "/concertList";
 	}
+	
+	@RequestMapping("/concertView")
+	public String concertView(@RequestParam("concertId") int concertId, Model model) {
+		log.info("ConcertController의 concertView() 메소드 실행");
+//		해당 공연 1건 
+		ConcertVO concertVO = concertService.getConcertById(concertId);
+		concertService.setTimeAndPoster(concertVO);
+//		해당 공연의 시간정보 
+		List<ConcertTimeVO> conTimeList = concertService.getConcertTimes(concertId);
+		
+//		jsp 로 필요한 정보 보내기
+		model.addAttribute("concertVO", concertVO);
+		model.addAttribute("conTimeList", conTimeList);
+		
+		return "/concertView";
+	}
+	
 }

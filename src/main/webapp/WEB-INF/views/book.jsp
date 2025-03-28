@@ -12,13 +12,128 @@
 		justify-content: center;
 		text-align: center;
 	}
+	#goToPay {
+		width: 391px;
+		height: 45px;
+		padding:0px;
+		margin:0px;
+		color:white;
+		font-size: 20px;
+		border: 0px;
+		border-radius: 10px;
+		transition: all 0.3s;
+	}
+	#goToPay:disabled {
+	    background-color: lightgray;
+	    cursor: not-allowed;
+	}
+	
+	#goToPay:not(:disabled) {
+	    background-color: #333333;
+	    cursor: pointer;
+	}
 	.seat {
+		width: 13px;
+	    height: 13px;
+	    display: inline-block;
+	    position: relative;
+	}
+	.seat input {
+	    display: none;
+	}
+	.seat span {
 		margin: auto;
+	    display: inline-block;
+	    width: 10px;
+	    height: 10px;
+	    border-radius: 2px;
+	    border: 1px solid #aaa;
+	    background-color: white;
+	    transition: all 0.3s;
+	    cursor: pointer;
+	    position: absolute;
+	    top: 50%;
+	    left: 50%;
+	    transform: translate(-50%, -50%);
+	}
+	
+	.seat input:checked + span {
+		width: 13px;
+		height: 13px;
+	}
+	
+	.seat input[value="VIP"]:checked + span {
+	    background-color: #78171C;
+	    border-color: black;
+	}
+	
+	.seat input[value="VIP"]:not(:checked) + span {
+	    background-color: #D79B99;
+	    border-color: #D79B99;
+	}
+	
+	.seat input[value="R"]:checked + span {
+	    background-color: #B63330;
+	    border-color: #9B2F2A;
+	}
+	
+	.seat input[value="R"]:not(:checked) + span {
+	    background-color: #F28D91;
+	    border-color: #F28D91;
+	}
+	
+	.seat input[value="S"]:checked + span {
+	    background-color: #CDAA39;
+	    border-color: #4C6A91;
+	}
+	
+	.seat input[value="S"]:not(:checked) + span {
+	    background-color: #E1D57A;
+	    border-color: #E1D57A;
+	}
+	
+	.seat input[value="A"]:checked + span {
+	    background-color: #E5CD94;
+	    border-color: #5E8B32;
+	}
+	
+	.seat input[value="A"]:not(:checked) + span {
+	    background-color: #F3E5A0;
+    	border-color: #F3E5A0;
+	}
+	
+	/* equal 체크박스 */
+	.seat input[value="equal"]:checked + span {
+	    background-color: #BDC3C7;
+	    border-color: #CDAA39;
+	}
+	
+	.seat input[value="equal"]:not(:checked) + span {
+	    background-color: #E2E5E7;
+	    border-color: #E2E5E7;
+	}
+	
+	.gradeExample {
+		width:13px;
+		height:13px; 
+		border-radius: 2px;
+		border: 1px solid #aaa;
+	}
+	
+	
+	#pickTime {
+		width: 280px;
+		height: 35px;
+		font-size: 16px;
+		text-align: center;
+		border-radius: 5px;
+		background-color: #F9F9F9;
 	}
 	.divCard {
 		border: 1px solid black;
 		padding: 20px;
 		display: flex;
+		background-color: #F9F9F9;
 	}
 	.lineNum {
 		color: gray;
@@ -35,12 +150,13 @@
 	.sideDetail {
 		margin-left: 30px;
 		width: 350px;
-		padding: 20px;
 	}
 	.mgb {
+		padding: 20px;
 		border: 1px solid black;
 		height: 35%;
 		margin-bottom: 20px;
+		background-color: #F9F9F9;
 	}
 	.info {
 		margin-top: 30px; 
@@ -50,105 +166,23 @@
 	.price {
 		text-align: right;
 		width: 250px;
-		border-bottom: 1px solid black;
 		font-weight: bold;
 	}
 	th {
 		width: 100px;
-		border-bottom: 1px solid black;
+	}
+	div {
+		border-radius: 10px;
 	}
 </style>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-
-window.onload = () => {
-	
-	changeTime();
-	
-	seatPrice = {
-		    VIP: parseInt(document.getElementById("seatPrice").getAttribute("data-vip")),
-		    R: parseInt(document.getElementById("seatPrice").getAttribute("data-r")),
-		    S: parseInt(document.getElementById("seatPrice").getAttribute("data-s")),
-		    A: parseInt(document.getElementById("seatPrice").getAttribute("data-a")),
-		    equal: parseInt(document.getElementById("seatPrice").getAttribute("data-equal"))
-	};
-	console.log(seatPrice);
-	
-};
-
-function changeTime() {
-	const selectedTimeId = document.getElementById("pickTime").value; // 선택된 공연 시간을 가져옴
-    $.ajax({
-    	url: "/getBookedSeats?conTimeId=" + selectedTimeId,  // 컨트롤러 요청 주소
-      	method: "GET",
-      	//data: {
-    	//	conTimeId: selectedTimeId
-		//},  // 선택된 공연 시간 전달
-       	success: function(response) {
-       		$(`input[class=seat]`).prop("checked", false);
-       		$(`input[class=seat]`).prop("disabled", false);
-       		// console.log(response);
-        	response.bookedSeats.forEach(function(seat) {
-        		// console.log(seat);
-        		$(`input[name=` + seat + `]`).prop("disabled", true);
-        	});
-        	response.allSeats.forEach(function(seat) {
-        		const lineNum = seat.lineNum;
-        		const seatNum = String(seat.seatNum).padStart(2, '0');
-        		const seatName = lineNum + seatNum;
-        		// console.log(seatName);
-        		$(`input[name=` + seatName + `]`).prop("value", seat.grade);
-        		// console.log($(`input[name=` + seatName + `]`).val());
-        	});
-			checkSeat();
-		},
-    	error: function(xhr, status, error) {
-    		console.error("AJAX 요청 실패:", status, error);
-    	}
-	});
-}
-
-function checkSeat() {
-	let selectedSeats = [];
-    $("input.seat:checked").each(function() {
-        selectedSeats.push($(this).attr("name"));
-    });
-    let cnt = selectedSeats.length > 0 ? selectedSeats.length + "석" : "";
-    $("#seatsCount").html(cnt);
-    let seatText = selectedSeats.length > 0 ? selectedSeats.join(", ") : "좌석을 선택해 주세요";
-    $("#pickedSeats").html(seatText);
-    totalPrice();
-}
-
-function totalPrice() {
-	let totalPrice = 0;
-	// console.log(seatPrice);
-	if (0 == seatPrice.equal) {
-		$("input.seat:checked").each(function() {
-			const seatGrade = $(this).val();
-			if (seatGrade === 'VIP') {
-				totalPrice += seatPrice.VIP;
-			} else if (seatGrade === 'R') {
-				totalPrice += seatPrice.R;
-			} else if (seatGrade === 'S') {
-				totalPrice += seatPrice.S;
-			} else if (seatGrade === 'A') {
-				totalPrice += seatPrice.A;
-			}
-		});
-	} else {
-		totalPrice = $("input.seat:checked").length * seatPrice.equal;
-	}
-	// console.log('totalPrice: ' + totalPrice + '원');
-	$("#totalPrice").html(totalPrice + '원');
-}
-  
-</script>
+<script src="/resources/js/book.js" defer></script>
 
 </head>
 <body>
 
-<fmt:formatDate value="${selectedTime}" pattern="yyyy-MM-dd HH:mm" var="fmtSelTime" />
+<fmt:formatDate value="${selectedTime}" pattern="yyyy-MM-dd HH:mm" var="fmtSelTime"/>
 
 <div id="seatPrice" 
      data-vip="${concertVO.priceVIP}" 
@@ -160,11 +194,11 @@ function totalPrice() {
 
 <div style="display: flex; flex-direction: column; align-items: center;">
 	<!-- 예약할 공연 날짜, 시간(회차) 선택 -->
-	<div style="justify-content: left; align-items: left;">
+	<div class="divCard info" style="text-align: left;">
+		<h2>${concertVO.title}</h2>
 		<select id="pickTime" onchange="changeTime()">
 			<c:forEach var="time" items="${conTimes}" varStatus="i">
-				<fmt:formatDate value="${time.concertTime}" pattern="yyyy-MM-dd HH:mm" var="fmtTime"/>
-				
+				<fmt:formatDate value="${time.concertTime}" pattern="yyyy년 MM월 dd일 HH시 mm분" var="fmtTime"/>
 				<c:if test="${fmtTime.equals(fmtSelTime)}">
 					<option value="${time.id}" selected="selected">${fmtTime}</option>
 				</c:if>
@@ -184,7 +218,10 @@ function totalPrice() {
 						<c:forEach var="j" begin="1" step="1" end="24">
 							<fmt:formatNumber var="fmtSeatNum" value="${j}" type="number" minIntegerDigits="2"/>
 							<c:set value="${lineNum}${fmtSeatNum}" var="seatName"/>
-							<input class="seat" type="checkbox" name="${seatName}" onchange="checkSeat()"/>
+							<label class="seat">
+								<input class="checkbox" type="checkbox" name="${seatName}" onchange="checkSeat()"/>
+								<span></span>
+							</label>
 							<c:if test="${j == 6 or j == 18}">&nbsp;&nbsp;&nbsp;</c:if>
 						</c:forEach><span class="lineNum">${lineNum}</span><br/>
 						<c:if test="${'J' eq lineNum.toString()}"><br/><br/></c:if>
@@ -196,7 +233,10 @@ function totalPrice() {
 						<c:forEach var="j" begin="1" step="1" end="14">
 							<fmt:formatNumber var="fmtSeatNum" value="${j}" type="number" minIntegerDigits="2"/>
 							<c:set value="${lineNum}${fmtSeatNum}" var="seatName"/>
-							<input class="seat" type="checkbox" name="${seatName}" onchange="checkSeat()"/>
+							<label class="seat">
+								<input class="checkbox" type="checkbox" name="${seatName}" onchange="checkSeat()"/>
+								<span></span>
+							</label>
 							<c:if test="${j == 7}">&nbsp;&nbsp;&nbsp;</c:if>
 						</c:forEach><span class="lineNum">${lineNum}</span><br/>
 					</c:forEach>
@@ -209,20 +249,24 @@ function totalPrice() {
 				<c:if test="${concertVO.equalPrice == 0}">
 					<table>
 						<tr>
-							<th style="color: purple;">VIP</th>
-							<td class="price" style="color: purple;">${concertVO.priceVIP}원</td>
+							<th>VIP</th>
+							<th><div class="gradeExample" style="background-color: #78171C; border-color: black"></div></th>
+							<td class="price">${concertVO.priceVIP}원</td>
 						</tr>
 						<tr>
-							<th style="color: tomato;">R</th>
-							<td class="price" style="color: tomato;">${concertVO.priceR}원</td>
+							<th>R</th>
+							<th><div class="gradeExample" style="background-color: #B63330; border-color: #9B2F2A"></div></th>
+							<td class="price">${concertVO.priceR}원</td>
 						</tr>
 						<tr>
-							<th style="color: skyblue;">S</th>
-							<td class="price" style="color: skyblue;">${concertVO.priceS}원</td>
+							<th>S</th>
+							<th><div class="gradeExample" style="background-color: #CDAA39; border-color: #4C6A91"></div></th>
+							<td class="price">${concertVO.priceS}원</td>
 						</tr>
 						<tr>
-							<th style="color: yellowgreen;">A</th>
-							<td class="price" style="color: yellowgreen;">${concertVO.priceA}원</td>
+							<th>A</th>
+							<th><div class="gradeExample" style="background-color: #E5CD94; border-color: #5E8B32"></div></th>
+							<td class="price">${concertVO.priceA}원</td>
 						</tr>
 					</table>
 				</c:if>
@@ -230,6 +274,7 @@ function totalPrice() {
 					<table>
 						<tr>
 							<th>전 좌석</th>
+							<th><div class="gradeExample" style="background-color: #BDC3C7; border-color: CDAA39"></div></th>
 							<td class="price">${concertVO.equalPrice}원</td>
 						</tr>
 					</table>
@@ -239,16 +284,27 @@ function totalPrice() {
 				<div class="sideDetail mgb">
 					<div style="height: 187px;">
 						<h3 style="margin: 0px;">선택 좌석</h3>
-						<div id="seatsCount"></div>
-						<div id="pickedSeats">좌석을 선택해 주세요</div>
+						<div id="seatsCount" style="font-weight: bold;"></div>
+						<div id="pickedSeats" style="font-weight: bold;">좌석을 선택해 주세요</div>
 					</div>
 					<div style="display: flex; justify-content: space-between; font-size: 20px;">
 						<div style="font-weight: bold; margin-top: auto;">결제 금액</div>
-						<div id="totalPrice" style="font-weight: bold; margin-top: auto;"></div>
+						<div id="totalPrice" name="totalPrice" style="font-weight: bold; margin-top: auto;"></div>
 					</div>
 				</div>
+				
+				<input type="hidden" name="id" value="${concertVO.id}"/>
+				<input type="hidden" name="title" value="${concertVO.title}"/>
+				<input type="hidden" name="hallType" value="${concertVO.hallType}"/>
+				<input type="hidden" name="posterUrl" value="${concertVO.posterUrl}"/>
+				<input type="hidden" name="priceVIP" value="${concertVO.priceVIP}"/>
+				<input type="hidden" name="priceR" value="${concertVO.priceR}"/>
+				<input type="hidden" name="priceS" value="${concertVO.priceS}"/>
+				<input type="hidden" name="priceA" value="${concertVO.priceA}"/>
+				<input type="hidden" name="equalPrice" value="${concertVO.equalPrice}"/>
+				
 				<div class="sideDetail">
-					<input type="button" value="결제하기"/>
+					<input id="goToPay" class="sideDetail" type="submit" value="예매하기" disabled="disabled"/>
 				</div>
 			</form>
 		</div>

@@ -6,179 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Vivere - 예약</title>
-<style type="text/css">
-	#pickSeat {
-		width: 600px;
-		justify-content: center;
-		text-align: center;
-	}
-	#goToPay {
-		width: 391px;
-		height: 45px;
-		padding:0px;
-		margin:0px;
-		color:white;
-		font-size: 20px;
-		border: 0px;
-		border-radius: 10px;
-		transition: all 0.3s;
-	}
-	#goToPay:disabled {
-	    background-color: lightgray;
-	    cursor: not-allowed;
-	}
-	
-	#goToPay:not(:disabled) {
-	    background-color: #333333;
-	    cursor: pointer;
-	}
-	.seat {
-		width: 13px;
-	    height: 13px;
-	    display: inline-block;
-	    position: relative;
-	}
-	.seat input {
-	    display: none;
-	}
-	.seat span {
-		margin: auto;
-	    display: inline-block;
-	    width: 10px;
-	    height: 10px;
-	    border-radius: 2px;
-	    border: 1px solid #aaa;
-	    background-color: white;
-	    transition: all 0.3s;
-	    cursor: pointer;
-	    position: absolute;
-	    top: 50%;
-	    left: 50%;
-	    transform: translate(-50%, -50%);
-	}
-	
-	.seat input:checked + span {
-		width: 13px;
-		height: 13px;
-	}
-	
-	.seat input[value="VIP"]:checked + span {
-	    background-color: #78171C;
-	    border-color: black;
-	}
-	
-	.seat input[value="VIP"]:not(:checked) + span {
-	    background-color: #D79B99;
-	    border-color: #D79B99;
-	}
-	
-	.seat input[value="R"]:checked + span {
-	    background-color: #B63330;
-	    border-color: #9B2F2A;
-	}
-	
-	.seat input[value="R"]:not(:checked) + span {
-	    background-color: #F28D91;
-	    border-color: #F28D91;
-	}
-	
-	.seat input[value="S"]:checked + span {
-	    background-color: #CDAA39;
-	    border-color: #4C6A91;
-	}
-	
-	.seat input[value="S"]:not(:checked) + span {
-	    background-color: #E1D57A;
-	    border-color: #E1D57A;
-	}
-	
-	.seat input[value="A"]:checked + span {
-	    background-color: #E5CD94;
-	    border-color: #5E8B32;
-	}
-	
-	.seat input[value="A"]:not(:checked) + span {
-	    background-color: #F3E5A0;
-    	border-color: #F3E5A0;
-	}
-	
-	/* equal 체크박스 */
-	.seat input[value="equal"]:checked + span {
-	    background-color: #BDC3C7;
-	    border-color: #CDAA39;
-	}
-	
-	.seat input[value="equal"]:not(:checked) + span {
-	    background-color: #E2E5E7;
-	    border-color: #E2E5E7;
-	}
-	
-	.gradeExample {
-		width:13px;
-		height:13px; 
-		border-radius: 2px;
-		border: 1px solid #aaa;
-	}
-	
-	
-	#pickTime {
-		width: 280px;
-		height: 35px;
-		font-size: 16px;
-		text-align: center;
-		border-radius: 5px;
-		background-color: #F9F9F9;
-	}
-	.divCard {
-		border: 1px solid black;
-		padding: 20px;
-		display: flex;
-		background-color: #F9F9F9;
-	}
-	.lineNum {
-		color: gray;
-		width: 15px;
-		display: inline-block;
-		text-align: center;
-	}
-	.selectSeat {
-		width: 530px;
-		height: 550px;
-		justify-content: center;
-		align-items: center;
-	}
-	.sideDetail {
-		margin-left: 30px;
-		width: 350px;
-	}
-	.mgb {
-		padding: 20px;
-		border: 1px solid black;
-		height: 35%;
-		margin-bottom: 20px;
-		background-color: #F9F9F9;
-	}
-	.info {
-		margin-top: 30px; 
-		width: 952px; 
-		display: inline-block;
-	}
-	.price {
-		text-align: right;
-		width: 250px;
-		font-weight: bold;
-	}
-	th {
-		width: 100px;
-	}
-	div {
-		border-radius: 10px;
-	}
-</style>
-
+<link rel="stylesheet" type="text/css" href="/resources/css/book.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/resources/js/book.js" defer></script>
-
 </head>
 <body>
 
@@ -210,8 +40,11 @@
 	</div><br/>
 	<div style="display: flex; justify-content: center;">
 		<!-- 좌석 선택 -->
-		<div class="divCard selectSeat">
+		<div class="divCard selectSeat" style="padding-top: 0;">
 			<div id="pickSeat">
+				<div class="stage">
+					stage
+				</div><br/>
 				<c:if test="${concertVO.hallType == 0}">
 					<c:forEach var="lineNum" items="${gHall}" varStatus="i">
 						<span class="lineNum">${lineNum}</span>
@@ -268,6 +101,11 @@
 							<th><div class="gradeExample" style="background-color: #E5CD94; border-color: #5E8B32"></div></th>
 							<td class="price">${concertVO.priceA}원</td>
 						</tr>
+						<tr>
+							<th>-</th>
+							<th><div class="gradeExample" style="background-color: lightgray; border-color: lightgray;"></div></th>
+							<td class="price">예매불가</td>
+						</tr>
 					</table>
 				</c:if>
 				<c:if test="${concertVO.equalPrice > 0}">
@@ -277,6 +115,11 @@
 							<th><div class="gradeExample" style="background-color: #BDC3C7; border-color: CDAA39"></div></th>
 							<td class="price">${concertVO.equalPrice}원</td>
 						</tr>
+						<tr>
+							<th>-</th>
+							<th><div class="gradeExample" style="background-color: lightgray; border-color: lightgray;"></div></th>
+							<td class="price">예매불가</td>
+						</tr>
 					</table>
 				</c:if>
 			</div>
@@ -284,8 +127,8 @@
 				<div class="sideDetail mgb">
 					<div style="height: 187px;">
 						<h3 style="margin: 0px;">선택 좌석</h3>
-						<div id="seatsCount" style="font-weight: bold;"></div>
-						<div id="pickedSeats" style="font-weight: bold;">좌석을 선택해 주세요</div>
+						<div id="seatsCount"></div>
+						<div id="pickedSeats">좌석을 선택해 주세요</div>
 					</div>
 					<div style="display: flex; justify-content: space-between; font-size: 20px;">
 						<div style="font-weight: bold; margin-top: auto;">결제 금액</div>

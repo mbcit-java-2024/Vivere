@@ -1,0 +1,200 @@
+@charset "UTF-8";
+
+#pickSeat {
+	width: 600px;
+	justify-content: center;
+	text-align: center;
+}
+#seatsCount {
+	padding-top: 5px;
+	padding-left: 5px;
+	font-weight: bold;
+	color: #555555;
+}
+#pickedSeats {
+    font-weight: bold;
+    max-height: 100px;
+    overflow-y: auto; /* 맥스로 지정한 크기 넘어가면 세로 스크롤바 자동 생성 */
+    word-wrap: break-word;
+    white-space: normal;
+    padding: 5px;
+}
+#goToPay {
+	width: 391px;
+	height: 45px;
+	padding:0px;
+	margin:0px;
+	color:white;
+	font-size: 20px;
+	border: 0px;
+	border-radius: 10px;
+	transition: all 0.3s;
+}
+#goToPay:disabled {
+    background-color: lightgray;
+    cursor: not-allowed;
+}
+
+#goToPay:not(:disabled) {
+    background-color: #333333;
+    cursor: pointer;
+}
+.seat {
+	width: 13px;
+    height: 13px;
+    display: inline-block;
+    position: relative;
+}
+.seat input {
+    display: none;
+}
+.seat span {
+	margin: auto;
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    border: 1px solid #aaa;
+    background-color: white;
+    transition: all 0.3s;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.seat input:checked + span {
+	width: 13px;
+	height: 13px;
+}
+
+.seat input[value="VIP"]:checked + span {
+    background-color: #78171C;
+    border-color: black;
+}
+
+.seat input[value="VIP"]:not(:checked) + span {
+    background-color: #D79B99;
+    border-color: #D79B99;
+}
+
+.seat input[value="R"]:checked + span {
+    background-color: #B63330;
+    border-color: #9B2F2A;
+}
+
+.seat input[value="R"]:not(:checked) + span {
+    background-color: #F28D91;
+    border-color: #F28D91;
+}
+
+.seat input[value="S"]:checked + span {
+    background-color: #CDAA39;
+    border-color: #4C6A91;
+}
+
+.seat input[value="S"]:not(:checked) + span {
+    background-color: #E1D57A;
+    border-color: #E1D57A;
+}
+
+.seat input[value="A"]:checked + span {
+    background-color: #E5CD94;
+    border-color: #5E8B32;
+}
+
+.seat input[value="A"]:not(:checked) + span {
+    background-color: #F3E5A0;
+   	border-color: #F3E5A0;
+}
+
+.seat input[value="equal"]:checked + span {
+    background-color: #CDAA39;
+    border-color: #4C6A91;
+}
+
+.seat input[value="equal"]:not(:checked) + span {
+    background-color: #E1D57A;
+    border-color: #E1D57A;
+}
+
+.seat input:disabled + span {
+    background-color: lightgray;
+    border-color: lightgray;
+}
+
+.gradeExample {
+	width:13px;
+	height:13px; 
+	border-radius: 2px;
+	border: 1px solid #aaa;
+}
+
+
+#pickTime {
+	width: 280px;
+	height: 35px;
+	font-size: 16px;
+	text-align: center;
+	border-radius: 5px;
+	background-color: #F9F9F9;
+}
+.divCard {
+	border: 1px solid black;
+	padding: 20px;
+	display: flex;
+	background-color: #FCFCFC;
+}
+.lineNum {
+	color: gray;
+	width: 15px;
+	display: inline-block;
+	text-align: center;
+}
+.selectSeat {
+	width: 530px;
+	height: 570px;
+	justify-content: center;
+	align-items: center;
+}
+.stage {
+	width: 450px;
+	height: 30px;
+	position: relative;
+	margin-top: 0;
+	padding-top: 0;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #D9C9A5;
+	color: white;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+.sideDetail {
+	margin-left: 30px;
+	width: 350px;
+}
+.mgb {
+	padding: 20px;
+	border: 1px solid black;
+	height: 35%;
+	margin-bottom: 20px;
+	background-color: #FCFCFC;
+}
+.info {
+	margin-top: 30px; 
+	width: 952px; 
+	display: inline-block;
+}
+.price {
+	text-align: right;
+	width: 250px;
+	font-weight: bold;
+}
+th {
+	width: 100px;
+}
+div {
+	border-radius: 10px;
+}

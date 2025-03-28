@@ -50,7 +50,7 @@ function checkSeat() {
     $("input.checkbox:checked").each(function() {
         selectedSeats.push($(this).attr("name"));
     });
-    let cnt = selectedSeats.length > 0 ? selectedSeats.length + "석" : "";
+    let cnt = selectedSeats.length > 0 ? "  총 " + selectedSeats.length + "석" : "";
     $("#seatsCount").html(cnt);
     let seatText = selectedSeats.length > 0 ? selectedSeats.join(", ") : "좌석을 선택해 주세요";
     $("#pickedSeats").html(seatText);

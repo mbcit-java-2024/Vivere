@@ -24,7 +24,7 @@ public class ConsumerVO {
     private Receive receive;
     private String address;
     private String detailAddress;
-    private Grade grade;
+    private Grade grade; 
     private Date createDate; 
     private Date updateDate;
 	

@@ -4,10 +4,30 @@
 
 <mapper namespace="com.mbcit.vivere.dao.ConsumerDAO">
 
-
-
+	<insert id="insertConsumer" parameterType="consumerVO">
+	    insert into consumer
+	    (userId, pw, name, birth, gender, phone, email, receive, address, detailAddress, grade, createDate, updateDate)
+	    values
+	    (#{userId}, #{pw}, #{name}, #{birth}, #{gender}, #{phone}, #{email}, #{receive}, #{address}, #{detailAddress}, #{grade}, #{createDate}, #{updateDate})
+	</insert>
+	
+	<select id="countByUserId" parameterType="String" resultType="int">
+    	select count(*) from consumer where userId = #{userId}
+	</select>
+	
+	<select id="findByUserId" parameterType="String" resultType="consumerVO">
+	    select * from consumer where userId = #{userId}
+	</select>
+	
+	<select id="findIdByNameAndEmail" resultType="consumerVO">
+	    select * from consumer where name = #{name} and email = #{email}
+	</select>	
+	
+	<select id="findPwByIdAndEmail" resultType="consumerVO">
+	    select * from consumer where userId = #{userId} and email = #{email}
+	</select>
+		
 </mapper>
-
 
 
 

@@ -11,7 +11,7 @@
 <body>
 <!-- 관리자 로그인 시에만 보이는 버튼 -->
 <button onclick="location.href='/updateConcert?concertId=${concertVO.id}'">수정</button>
-<button onclick="location.href='/deleteConcert?concertId=${concertVO.id}'">삭제</button>
+<button onclick="location.href='/concertData?concertId=${concertVO.id}'">통계</button>
 
 <!-- 공연 정보 -->
 <div style="display: flex;">

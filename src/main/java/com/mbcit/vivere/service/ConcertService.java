@@ -306,6 +306,22 @@ public class ConcertService {
 		return fHall;
 	}
 
+//	cocertId를 받아 DB의 concert, concerttime, concertseat 테이블에서 해당하는 데이터와 
+//	posters 폴더의 포스터 이미지를 삭제하는 메소드
+	public void deleteConcert(int concertId) {
+		// 이미지 파일 삭제 (poster 폴더에 있는 파일 삭제)
+		String absolutePath = concertDAO.getConcertById(concertId).getPosterUrl(); // DB에 저장된 절대 경로
+		if (absolutePath != null && !absolutePath.isEmpty()) {
+			File file = new File(absolutePath);
+			if (file.exists()) {
+				file.delete(); // 이미지 파일 삭제
+			}
+		}
+		concertDAO.deleteConcert(concertId);
+		concertDAO.deleteConcertTimesById(concertId);
+		concertDAO.deleteConcertSeatsById(concertId);
+	}
+
 
 
 

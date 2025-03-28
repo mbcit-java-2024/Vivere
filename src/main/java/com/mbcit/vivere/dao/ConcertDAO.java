@@ -19,6 +19,9 @@ public interface ConcertDAO {
 	void insertConcertSeat(concertSeatVO vo);
 	List<ConcertVO> getConcertListByTime();
 	List<ConcertVO> getConcertListByTimeAndCategoryId(int categoryId);
+	void deleteConcert(int concertId);
+	void deleteConcertTimesById(int concertId);
+	void deleteConcertSeatsById(int concertId);
 	
 
 }

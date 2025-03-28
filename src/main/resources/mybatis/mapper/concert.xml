@@ -51,6 +51,17 @@
 		values (#{concertId}, #{concertTimeId}, #{lineNum}, #{seatNum}, #{grade}, false)
 	</insert>
 
+	<!-- delete -->
+	<delete id="deleteConcert" parameterType="int">
+		DELETE FROM concert WHERE id = #{concertId}
+	</delete>
+	<delete id="deleteConcertTimesById" parameterType="int">
+		DELETE FROM concerttime WHERE concertId = #{concertId}
+	</delete>
+	<delete id="deleteConcertSeatsById" parameterType="int">
+		DELETE FROM concertseat WHERE concertId = #{concertId}
+	</delete>
+
 </mapper>
 
 

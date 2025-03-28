@@ -92,4 +92,25 @@ public class ConcertController {
 		return "/concertView";
 	}
 	
+	@RequestMapping("/updateConcert")
+	public String updateConcert(@RequestParam("concertId") int concertId, Model model) {
+//		해당 공연 1건 
+		ConcertVO concertVO = concertService.getConcertById(concertId);
+		concertService.setTimeAndPoster(concertVO);
+//		해당 공연의 시간정보 
+		List<ConcertTimeVO> conTimeList = concertService.getConcertTimes(concertId);
+//		jsp 로 필요한 정보 보내기
+		model.addAttribute("concertVO", concertVO);
+		model.addAttribute("conTimeList", conTimeList);
+		
+		return "/updateConcert";
+	}
+	
+	
+	@RequestMapping("/deleteConcert")
+	public String deleteConcert(@RequestParam("concertId") int concertId) {
+		concertService.deleteConcert(concertId);
+		return"redirect:/concertList";
+	}
+	
 }

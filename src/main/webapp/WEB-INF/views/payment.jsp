@@ -9,5 +9,19 @@
 
 <h1>payment.jsp</h1>
 
+${concertVO}
+<br/>
+id: ${concertVO.id}<br/>
+title: ${concertVO.title}<br/>
+hallType: ${concertVO.hallType}<br/>
+posterUrl: ${concertVO.posterUrl}<br/>
+priceVIP: ${concertVO.priceVIP}<br/>
+priceR: ${concertVO.priceR}<br/>
+priceS" value="${concertVO.priceS}"/><br/>
+priceA: ${concertVO.priceA}<br/>
+equalPrice: ${concertVO.equalPrice}<br/>
+
+결제금액: ${totalPrice}<br/>
+
 </body>
 </html>

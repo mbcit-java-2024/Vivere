@@ -123,7 +123,7 @@
 					</table>
 				</c:if>
 			</div>
-			<form action="/payment">
+			<form action="/payment" method="post">
 				<div class="sideDetail mgb">
 					<div style="height: 187px;">
 						<h3 style="margin: 0px;">선택 좌석</h3>
@@ -132,7 +132,7 @@
 					</div>
 					<div style="display: flex; justify-content: space-between; font-size: 20px;">
 						<div style="font-weight: bold; margin-top: auto;">결제 금액</div>
-						<div id="totalPrice" name="totalPrice" style="font-weight: bold; margin-top: auto;"></div>
+						<div id="totalPrice" style="font-weight: bold; margin-top: auto;"></div>
 					</div>
 				</div>
 				
@@ -145,6 +145,7 @@
 				<input type="hidden" name="priceS" value="${concertVO.priceS}"/>
 				<input type="hidden" name="priceA" value="${concertVO.priceA}"/>
 				<input type="hidden" name="equalPrice" value="${concertVO.equalPrice}"/>
+				<input type="hidden" name="totalPrice"/>
 				
 				<div class="sideDetail">
 					<input id="goToPay" class="sideDetail" type="submit" value="예매하기" disabled="disabled"/>

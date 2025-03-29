@@ -85,6 +85,7 @@ function totalPrice() {
 }
 
 function submitChange(totalPrice) {
+	$("input[name=totalPrice]").prop("value", totalPrice);
 	if (0 < totalPrice) {
 		$("#goToPay").prop("disabled", false);
 	} else {

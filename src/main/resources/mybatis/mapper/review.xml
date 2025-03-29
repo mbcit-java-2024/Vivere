@@ -3,7 +3,11 @@
 
 
 <mapper namespace="com.mbcit.vivere.dao.ReviewDAO">
-
+	<insert id="insert" parameterType="java.util.HashMap">
+		INSERT INTO vivere.review
+		(consumerId, concertId, rate, content, createDate, updateDate)
+		VALUES(#{consumerId}, #{concertId}, #{rate}, #{content}, now(), now());
+	</insert>
 
 </mapper>
 

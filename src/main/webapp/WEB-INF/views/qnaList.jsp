@@ -9,70 +9,96 @@
 <head>
 <meta charset="UTF-8">
 <title>구매자 페이지 - 문의 내역</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
+.qna-box {
+	border: 1px solid #ccc;
+	padding: 16px;
+	margin-bottom: 20px;
+	border-radius: 8px;
+	background-color: #f9f9f9;
+}
+
+.qna-title {
+	font-weight: bold;
+	background-color: #eee;
+	padding: 10px;
+	margin-bottom: 8px;
+}
+
+.qna-content {
+	margin-bottom: 10px;
+}
+
+.answer-box {
+	background-color: #e6f5ff;
+	padding: 10px;
+	border-radius: 6px;
+}
+
+.edit-form {
+	display: none;
+	margin-top: 10px;
+}
+
+textarea, input[type="text"] {
+	width: 100%;
+	padding: 8px;
+	margin-bottom: 6px;
+}
+
+.btn {
+	padding: 6px 10px;
+	cursor: pointer;
+	margin-top: 6px;
+}
+
+.top-bar {
+	margin-bottom: 20px;
+}
 </style>
+
+<script>
+    function toggleEditForm(id) {
+      $(".edit-form").not("#editForm-" + id).slideUp();
+      $("#editForm-" + id).slideToggle();
+    }
+  </script>
 </head>
 <body>
-	<!-- 문의 내역 + 버튼 영역 -->
-	<div
-		>
-		<h2 >내 문의 내역</h2>
-		<a href="/qna/write">
-			<button
-				>
-				✍ 문의글쓰기</button>
-		</a>
+	<div class="top-bar">
+		<button class="btn" onclick="location.href='/qna/write'">✉
+			문의글쓰기</button>
 	</div>
 
 	<c:forEach var="qna" items="${qnaList}">
-		<div class="qna-box"
-			>
+		<div class="qna-box">
+			<div class="qna-title">${qna.qna_title}</div>
+			<div class="qna-content">${qna.qna_content}</div>
 
-			<!-- 문의 제목 및 작성일 -->
-			<div class="qna-header">
-				<strong>${qna.qna_title}</strong> <span >작성일:
-					<fmt:formatDate value="${qna.qna_createDate}" pattern="yyyy-MM-dd" />
-				</span>
-			</div>
-
-			<!-- 문의 내용 -->
-			<div class="qna-content">
-				${qna.qna_content}</div>
-
-			<!-- 답변 여부에 따라 표시 -->
 			<c:choose>
 				<c:when test="${not empty qna.content}">
-					<!-- 답변이 있는 경우 -->
-					<div class="answer-box"
-						>
-						<strong>답변</strong> <span >답변일: <fmt:formatDate
-								value="${qna.updateDate}" pattern="yyyy-MM-dd" /></span><br />
-						<div>${qna.title}</div>
-						<div >${qna.content}</div>
+					<div class="answer-box">
+						<strong>답변 제목: ${qna.title}</strong><br /> ${qna.content}
 					</div>
 				</c:when>
+
 				<c:otherwise>
-					<div class="answer-box"
-						>
-						<strong>아직 답변이 등록되지 않았습니다.</strong>
-					</div>
-					<div>
-						<a href="/qna/edit?qnaId=${qna.qna_id}">
-							<button
-								>
-								✏ 문의글 수정</button>
-						</a>
+					<button class="btn" onclick="toggleEditForm(${qna.qna_id})">✏
+						문의 수정</button>
+					<div class="edit-form" id="editForm-${qna.qna_id}">
+						<form action="/qna/update" method="post">
+							<input type="hidden" name="qnaId" value="${qna.qna_id}" /> <input
+								type="text" name="qna_title" value="${qna.qna_title}" />
+							<textarea name="qna_content">${qna.qna_content}</textarea>
+							<button type="submit">수정 저장</button>
+						</form>
 					</div>
 				</c:otherwise>
 			</c:choose>
-
 		</div>
 	</c:forEach>
 
-
-	<script>
-		
-	</script>
 
 </body>
 </html>

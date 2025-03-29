@@ -4,7 +4,12 @@
 
 <mapper namespace="com.mbcit.vivere.dao.QnarepDAO">
 
+	<insert id="insert" parameterType="java.util.HashMap"> 
+		INSERT INTO vivere.qnarep
+		(qnaId, title, content, createDate, updateDate)
+		VALUES(#{qnaId}, #{title}, #{content}, now(), now());
 
+	</insert>
 
 </mapper>
 

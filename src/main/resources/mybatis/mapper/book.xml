@@ -4,36 +4,49 @@
 
 <mapper namespace="com.mbcit.vivere.dao.BookDAO">
 
-<!-- 이미 예약된 좌석의 모든 정보를 불러오는 쿼리 -->
-<select id="selectBookedSeats" parameterType="int" resultType="concertSeatVO">
-	select * from concertSeat where concertTimeId = #{conTimeId} and bookYN;
-</select>
+	<!-- 이미 예약된 좌석의 모든 정보를 불러오는 쿼리 -->
+	<select id="selectBookedSeats" parameterType="int"
+		resultType="concertSeatVO">
+		select * from concertSeat where concertTimeId = #{conTimeId} and bookYN;
+	</select>
 
 
-<select id="pastBook"  parameterType="bookVO" resultType="bookVO">
-	SELECT a.id
+	<select id="pastBook" parameterType="bookVO" resultType="bookVO">
+		SELECT a.id
 		, a.consumerId
 		, a.concertId
 		, a.paymentId
 		, a.bookNum
-		, a.price
+		,
+		a.price
 		, a.seatCnt
 		, a.seatNum
 		, a.grade
 		, a.orderDate
 		, a.concertTime
-		, b.title
+		,
+		b.title
 		, b.hallType
-		, b.categoryId 
+		, b.categoryId
 		, b.posterUrl
-	FROM book a LEFT JOIN concert b ON a.concertId  = b.id
-	where a.consumerId  = 1
-	and concertTime <![CDATA[<=]]> now()
-</select>
+		, r.id as review_id
+		, r.consumerId
+		, r.concertId
+		, r.rate
+		, r.content
+		, r.createDate
+		, r.updateDate
+		FROM book a LEFT JOIN concert b ON a.concertId = b.id
+		LEFT JOIN review r ON a.concertId = r.concertId and a.consumerId = r.consumerId
+		WHERE 1=1
+		and a.consumerId = 1
+		and concertTime <![CDATA[<=]]> now()
+	</select>
 
-<select id="getConcertSeatByConTimeId" parameterType="int" resultType="concertSeatVO">
-	select * from concertSeat where concertTimeId = #{conTimeId}
-</select>
+	<select id="getConcertSeatByConTimeId" parameterType="int"
+		resultType="concertSeatVO">
+		select * from concertSeat where concertTimeId = #{conTimeId}
+	</select>
 
 </mapper>
 

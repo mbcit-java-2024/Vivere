@@ -6,9 +6,21 @@
 	<insert id="insert" parameterType="java.util.HashMap">
 		INSERT INTO vivere.review
 		(consumerId, concertId, rate, content, createDate, updateDate)
-		VALUES(#{consumerId}, #{concertId}, #{rate}, #{content}, now(), now());
+		VALUES(#{consumerId}, #{concertId}, #{rate}, #{content}, now(),
+		now());
 	</insert>
 
+	<update id="update" parameterType="java.util.HashMap">
+		UPDATE vivere.review
+		SET rate = #{rate}
+		, content = #{content}
+		WHERE id = #{review_id}; 
+	</update>
+	<delete id="delete" parameterType="reviewVO">
+		DELETE FROM review
+		WHERE id = #{id} 
+		AND consumerId = 1;
+	</delete>
 </mapper>
 
 

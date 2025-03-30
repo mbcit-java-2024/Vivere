@@ -10,14 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mbcit.vivere.eNum.Grade;
 import com.mbcit.vivere.service.BookService;
 import com.mbcit.vivere.service.QnAService;
+import com.mbcit.vivere.service.ReviewService;
 import com.mbcit.vivere.vo.BookVO;
 import com.mbcit.vivere.vo.ConsumerVO;
 import com.mbcit.vivere.vo.QnaVO;
+import com.mbcit.vivere.vo.ReviewVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,6 +32,8 @@ public class MainController {
 	private BookService bookService;
 	@Autowired
 	private QnAService qnaService;
+	@Autowired
+	private ReviewService reviewService;
 	
 	@RequestMapping("/")
 	public String main() {
@@ -66,6 +71,36 @@ public class MainController {
 			
 		log.info("pastBook" + pastBook);
 		model.addAttribute("pastBook", pastBook);
+		return result;
+	}
+	
+	@GetMapping("/deleteReivew/{id}")
+	public String deleteReivew(Model model, BookVO bookVO, ReviewVO reviewVO, @PathVariable int id) {
+		// 수빈
+		log.info("MainController 의 deleteReivew() 메소드 실행::::::::id:::::::::" + id);
+		
+		String result = "/";
+		ConsumerVO consumerVO = new ConsumerVO();
+		List<BookVO> pastBook = new ArrayList<BookVO>();
+		
+		// ProductController에서 로그인 여부 확인
+//		HttpSession session = request.getSession(false);
+//		if (session != null && session.getAttribute("userType") != null) { 
+//			int userType = (int) session.getAttribute("userType"); 
+		
+		//		if (consumerVO.getGrade() != Grade.ADMIN) {
+		bookVO.setConsumerId(1); 
+		result = "redirect:/pastBook";
+		//		} else {
+		//			consumerVO.setGrade(Grade.ADMIN);
+		//			result = "/"; // 로그인 페이지로
+		//		}
+				reviewVO.setId(id);
+				reviewService.delete(reviewVO);
+		//		pastBook = bookService.pastBook(bookVO);
+//		else {
+//			result = "/login"; // 로그인 페이지로
+//		}
 		return result;
 	}
 	

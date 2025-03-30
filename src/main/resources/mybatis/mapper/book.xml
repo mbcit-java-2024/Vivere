@@ -29,7 +29,7 @@
 		, b.hallType
 		, b.categoryId
 		, b.posterUrl
-		, r.id as review_id
+		, r.id as review_id 
 		, r.consumerId
 		, r.concertId
 		, r.rate

@@ -71,20 +71,48 @@ textarea {
 
 <script type="text/javascript">
 
-
+function selectEditRate(id, rate) {
+	  $("#edit-rate-" + id).val(rate);
+	  const ratingBox = $("#editForm-" + id).find(".rating");
+	  ratingBox.find(".star").each(function(index) {
+	    if (index < rate) {
+	      $(this).addClass("active").text("★");
+	    } else {
+	      $(this).removeClass("active").text("☆");
+	    }
+	  });
+	}
 function updateReview(id) {
-	  const content = $("#editForm-" + id).find("textarea[name='content']").val();
-	  const rate = $("#editForm-" + id).find("input[name='rate']").val();
-	  const bookId = $("#editForm-" + id).find("input[name='bookId']").val();
-	  const concertId = $("#editForm-" + id).find("input[name='concertId']").val();
+	console.log('updateReview:::::::::::::::::::::id::::::::'+id);
+    
+    let textarea = $("#editForm-"+id).find("textarea[name='content']").val();
+    console.log('updateReview:::::::::::::::::::::::textarea::::::'+textarea);
+    let concertId = $("#editForm-"+id).find("input[name='concertId']").val();
+    console.log('updateReview:::::::::::::::::::::::concertId::::::'+concertId);
+    let bookId = $("#editForm-"+id).find("input[name='bookId']").val();
+    console.log('updateReview:::::::::::::::::::::::bookId::::::'+bookId);
+    let rate = $("#editForm-" + id).find("input[name='rate']").val();
+    console.log('updateReview::::::::::::::rate:::::::' + rate);
+	  
+	  let param = {
+	    		content: textarea
+	    		, concertId: concertId
+	    		, bookId: bookId
+	    		, rate: rate
+	    		, review_id: $("#editForm-" + id).find("input[name='reviewId']").val()
+	    };
 
 	  $.ajax({
-	    url: '/reviewUpdate',
+	    url: '/updateReview',
 	    type: 'POST',
 	    contentType: 'application/json',
-	    data: JSON.stringify({ bookId, concertId, content, rate }),
+	    data: JSON.stringify(param),
+	    beforeSend:function(){
+            console.log('updateReview:::::::::beforeSend::::::::::::::::::::param' + JSON.stringify(param));
+        },
 	    success: function(data) {
-	      if (data.code == '0') {
+	    	console.log('success:::::::::::111::::::::::::' + JSON.stringify(data));
+	      if ('0' == data.code) {
 	        alert('리뷰가 수정되었습니다!');
 	        location.reload();
 	      } else {
@@ -116,6 +144,7 @@ function updateReview(id) {
 	    console.log('reviewInsert:::::::::::::::::::::::bookId::::::'+bookId);
 	    let rate = $("#reviewForm-" + id).find("input[name='rate']").val();
 	    console.log('reviewInsert::::::::::::::rate:::::::' + rate);
+	    
 	    let param = {
 	    		content: textarea
 	    		, concertId: concertId
@@ -136,7 +165,7 @@ function updateReview(id) {
 	        success : function(data){
 	            console.log('success:::::::::::111::::::::::::' + JSON.stringify(data));
 	            if ('0' == data.code) {
-	            	 // location.reload();
+	            	 location.reload();
 	            	 // location.href = '/orderOKPage?orderIds=' + data.orderIds;
 	            } else {
             		if (null != data.message) {
@@ -242,16 +271,19 @@ function updateReview(id) {
 						<div>
 							<button class="review-btn" onclick="showEditForm(${pastBook.id})">✏️
 								수정</button>
-							<button class="review-btn"
-								onclick="deleteReivew(${pastBook.id})">🗑 삭제</button>
+							<button class="review-btn" onclick="location.href='/deleteReivew/${pastBook.review_id}'">🗑
+								삭제</button>
 						</div>
 					</div>
 
 					<!-- ✅ 수정 폼 (기존 review-form 복사해서 항상 숨김 처리) -->
 					<div class="review-form" id="editForm-${pastBook.id}"
 						style="display: none;">
-						<input type="hidden" name="bookId" value="${pastBook.id}" /> <input
+						<input type="hidden" name="bookId" value="${pastBook.id}" /> 
+						<input
 							type="hidden" name="concertId" value="${pastBook.concertId}" />
+						<input
+							type="hidden" name="reviewId" value="${pastBook.review_id}" />
 						<input type="text" name="rate" id="edit-rate-${pastBook.id}"
 							value="${pastBook.rate}" />
 
@@ -320,19 +352,6 @@ function updateReview(id) {
 		  $("#reviewView-" + id).hide();
 		  $("#editForm-" + id).slideDown();
 		}
-
-		function selectEditRate(id, rate) {
-		  $("#edit-rate-" + id).val(rate);
-		  const ratingBox = $("#editForm-" + id).find(".rating");
-		  ratingBox.find(".star").each(function(index) {
-		    if (index < rate) {
-		      $(this).addClass("active").text("★");
-		    } else {
-		      $(this).removeClass("active").text("☆");
-		    }
-		  });
-		}
-
 
 	</script>
 </body>

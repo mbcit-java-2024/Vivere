@@ -40,7 +40,6 @@ public class QnAController {
 			
 			try {
 				resultCnt = qnARepService.insert(param);
-				// 여기가 안ㅉ기히느네.. 
 				log.info("QnAController ========3==========insertRep::::resultCnt===" + resultCnt);
 				 
 				resultMap.put("resultCnt", resultCnt); 	

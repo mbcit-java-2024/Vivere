@@ -213,14 +213,23 @@ public class ConcertService {
     	vo.setStartDate(conTimes.get(0).getConcertTime());
     	vo.setEndDate(conTimes.get(conTimes.size() - 1).getConcertTime());
     	
-    	// ConcertVO 마다 posterUrl 을 상대경로로 바꿔준다.
-    	File file = new File(vo.getPosterUrl());
-    	String fileName = file.getName(); // 파일명만 추출
-    	String relativePath = "/posters/" + fileName;
-    	log.info("이미지 상대 경로: " + relativePath);
+//    	File file = new File(vo.getPosterUrl());
+//    	String fileName = file.getName(); // 파일명만 추출
+//    	String relativePath = "/posters/" + fileName;
+    	String relativePath = relativePath(vo.getPosterUrl());
     	vo.setPosterUrl(relativePath);
     	
     	return vo;
+    }
+    
+    public String relativePath(String posterUrl) {
+    	// ConcertVO 마다 posterUrl 을 상대경로로 바꿔준다.
+    	File file = new File(posterUrl);
+    	String fileName = file.getName(); // 파일명만 추출
+    	String relativePath = "/posters/" + fileName;
+    	log.info("이미지 상대 경로: " + relativePath);
+    	
+    	return relativePath;
     }
 //	List<ConcertVO>를 받아 각 콘서트 객체의 공연시작일과 마지막일을 넣어주고 포스터url을 상대경로로 바꿔주는 메소드    
     public List<ConcertVO> setTimeAndPoster (List<ConcertVO> concertList){

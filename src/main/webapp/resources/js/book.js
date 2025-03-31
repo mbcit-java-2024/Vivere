@@ -43,6 +43,10 @@ function changeTime() {
     		console.error("AJAX 요청 실패:", status, error);
     	}
 	});
+	// const time = $(`#pickTime option:selected`).attr("data-time");
+	const time = $(`#pickTime option:selected`).text();
+	console.log(time);
+	$(`input[name=selectedTime]`).prop("value", time);
 }
 
 function checkSeat() {
@@ -54,6 +58,7 @@ function checkSeat() {
     $("#seatsCount").html(cnt);
     let seatText = selectedSeats.length > 0 ? selectedSeats.join(", ") : "좌석을 선택해 주세요";
     $("#pickedSeats").html(seatText);
+	$("input[name=selectedSeats]").prop("value", seatText);
 	
 	submitChange(totalPrice());
 }

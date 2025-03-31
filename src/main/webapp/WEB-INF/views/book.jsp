@@ -6,13 +6,15 @@
 <head>
 <meta charset="UTF-8">
 <title>Vivere - 예약</title>
+
 <link rel="stylesheet" type="text/css" href="/resources/css/book.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/resources/js/book.js" defer></script>
+
 </head>
 <body>
 
-<fmt:formatDate value="${selectedTime}" pattern="yyyy-MM-dd HH:mm" var="fmtSelTime"/>
+<fmt:formatDate value="${selectedTime}" pattern="yyyy년 MM월 dd일 HH시 mm분" var="fmtSelTime"/>
 
 <div id="seatPrice" 
      data-vip="${concertVO.priceVIP}" 
@@ -123,7 +125,7 @@
 					</table>
 				</c:if>
 			</div>
-			<form action="/payment" method="post">
+			<form action="/payment" method="POST">
 				<div class="sideDetail mgb">
 					<div style="height: 187px;">
 						<h3 style="margin: 0px;">선택 좌석</h3>
@@ -145,7 +147,10 @@
 				<input type="hidden" name="priceS" value="${concertVO.priceS}"/>
 				<input type="hidden" name="priceA" value="${concertVO.priceA}"/>
 				<input type="hidden" name="equalPrice" value="${concertVO.equalPrice}"/>
+				
 				<input type="hidden" name="totalPrice"/>
+				<input type="hidden" name="selectedSeats"/>
+				<input type="hidden" name="selectedTime"/>
 				
 				<div class="sideDetail">
 					<input id="goToPay" class="sideDetail" type="submit" value="예매하기" disabled="disabled"/>

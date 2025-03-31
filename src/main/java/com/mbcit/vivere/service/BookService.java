@@ -1,8 +1,13 @@
 package com.mbcit.vivere.service;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,8 +49,29 @@ public class BookService {
 	}
 
 	public List<concertSeatVO> getConcertSeatByConTimeId(int conTimeId) {
+		System.out.println("BookService 클래스의 getConcertSeatByConTimeId() 메소드 실행");
 		List<concertSeatVO> conSeat = bookDAO.getConcertSeatByConTimeId(conTimeId);
 		return conSeat;
 	}
 
+	public Date selectedTime(String selectedTime) {
+		System.out.println("BookService 클래스의 selectedTime() 메소드 실행");
+		System.out.println("변환 전: " + selectedTime);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분");
+        Date date = null;
+		try {
+			date = sdf.parse(selectedTime);
+		} catch (ParseException e) {
+			System.out.println("selectedTime 변환 실패");
+		}
+        
+        return date;
+	}
+
 }
+
+
+
+
+

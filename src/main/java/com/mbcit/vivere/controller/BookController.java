@@ -25,7 +25,6 @@ import com.mbcit.vivere.vo.ConcertTimeVO;
 import com.mbcit.vivere.vo.ConcertVO;
 import com.mbcit.vivere.vo.concertSeatVO;
 
-import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -86,17 +85,34 @@ public class BookController {
 	
 	@PostMapping("/payment")
 	public String payment(@ModelAttribute ConcertVO concertVO, 
-				Model model,
-				@RequestParam("totalPrice") int totalPrice) {
+						@RequestParam("totalPrice") int totalPrice, 
+						@RequestParam("selectedSeats") String selectedSeats,
+						@RequestParam("selectedTime") String selectedTime,
+						Model model) {
 		System.out.println("BookController 컨트롤러의 payment() 메소드 실행");
-		System.out.println(totalPrice);
 		
+		Date selTime = bookService.selectedTime(selectedTime);
 		
+		System.out.println(concertVO.getPosterUrl());
+    	String relativePath = concertService.relativePath(concertVO.getPosterUrl());
+    	System.out.println(relativePath);
+    	concertVO.setPosterUrl(relativePath);
+		
+		model.addAttribute("selectedSeats", selectedSeats);
+		model.addAttribute("selTime", selTime);
 		model.addAttribute("concertVO", concertVO);
 		model.addAttribute("totalPrice", totalPrice);
 		
 		return "/payment";
 	}
+	
+	// get요청으로 payment을 요청하면 home화면으로 돌려보냄
+	@GetMapping("/payment")
+	public String redirectPayment() {
+		return "redirect:/";
+	}
+	
+
 	
 
 }

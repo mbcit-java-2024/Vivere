@@ -29,6 +29,7 @@
 	border: 0px;
 	border-radius: 10px;
 	transition: all 0.3s;
+	box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
 }
 #goToPay:disabled {
     background-color: lightgray;
@@ -62,6 +63,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
 }
 
 .seat input:checked + span {
@@ -145,6 +147,7 @@
 	padding: 20px;
 	display: flex;
 	background-color: #FCFCFC;
+	box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
 }
 .lineNum {
 	color: gray;
@@ -181,6 +184,7 @@
 	height: 35%;
 	margin-bottom: 20px;
 	background-color: #FCFCFC;
+	box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
 }
 .info {
 	margin-top: 30px; 

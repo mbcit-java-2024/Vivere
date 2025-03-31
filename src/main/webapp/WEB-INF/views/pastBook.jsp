@@ -11,50 +11,104 @@
 <title>지난 공연 리뷰</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
-.concert-box {
-	border: 1px solid #ccc;
-	border-radius: 10px;
-	padding: 15px;
+body {
+	font-family: 'Pretendard', sans-serif;
+	background-color: #FAF8F6;
+	color: #2B2B2B;
+	margin: 0;
+	padding: 40px;
+}
+
+h2 {
+	color: #800020;
 	margin-bottom: 20px;
-	background-color: #f9f9f9;
+}
+
+.concert-box {
+	background-color: #FFFFFF;
+	border: 2px solid #E5CD94;
+	padding: 24px 28px;
+	margin-bottom: 32px;
+	border-radius: 12px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
 .concert-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+	margin-bottom: 16px;
 }
 
-.concert-info {
-	font-size: 14px;
-	line-height: 1.6;
+.concert-info p {
+	margin: 6px 0;
+	font-size: 15px;
+}
+
+.concert-info strong {
+	color: #800020;
 }
 
 .review-btn {
-	background-color: #e0e0e0;
-	border: none;
-	padding: 5px 10px;
+	background-color: #F5DEB3;
+	color: #800020;
+	padding: 6px 12px;
+	border: 2px solid #D4AF37;
+	border-radius: 6px;
+	font-weight: bold;
 	cursor: pointer;
-	border-radius: 5px;
+	margin-right: 8px;
+	margin-top: 10px;
+	transition: all 0.3s;
+}
+
+.review-btn:hover {
+	background-color: #E2725B;
+	color: white;
+	border-color: #B63330;
 }
 
 .review-form {
 	display: none;
-	margin-top: 10px;
+	margin-top: 16px;
+	padding: 20px;
+	background-color: #FAF8F6;
+	border: 2px solid #E2725B;
+	border-radius: 10px;
 }
 
 textarea {
 	width: 100%;
-	height: 60px;
-	padding: 8px;
-	border-radius: 5px;
-	border: 1px solid #ccc;
+	height: 80px;
+	padding: 10px;
+	margin-top: 10px;
+	font-size: 14px;
+	border: 1.5px solid #CDAA39;
+	border-radius: 8px;
 	resize: none;
+	box-sizing: border-box;
+	font-family: 'Pretendard', sans-serif;
+}
+
+textarea:focus {
+	border-color: #800020;
+	outline: none;
 }
 
 .review-save-btn {
-	margin-top: 5px;
+	background-color: #F5DEB3;
+	color: #800020;
+	padding: 8px 14px;
+	border: 2px solid #D4AF37;
+	border-radius: 6px;
+	font-weight: bold;
+	cursor: pointer;
+	margin-top: 10px;
 	float: right;
+	transition: all 0.3s;
+}
+
+.review-save-btn:hover {
+	background-color: #E2725B;
+	color: white;
+	border-color: #B63330;
 }
 
 .rating {
@@ -65,7 +119,30 @@ textarea {
 }
 
 .rating .star.active {
-	color: gold;
+	color: #D4AF37;
+}
+
+.review-view {
+	background-color: #EFEEED;
+	padding: 16px;
+	border-radius: 10px;
+	margin-top: 12px;
+	border-left: 5px solid #800020;
+}
+
+.review-view p {
+	margin: 6px 0;
+}
+
+.review-view strong {
+	color: #800020;
+}
+
+.review-form button {
+	display: inline-block;
+	float: right;
+	/* 또는 아래처럼 조정 */
+	width: auto;
 }
 </style>
 
@@ -204,156 +281,194 @@ function updateReview(id) {
 	        });
 	    });
 	});
-</script>
-
-</head>
-<body>
-	<c:forEach var="pastBook" items="${pastBook}">
-		<h2>${pastBook.title }</h2>
-		<div class="concert-box">
-			<div class="concert-header">
-				<div class="concert-info">
-					<div class="concert-info">${pastBook.posterUrl }</div>
-
-					<p>
-						<strong>공연 번호:</strong> ${pastBook.id}
-					</p>
-					<p>
-						<strong>홀 타입:</strong>
-						<c:if test="${pastBook.hallType eq 0}">가우디우홀</c:if>
-						<c:if test="${pastBook.hallType eq 1}">펠리체홀</c:if>
-
-
-					</p>
-					<p>
-						<strong>장르 타입: <c:if test="${pastBook.categoryId eq 1}">클래식</c:if>
-							<c:if test="${pastBook.categoryId eq 2}">뮤지컬</c:if> <c:if
-								test="${pastBook.categoryId eq 3}">재즈</c:if> <c:if
-								test="${pastBook.categoryId eq 4}">대중음악</c:if> <c:if
-								test="${pastBook.categoryId eq 5}">연극</c:if> <c:if
-								test="${pastBook.categoryId eq 6}">무용</c:if> <c:if
-								test="${pastBook.categoryId eq 7}">기타</c:if></strong>
-
-					</p>
-					<p>
-						<strong>좌석 번호:</strong> ${pastBook.seatNum}
-					</p>
-					<p>
-						<strong>예매 일자:</strong>
-						<fmt:formatDate value="${pastBook.orderDate}" pattern="yyyy-MM-dd" />
-					</p>
-					<p>
-						<strong>공연 일시:</strong>
-						<fmt:formatDate value="${pastBook.concertTime}"
-							pattern="yyyy-MM-dd HH:mm" />
-					</p>
-
-				</div>
-			</div>
-
-
-			<c:choose>
-				<c:when test="${not empty pastBook.content}">
-					<div class="review-view" id="reviewView-${pastBook.id}">
-						<p>
-							<strong>내 리뷰:</strong> <span id="reviewContent-${pastBook.id}">${pastBook.content}</span>
-						</p>
-						<p>
-							<strong>내 별점:</strong> <span id="reviewStars-${pastBook.id}">
-								<c:forEach var="i" begin="1" end="5">
-									<c:choose>
-										<c:when test="${i <= pastBook.rate}">★</c:when>
-										<c:otherwise>☆</c:otherwise>
-									</c:choose>
-								</c:forEach>
-							</span>
-						</p>
-						<div>
-							<button class="review-btn" onclick="showEditForm(${pastBook.id})">✏️
-								수정</button>
-							<button class="review-btn" onclick="location.href='/deleteReivew/${pastBook.review_id}'">🗑
-								삭제</button>
-						</div>
-					</div>
-
-					<!-- ✅ 수정 폼 (기존 review-form 복사해서 항상 숨김 처리) -->
-					<div class="review-form" id="editForm-${pastBook.id}"
-						style="display: none;">
-						<input type="hidden" name="bookId" value="${pastBook.id}" /> 
-						<input
-							type="hidden" name="concertId" value="${pastBook.concertId}" />
-						<input
-							type="hidden" name="reviewId" value="${pastBook.review_id}" />
-						<input type="text" name="rate" id="edit-rate-${pastBook.id}"
-							value="${pastBook.rate}" />
-
-						<div class="rating" data-id="${pastBook.id}">
-							<span class="star" data-value="1"
-								onclick="selectEditRate(${pastBook.id},1)">☆</span> <span
-								class="star" data-value="2"
-								onclick="selectEditRate(${pastBook.id},2)">☆</span> <span
-								class="star" data-value="3"
-								onclick="selectEditRate(${pastBook.id},3)">☆</span> <span
-								class="star" data-value="4"
-								onclick="selectEditRate(${pastBook.id},4)">☆</span> <span
-								class="star" data-value="5"
-								onclick="selectEditRate(${pastBook.id},5)">☆</span>
-						</div>
-						<br />
-						<textarea name="content" placeholder="리뷰 수정">${pastBook.content}</textarea>
-						<button type="button" class="review-save-btn"
-							onclick="updateReview(${pastBook.id})">수정 완료</button>
-					</div>
-
-				</c:when>
-				<c:otherwise>
-					<button class="review-btn"
-						onclick="toggleReviewForm(${pastBook.id})">🖋 리뷰쓰기</button>
-
-					<div class="review-form" id="reviewForm-${pastBook.id}">
-						<form action="" method="">
-							<input type="hidden" name="bookId" value="${pastBook.id}" /> <input
-								type="hidden" name="concertId" value="${pastBook.concertId}" />
-							<input type="text" name="rate" id="rate-${pastBook.id}" value="0" />
-
-							<div class="rating" data-id="${pastBook.id}">
-								<span class="star" data-value="1"
-									onclick="selectrate(${pastBook.id},1)">☆</span> <span
-									class="star" data-value="2"
-									onclick="selectrate(${pastBook.id},2)">☆</span> <span
-									class="star" data-value="3"
-									onclick="selectrate(${pastBook.id},3)">☆</span> <span
-									class="star" data-value="4"
-									onclick="selectrate(${pastBook.id},4)">☆</span> <span
-									class="star" data-value="5"
-									onclick="selectrate(${pastBook.id},5)">☆</span>
-							</div>
-							<br />
-							<textarea name="content" placeholder="리뷰를 입력하세요..."></textarea>
-							<button type="button" class="review-save-btn"
-								onclick="reviewInsert(${pastBook.id})">리뷰저장</button>
-						</form>
-					</div>
-				</c:otherwise>
-			</c:choose>
-
-
-
-		</div>
-	</c:forEach>
-
-
-	<script>
 	 function toggleReviewForm(id) {
 		    $(".review-form").not("#reviewForm-" + id).slideUp(); // 다른 폼 닫기
 		    $("#reviewForm-" + id).slideToggle(); // 클릭한 폼 토글
 		  }
 	 function showEditForm(id) {
-		  $("#reviewView-" + id).hide();
-		  $("#editForm-" + id).slideDown();
+		 $(".review-form").not("#editForm-" + id).slideUp();
+		 $("#editForm-" + id).slideToggle(); 
 		}
 
-	</script>
+</script>
+
+</head>
+<body>
+	<!-- ✅ 리뷰가 있는 공연 -->
+	<h2 class="section-title">✅ 리뷰 작성 완료된 공연</h2>
+	<c:forEach var="pastBook" items="${pastBook}">
+		<c:if test="${not empty pastBook.content}">
+			<div class="concert-box">
+				<!-- 공연 정보 공통 -->
+				<h3>${pastBook.title}</h3>
+				<div class="concert-header">
+					<div class="concert-info">
+						<p>
+							<strong>공연 번호:</strong> ${pastBook.id}
+						</p>
+						<p>
+							<strong>홀 타입:</strong>
+							<c:if test="${pastBook.hallType eq 0}">가우디우홀</c:if>
+							<c:if test="${pastBook.hallType eq 1}">펠리체홀</c:if>
+						</p>
+						<p>
+							<strong>장르 타입: <c:if test="${pastBook.categoryId eq 1}">클래식</c:if>
+								<c:if test="${pastBook.categoryId eq 2}">뮤지컬</c:if> <c:if
+									test="${pastBook.categoryId eq 3}">재즈</c:if> <c:if
+									test="${pastBook.categoryId eq 4}">대중음악</c:if> <c:if
+									test="${pastBook.categoryId eq 5}">연극</c:if> <c:if
+									test="${pastBook.categoryId eq 6}">무용</c:if> <c:if
+									test="${pastBook.categoryId eq 7}">기타</c:if></strong>
+
+						</p>
+						<p>
+							<strong>좌석 번호:</strong> ${pastBook.seatNum}
+						</p>
+						<p>
+							<strong>예매 일자:</strong>
+							<fmt:formatDate value="${pastBook.orderDate}"
+								pattern="yyyy-MM-dd" />
+						</p>
+						<p>
+							<strong>공연 일시:</strong>
+							<fmt:formatDate value="${pastBook.concertTime}"
+								pattern="yyyy-MM-dd HH:mm" />
+						</p>
+					</div>
+				</div>
+
+				<!-- 작성된 리뷰 출력 -->
+				<div class="review-view" id="reviewView-${pastBook.id}">
+					<p>
+						<strong>내 리뷰:</strong> ${pastBook.content}
+					</p>
+					<p>
+						<strong>내 별점:</strong>
+						<c:forEach var="i" begin="1" end="5">
+							<c:choose>
+								<c:when test="${i <= pastBook.rate}">★</c:when>
+								<c:otherwise>☆</c:otherwise>
+							</c:choose>
+						</c:forEach>
+					</p>
+					<button class="review-btn" onclick="showEditForm(${pastBook.id})">✏
+						수정</button>
+					<button class="review-btn"
+						onclick="location.href='/deleteReivew/${pastBook.review_id}'">🗑
+						삭제</button>
+				</div>
+
+				<div class="review-form" id="editForm-${pastBook.id}"
+					style="display: none;">
+					<input type="hidden" name="bookId" value="${pastBook.id}" /> <input
+						type="hidden" name="concertId" value="${pastBook.concertId}" /> <input
+						type="hidden" name="reviewId" value="${pastBook.review_id}" /> <input
+						type="hidden" name="rate" id="edit-rate-${pastBook.id}"
+						value="${pastBook.rate}" />
+					<button type="button" class="review-save-btn"
+						onclick="updateReview(${pastBook.id})">수정 완료</button>
+
+					<div class="rating" data-id="${pastBook.id}">
+						<span class="star" data-value="1"
+							onclick="selectEditRate(${pastBook.id},1)">☆</span> <span
+							class="star" data-value="2"
+							onclick="selectEditRate(${pastBook.id},2)">☆</span> <span
+							class="star" data-value="3"
+							onclick="selectEditRate(${pastBook.id},3)">☆</span> <span
+							class="star" data-value="4"
+							onclick="selectEditRate(${pastBook.id},4)">☆</span> <span
+							class="star" data-value="5"
+							onclick="selectEditRate(${pastBook.id},5)">☆</span>
+					</div>
+					<br />
+					<textarea name="content" placeholder="리뷰 수정">${pastBook.content}</textarea>
+				</div>
+			</div>
+		</c:if>
+	</c:forEach>
+
+	<hr
+		style="margin: 40px 0; border: none; border-top: 2px dashed #CDAA39;" />
+
+	<!-- ❗ 리뷰가 없는 공연 -->
+	<h2 class="section-title">📝 리뷰 쓰기 전인 공연</h2>
+	<c:forEach var="pastBook" items="${pastBook}">
+		<c:if test="${empty pastBook.content}">
+			<div class="concert-box">
+				<!-- 공연 정보 공통 -->
+				<h3>${pastBook.title}</h3>
+				<div class="concert-header">
+					<div class="concert-info">
+						<p>
+							<strong>공연 번호:</strong> ${pastBook.id}
+						</p>
+						<p>
+							<strong>홀 타입:</strong>
+							<c:if test="${pastBook.hallType eq 0}">가우디우홀</c:if>
+							<c:if test="${pastBook.hallType eq 1}">펠리체홀</c:if>
+						</p>
+						<p>
+							<strong>장르 타입: <c:if test="${pastBook.categoryId eq 1}">클래식</c:if>
+								<c:if test="${pastBook.categoryId eq 2}">뮤지컬</c:if> <c:if
+									test="${pastBook.categoryId eq 3}">재즈</c:if> <c:if
+									test="${pastBook.categoryId eq 4}">대중음악</c:if> <c:if
+									test="${pastBook.categoryId eq 5}">연극</c:if> <c:if
+									test="${pastBook.categoryId eq 6}">무용</c:if> <c:if
+									test="${pastBook.categoryId eq 7}">기타</c:if></strong>
+
+						</p>
+						<p>
+							<strong>좌석 번호:</strong> ${pastBook.seatNum}
+						</p>
+						<p>
+							<strong>예매 일자:</strong>
+							<fmt:formatDate value="${pastBook.orderDate}"
+								pattern="yyyy-MM-dd" />
+						</p>
+						<p>
+							<strong>공연 일시:</strong>
+							<fmt:formatDate value="${pastBook.concertTime}"
+								pattern="yyyy-MM-dd HH:mm" />
+						</p>
+					</div>
+				</div>
+
+				<button class="review-btn"
+					onclick="toggleReviewForm(${pastBook.id})">🖋 리뷰쓰기</button>
+
+				<div class="review-form" id="reviewForm-${pastBook.id}">
+					<form action="" method="post">
+						<input type="hidden" name="bookId" value="${pastBook.id}" /> <input
+							type="hidden" name="concertId" value="${pastBook.concertId}" />
+						<input type="hidden" name="rate" id="rate-${pastBook.id}"
+							value="0" />
+						<button type="button" class="review-save-btn"
+							onclick="reviewInsert(${pastBook.id})">리뷰저장</button>
+
+						<div class="rating" data-id="${pastBook.id}">
+							<span class="star" data-value="1"
+								onclick="selectrate(${pastBook.id},1)">☆</span> <span
+								class="star" data-value="2"
+								onclick="selectrate(${pastBook.id},2)">☆</span> <span
+								class="star" data-value="3"
+								onclick="selectrate(${pastBook.id},3)">☆</span> <span
+								class="star" data-value="4"
+								onclick="selectrate(${pastBook.id},4)">☆</span> <span
+								class="star" data-value="5"
+								onclick="selectrate(${pastBook.id},5)">☆</span>
+						</div>
+
+						<br />
+						<textarea name="content" placeholder="리뷰를 입력하세요..."></textarea>
+
+					</form>
+				</div>
+
+			</div>
+		</c:if>
+	</c:forEach>
+
+
 </body>
 </html>
 

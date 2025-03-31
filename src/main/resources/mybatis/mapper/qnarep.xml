@@ -10,6 +10,14 @@
 		VALUES(#{qnaId}, #{title}, #{content}, now(), now());
 
 	</insert>
+	
+	<update id="updateRep" parameterType="java.util.HashMap">
+		UPDATE vivere.qnarep
+		SET title = #{title}
+		, content = #{content}
+		WHERE id = #{rep_id}
+	</update>
+
 
 </mapper>
 

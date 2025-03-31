@@ -41,6 +41,7 @@
 		WHERE 1=1
 		and a.consumerId = 1
 		and concertTime <![CDATA[<=]]> now()
+		ORDER BY r.createDate DESC
 	</select>
 
 	<select id="getConcertSeatByConTimeId" parameterType="int"

@@ -10,20 +10,37 @@
 		,b.content
 		,b.createDate
 		,b.updateDate
-		,a.id AS qna_id
+		,a.id AS
+		qna_id
 		,b.id AS rep_id
 		,a.consumerId
 		,a.title AS qna_title
-		,a.content AS qna_content
+		,a.content AS
+		qna_content
 		,a.createDate AS qna_createDate
-		,a.updateDate AS qna_updateDate
+		,a.updateDate AS
+		qna_updateDate
 
 		FROM qna a LEFT JOIN qnarep b ON a.id = b.qnaid
 		where 1=1
 		<if test="consumerId !=null and  consumerId !='' ">
 			and consumerId = 1
 		</if>
+		ORDER BY
+		a.createDate DESC
 	</select>
+	<insert id="insert" parameterType="qnaVO">
+		INSERT INTO vivere.qna
+		(consumerId, title, content, createDate, updateDate)
+		VALUES(1, #{qna_title}, #{qna_content}, now(), now());
+	</insert>
+	<update id="update" parameterType="java.util.HashMap">
+		UPDATE vivere.qna
+		SET title = #{qna_title}
+		, content = #{qna_content}
+		WHERE id = #{qna_id}
+		AND consumerId = 1; 
+	</update>
 
 </mapper>
 

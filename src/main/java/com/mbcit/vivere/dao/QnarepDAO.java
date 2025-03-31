@@ -12,4 +12,6 @@ public interface QnarepDAO {
 
 	int insert(Map<String, Object> param);
 
+	int updateRep(Map<String, Object> param);
+
 }

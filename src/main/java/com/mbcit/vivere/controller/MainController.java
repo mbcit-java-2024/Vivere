@@ -4,13 +4,12 @@ package com.mbcit.vivere.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mbcit.vivere.eNum.Grade;
@@ -89,8 +88,8 @@ public class MainController {
 //			int userType = (int) session.getAttribute("userType"); 
 		
 		//		if (consumerVO.getGrade() != Grade.ADMIN) {
-		bookVO.setConsumerId(1); 
-		result = "redirect:/pastBook";
+					bookVO.setConsumerId(1); 
+					result = "redirect:/pastBook";
 		//		} else {
 		//			consumerVO.setGrade(Grade.ADMIN);
 		//			result = "/"; // 로그인 페이지로
@@ -103,8 +102,55 @@ public class MainController {
 //		}
 		return result;
 	}
-	
-	
+	@GetMapping("/qnaInsert")
+	public String qnaInsert(Model model, QnaVO qnaVO) {
+		// 수빈 
+		log.info("MainController 의 qnaInsert() 메소드 실행");
+		String result = "/";
+		ConsumerVO consumerVO = new ConsumerVO();
+		
+		// ProductController에서 로그인 여부 확인
+//		HttpSession session = request.getSession(false);
+//		if (session != null && session.getAttribute("userType") != null) { 
+//			int userType = (int) session.getAttribute("userType"); 
+		
+//		if (consumerVO.getGrade() != Grade.ADMIN) {
+		qnaVO.setConsumerId(1); 
+		result ="/qnaInsert";
+//		} else {
+//			consumerVO.setGrade(Grade.ADMIN);
+//			result = "/managerQnaList";
+//		}
+//		else {
+//			result = "/login"; // 로그인 페이지로
+//		}
+		return result;
+	}
+	@PostMapping("/qnaInsertOK")
+	public String qnaInsertOK(Model model, QnaVO qnaVO) {
+		// 수빈 
+		log.info("MainController 의 qnaInsert() 메소드 실행");
+		String result = "/";
+		ConsumerVO consumerVO = new ConsumerVO();
+		
+		// ProductController에서 로그인 여부 확인
+//		HttpSession session = request.getSession(false);
+//		if (session != null && session.getAttribute("userType") != null) { 
+//			int userType = (int) session.getAttribute("userType"); 
+		
+//		if (consumerVO.getGrade() != Grade.ADMIN) {
+		qnaVO.setConsumerId(1); 
+		qnaService.insert(qnaVO);
+		result = "redirect:/qnaList";
+//		} else {
+//			consumerVO.setGrade(Grade.ADMIN);
+//			result = "/managerQnaList";
+//		}
+//		else {
+//			result = "/login"; // 로그인 페이지로
+//		}
+		return result;
+	}
 	@GetMapping("/qnaList")
 	public String qnaList(Model model, QnaVO qnaVO) {
 		// 수빈 

@@ -16,7 +16,7 @@
 
 <!-- 공연 정보 -->
 <div style="display: flex;">
-	<h3>${concertVO.title }</h3> &nbsp;&nbsp;&nbsp;
+	<h2>${concertVO.title }</h2> &nbsp;&nbsp;&nbsp;
 	<fmt:formatDate value="${concertVO.startDate}" pattern="yy.MM.dd" var="startDate"/>
 	<fmt:formatDate value="${concertVO.endDate}" pattern="yy.MM.dd" var="endDate"/>
 	<h5>${startDate} ~ ${endDate}</h5>
@@ -43,11 +43,12 @@
 </div>
 
 <!-- 공연소개 -->	
+<h3>공연 소개</h3>
 <div>
 	${concertVO.description}
 </div>
 
-<h2>📋 전체 리뷰 목록</h2>
+<h2>전체 리뷰 목록</h2>
 
   <c:forEach var="review" items="${reviewList}">
     <div class="review-box">

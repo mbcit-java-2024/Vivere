@@ -65,6 +65,102 @@ function handleSeatSelection(seatName, isChecked, seatType) {
 	}
 	
 }
+/* ====================== 좌석 UI 업데이트: '좌석선택' 에 변화주기 =================================== */
+function updateSeatSelectionUI(seatType) {
+	console.log("updateSeatSelectionUI() 실행")
+    let container = $("#pick_seat_"+ seatType);
+    // console.log("#pick_seat_"+seatType+": "+container.length);
+    container.empty();
+
+    if (!selectedHall) {
+        container.append("<p>공연장을 선택하세요.</p>");
+        return;
+    }
+
+    // 공연장에 따라 출력할 레이아웃 생성 및 변수에 저장
+    let seatLayout = generateSeatLayout(selectedHall, seatType);
+    // console.log("seatLayout: "+ seatLayout.length);
+    
+    // 체크된 상태인 seatType 에 따라 각각 하나씩 추가
+    container.append(seatLayout);
+
+} // updateSeatSelectionUI()
+
+/* ===================================== 좌석 배치 생성 함수 =================================== */
+
+function generateSeatLayout(hallType, seatType) {
+	console.log("generateSeatLayout(hallType) 실행")
+   // let divCard = $("<div>").addClass("divCard");
+    let divCard = $("#pick_seat_"+ seatType);
+   // console.log("generate pick_seat: " + divCard.length);
+    let pickSeat = $("<div>").attr("id", "pickSeat");
+    let rows, seatsPerRow, breakPoints;
+	
+    // 홀타입별 행과 좌석수 초기화
+    if (hallType === "gaudium") {
+        rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T"];
+        seatsPerRow = 24;
+        breakPoints = [6, 18];
+    } else {
+        rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O"];
+        seatsPerRow = 14;
+        breakPoints = [7];
+    }
+	
+    pickSeat.append("<div><p>"+seatType.toUpperCase()+"</p></div>");
+    // rows 에 저장된 객체 하나씩 반복하며 행 1줄 생성 실행. : for (String lineNume : rows)
+    rows.forEach((lineNum) => {
+        let rowDiv = $("<div>");
+        // 왼쪽 줄 번호
+        rowDiv.append($("<span>").addClass("lineNum clickable-span").text(lineNum).attr("id", seatType+"_"+lineNum)); 
+		
+        // 체크박스 1줄 생성
+        for (let j = 1; j <= seatsPerRow; j++) {
+            let seatNum = j.toString().padStart(2, "0"); // 01, 02 형식
+            let seatName = lineNum + seatNum;
+           // console.log("forEach문 seatType: "+ seatType);
+			
+           // 체크박스 1개 생성
+            let seatCheckbox = $("<input>", {
+            	id: seatType+"_"+seatName,
+                type: "checkbox",
+                class: lineNum + " "+ seatType + " seat",
+                name: seatType+"Seats",
+                value: seatName
+	        }); // 체크박스 1개 생성완료
+            
+			// 만약 value 가 selectedSeat[type]에 있으면 체크박스를 disable 시킨다.
+			for (let type in selectedSeats) {
+				if (selectedSeats[type].includes(seatName)) {
+			        // selectedSeats에 이미 있으면 disabled 처리
+			        seatCheckbox.prop("disabled", true); 
+			    }
+			}
+
+            // 행 div 에 체크박스를 넣는다.
+            rowDiv.append(seatCheckbox);
+
+            // 복도로 나뉜 열에 해당하면 행 div 에 체크박스 대신 공간을 넣는다.
+            if (breakPoints.includes(j)) {
+                rowDiv.append("&nbsp;&nbsp;&nbsp;"); // 공간 추가
+            }
+        }// 체크박스 1줄 생성 for 반복문 끝
+        
+
+        rowDiv.append($("<span>").addClass("lineNum").text(lineNum)); // 오른쪽 줄 번호
+        rowDiv.append("<br/>"); // 줄바꿈
+
+        if (hallType === "gaudium" && lineNum === "J") {
+            rowDiv.append("<br/>"); // 특정 줄 이후 공간 추가
+        }
+
+        // 생성된 행 1개를 pickSeat div 에 넣기
+        pickSeat.append(rowDiv);
+    });
+	
+    divCard.append(pickSeat);
+    return divCard;
+} 
 
 $(document).ready(function() {
     if (firstRun) {
@@ -253,16 +349,23 @@ $(document).ready(function() {
     
 	/* =============== 공연장 선택 감지: 결과를 selectHall 변수에 넣어준다. ============= */
 	 $("input[name='hallType']").change(function () {
-    	console.log("seatType")
+		console.log("공연장 변경 감지")
      	selectedHall = $(this).val() === "0" ? "gaudium" : "felice";
      	let selectedValue = $(this).val(); // 선택된 라디오 버튼 값
         maxValue = maxValues[selectedValue]; // 해당 좌석 등급의 최대값 가져오기
         $(".seatCount").attr("max", maxValue); // max 값 변경
+    	console.log("hallType: "+ selectedValue)
 		
         // 공연장 변경시 기존에 선택된 좌석들 초기화
         	for (let seatType in selectedSeats){
+			console.log("selectedSeats 초기화: "+seatType);
         		selectedSeats[seatType] = [];
+			console.log("selectedSeats["+seatType+"]: "+ selectedSeats[seatType]);
+		    updateSeatSelectionUI(seatType);
        	 }
+//    	$(".seat").prop("checked", false);
+	  	$(".seat").prop("disabled", false);
+       	
 	 });
 
     /* =========== 공연 좌석 등급설정 : class = "seatType" 인 input의 값이 바뀔때마다 실행 ========== */
@@ -271,17 +374,20 @@ $(document).ready(function() {
         
 		/* =============== 공연장 선택 감지: 결과를 selectHall 변수에 넣어준다. ============= */
 		 $("input[name='hallType']").change(function () {
+			console.log("공연장 변경 감지")
 		    selectedHall = $(this).val() === "0" ? "gaudium" : "felice";
 	     	let selectedValue = $(this).val(); // 선택된 라디오 버튼 값
 	        maxValue = maxValues[selectedValue]; // 해당 좌석 등급의 최대값 가져오기
 	        $(".seatCount").attr("max", maxValue); // max 값 변경
+			console.log("selectedHall: "+ selectedHall);
 
 			// selectedSeats 초기화
 	        for (let seatType in selectedSeats){
+			console.log("selectedSeats 초기화: "+seatType);
 	        	selectedSeats[seatType] = [];
 	        }
+		    updateSeatSelectionUI(seatType);
 	        
-		    updateSeatSelectionUI();
 		 });
 		
         if (!seatType) {
@@ -325,13 +431,9 @@ $(document).ready(function() {
             $("#seatContainer").append(seatForm);
             selectedSeats[seatType] = [];
 
-		/*          
-			let pick_seatDiv = $("<div>").attr("id", "pick_seat_"+seatType).attr("class", "divCard");
-            pick_seatDiv.append("<span>"+seatType.toUpperCase()+"</span>");
-		 */            
 			let pick_seatDiv = "<div id=\"pick_seat_"+seatType+"\" class=\"divCard\"></div>";
  			$("#seatSelectionContainer").append(pick_seatDiv); // divCard를 추가
-            updateSeatSelectionUI();
+            updateSeatSelectionUI(seatType);
             
         } else {
             $("#" + seatId).remove();
@@ -342,118 +444,12 @@ $(document).ready(function() {
             selectedSeats[seatType] = [];
 			
             $("#pick_seat_" + seatType).remove();
-            updateSeatSelectionUI();
+            updateSeatSelectionUI(seatType);
         }
 
-    /* ====================== 좌석 UI 업데이트: '좌석선택' 에 변화주기 =================================== */
-	    function updateSeatSelectionUI() {
-	        let container = $("#pick_seat_"+ seatType);
-	        // console.log("#pick_seat_"+seatType+": "+container.length);
-	        container.empty();
-	
-	        if (!selectedHall) {
-	            container.append("<p>공연장을 선택하세요.</p>");
-	            return;
-	        }
-	
-	        // 공연장에 따라 출력할 레이아웃 생성 및 변수에 저장
-	        let seatLayout = generateSeatLayout(selectedHall);
-	        // console.log("seatLayout: "+ seatLayout.length);
-	        
-	        // 체크된 상태인 seatType 에 따라 각각 하나씩 추가
-	        container.append(seatLayout);
-	
-	        // 선택된 좌석 개수만큼 자동 체크
-	    /*     for (let seatType in selectedSeats) {
-	            selectedSeats[seatType].forEach(seat => {
-	                $(`input.seat[value='${seat}']`).prop("checked", true);
-	            });
-	        } */
-	    }
-
-    /* ===================================== 좌석 배치 생성 함수 =================================== */
-
-	    function generateSeatLayout(hallType) {
-	       // let divCard = $("<div>").addClass("divCard");
-	        let divCard = $("#pick_seat_"+ seatType);
-	       // console.log("generate pick_seat: " + divCard.length);
-	        let pickSeat = $("<div>").attr("id", "pickSeat");
-	        let rows, seatsPerRow, breakPoints;
-			
-	        // 홀타입별 행과 좌석수 초기화
-	        if (hallType === "gaudium") {
-	            rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T"];
-	            seatsPerRow = 24;
-	            breakPoints = [6, 18];
-	        } else {
-	            rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O"];
-	            seatsPerRow = 14;
-	            breakPoints = [7];
-	        }
-			
-	        pickSeat.append("<div><p>"+seatType.toUpperCase()+"</p></div>");
-	        // rows 에 저장된 객체 하나씩 반복하며 행 1줄 생성 실행. : for (String lineNume : rows)
-	        rows.forEach((lineNum) => {
-	            let rowDiv = $("<div>");
-	            // 왼쪽 줄 번호
-	            rowDiv.append($("<span>").addClass("lineNum clickable-span").text(lineNum).attr("id", seatType+"_"+lineNum)); 
-				
-	            // 체크박스 1줄 생성
-	            for (let j = 1; j <= seatsPerRow; j++) {
-	                let seatNum = j.toString().padStart(2, "0"); // 01, 02 형식
-	                let seatName = lineNum + seatNum;
-	               // console.log("forEach문 seatType: "+ seatType);
-					
-	               // 체크박스 1개 생성
-	                let seatCheckbox = $("<input>", {
-	                	id: seatType+"_"+seatName,
-	                    type: "checkbox",
-	                    class: lineNum + " "+ seatType + " seat",
-	                    name: seatType+"Seats",
-	                    value: seatName
-/* 	                    change: function () {
-	                    	// 좌석 체크박스가 체크/해제되면
-	                        let a = $(this).attr("name"); // name 에 있는 것을 꺼내와라 = 좌석 등급
-	                        let seatType = a.replace("Seats", ""); 
-	                        handleSeatSelection(seatName, isChecked)
-	                    }
- */	                }); // 체크박스 1개 생성완료
-	                
-					// 만약 value 가 selectedSeat[type]에 있으면 체크박스를 disable 시킨다.
-					for (let type in selectedSeats) {
-						if (selectedSeats[type].includes(seatName)) {
-					        // selectedSeats에 이미 있으면 disabled 처리
-					        seatCheckbox.prop("disabled", true); 
-					    }
-					}
-	
-	                // 행 div 에 체크박스를 넣는다.
-	                rowDiv.append(seatCheckbox);
-	
-	                // 복도로 나뉜 열에 해당하면 행 div 에 체크박스 대신 공간을 넣는다.
-	                if (breakPoints.includes(j)) {
-	                    rowDiv.append("&nbsp;&nbsp;&nbsp;"); // 공간 추가
-	                }
-	            }// 체크박스 1줄 생성 for 반복문 끝
-	            
-	
-	            rowDiv.append($("<span>").addClass("lineNum").text(lineNum)); // 오른쪽 줄 번호
-	            rowDiv.append("<br/>"); // 줄바꿈
-	
-	            if (hallType === "gaudium" && lineNum === "J") {
-	                rowDiv.append("<br/>"); // 특정 줄 이후 공간 추가
-	            }
-	
-	            // 생성된 행 1개를 pickSeat div 에 넣기
-	            pickSeat.append(rowDiv);
-	        });
-			
-	        divCard.append(pickSeat);
-	        return divCard;
-	    }
-   	});
+    });
     /* 끝 =========== 공연 좌석 등급설정 : class = "seatType" 인 input의 값이 바뀔때마다 실행 ========== */
-   
+
  });
 /* ============== 좌석 행 알파벳 클릭시 해당 행 전부 선택 ====================== */
 $(document).on("click", "span.lineNum", function () {

@@ -113,7 +113,7 @@
 	<delete id="deleteConcertTimesByConcertId" parameterType="int">
 		DELETE FROM concerttime WHERE concertId = #{concertId}
 	</delete>
-	<delete id="deleteConcertTimesById" parameterType="int">
+	<delete id="deleteConcertTimeById" parameterType="int">
 		DELETE FROM concerttime WHERE id = #{concertTimeId}
 	</delete>
 	

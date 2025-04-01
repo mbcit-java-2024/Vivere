@@ -344,9 +344,12 @@ public class ConcertService {
 
 //	concertTimeId를 받아 concertTime 1건과 해당하는 concertSeats를 삭제하는 메소드
 	public void deleteConcertTime(int concertTimeId) {
-		System.out.println("ConcertService 클래스의 deleteConcertTime() 메소드 실행");
+		log.info("ConcertService 클래스의 deleteConcertTime() 메소드 실행");
+		log.info("concertTimeId: "+concertTimeId);
 		concertDAO.deleteConcertTimeById(concertTimeId);
+		log.info("concerttime 테이블 삭제까지 진행");
 		concertDAO.deleteConcertSeatsByConcertTimeId(concertTimeId);
+		log.info("concertseat 테이블 삭제까지 진행");
 	}
 
 //	concertTimeVO를 받아 concertTime 1건을 저장하는 메소드

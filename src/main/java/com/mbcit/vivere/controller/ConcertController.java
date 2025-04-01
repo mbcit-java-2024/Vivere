@@ -200,7 +200,9 @@ public class ConcertController {
 	@PostMapping("/deleteConcertTime")
 	@ResponseBody
 	public String deleteConcertTime(@RequestParam("timeId") int concertTimeId) {
+		log.info("ConcertController의 deleteConcertTime() 메소드 실행");
 	    try {
+	    	log.info("concertTimeId: "+ concertTimeId);
 	        concertService.deleteConcertTime(concertTimeId);
 	        return "success";
 	    } catch (Exception e) {

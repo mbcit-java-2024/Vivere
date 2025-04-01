@@ -12,7 +12,7 @@ public class BookVO {
 	private int id;
     private int consumerId;
     private int concertId;
-    private int paymentId;
+    private int CardId;
     private String bookNum;
     private String seatNum;
     private int price;
@@ -20,7 +20,7 @@ public class BookVO {
     private String grade;
     private Date orderDate;
     private Date concertTime;
-    
+    private short payType;
     
     private String title;
     private int hallType;

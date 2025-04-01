@@ -122,8 +122,8 @@
 }
 
 .seat input:disabled + span {
-    background-color: lightgray;
-    border-color: lightgray;
+    background-color: lightgray !important;
+    border-color: lightgray !important;
 }
 
 .gradeExample {

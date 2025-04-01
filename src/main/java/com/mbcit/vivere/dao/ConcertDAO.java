@@ -34,6 +34,8 @@ public interface ConcertDAO {
 	void deleteConcertSeatsByConcertTimeId(int concertTimeId);
 	List<concertSeatVO> getConcertSeatListByGrade(concertSeatVO vo);
 	void update(ConcertVO vo);
+	String getGrade(concertSeatVO concertSeatVO);
+	void updateBookYN(concertSeatVO concertSeatVO);
 	
 
 }

@@ -12,7 +12,7 @@ public class CardVO {
     private int id;
     private int consumerId;
     private String pw;
-    private int cardNum;
+    private String cardNum;
     private int cvc;
     private Date validDate;
     private Date createDate;

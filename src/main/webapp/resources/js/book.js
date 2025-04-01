@@ -15,6 +15,7 @@ window.onload = () => {
 
 function changeTime() {
 	const selectedTimeId = document.getElementById("pickTime").value; // 선택된 공연 시간을 가져옴
+	$(`input[name=conTimeId]`).prop("value", selectedTimeId);
     $.ajax({
     	url: "/getBookedSeats?conTimeId=" + selectedTimeId,  // 컨트롤러 요청 주소
       	method: "GET",
@@ -45,7 +46,7 @@ function changeTime() {
 	});
 	// const time = $(`#pickTime option:selected`).attr("data-time");
 	const time = $(`#pickTime option:selected`).text();
-	console.log(time);
+	// console.log(time);
 	$(`input[name=selectedTime]`).prop("value", time);
 }
 

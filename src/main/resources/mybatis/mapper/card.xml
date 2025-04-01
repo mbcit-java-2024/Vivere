@@ -4,7 +4,9 @@
 
 <mapper namespace="com.mbcit.vivere.dao.CardDAO">
 
-
+	<select id="getCardListByConsumerId" parameterType="int" resultType="cardVO">
+		select * from card where consumerId = #{consumerId}
+	</select>
 
 </mapper>
 

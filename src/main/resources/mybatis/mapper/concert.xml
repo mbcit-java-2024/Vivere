@@ -49,6 +49,15 @@
 		SELECT * FROM concertseat WHERE concertId = #{concertId} AND concertTimeId = #{concertTimeId} AND grade = #{grade}
 	</select>	
 	
+	<select id="getGrade" parameterType="concertSeatVO" resultType="String">
+		select grade 
+		from concertSeat 
+		where concertId = #{concertId} 
+		and lineNum = #{lineNum} 
+		and seatNum = #{seatNum} 
+		limit 1
+	</select>	
+	
 	<!-- insert  -->
 	<insert id="insert" parameterType="concertVO">
 		insert into concert (title, hallType, description, categoryId, totalSeat, posterUrl, priceVIP,
@@ -85,6 +94,15 @@
 			countVIP = #{countVIP}, countR = #{countR}, countS = #{countS},countA = #{countA}, equalPrice = #{equalPrice},
 			updateDate = now(), posterUrl = #{posterUrl}
 		where id = #{id}
+	</update>
+	
+	<update id="updateBookYN" parameterType="concertSeatVO">
+		update concertSeat 
+		set bookYN = true
+		where concertId = #{concertId} 
+		and concertTimeId = #{concertTimeId} 
+		and lineNum = #{lineNum} 
+		and seatNum = #{seatNum}
 	</update>
 
 	<!-- delete -->

@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mbcit.vivere.service.BookService;
+import com.mbcit.vivere.service.CardService;
 import com.mbcit.vivere.service.ConcertService;
+import com.mbcit.vivere.vo.CardVO;
 import com.mbcit.vivere.vo.ConcertTimeVO;
 import com.mbcit.vivere.vo.ConcertVO;
 import com.mbcit.vivere.vo.concertSeatVO;
@@ -36,6 +38,9 @@ public class BookController {
 	
 	@Autowired
 	private BookService bookService;
+	
+	@Autowired
+	private CardService cardService;
 	
 	@RequestMapping("/book")
 	public String book(HttpServletRequest request, Model model) {
@@ -88,8 +93,28 @@ public class BookController {
 						@RequestParam("totalPrice") int totalPrice, 
 						@RequestParam("selectedSeats") String selectedSeats,
 						@RequestParam("selectedTime") String selectedTime,
+						@RequestParam("conTimeId") String conTimeId,
+						HttpServletRequest request,
 						Model model) {
 		System.out.println("BookController 컨트롤러의 payment() 메소드 실행");
+		
+//		로그인 완료되면 살리기
+//		int consumerId = (int) request.getSession().getAttribute("consumerId");
+		int consumerId = 1;
+		
+		List<CardVO> cardList = cardService.getCardListById(consumerId);
+		CardVO card1 = new CardVO(); // ************ !!!Test!!! ************ 
+		CardVO card2 = new CardVO(); // ************ !!!Test!!! ************
+		CardVO card3 = new CardVO(); // ************ !!!Test!!! ************
+		card1.setId(1); // ************ !!!Test!!! ************
+		card2.setId(2); // ************ !!!Test!!! ************
+		card3.setId(3); // ************ !!!Test!!! ************
+		card1.setCardNum("1111111111111111"); // ************ !!!Test!!! ************
+		card2.setCardNum("2222222222222222"); // ************ !!!Test!!! ************
+		card3.setCardNum("3333333333333333"); // ************ !!!Test!!! ************
+		cardList.add(card1); // ************ !!!Test!!! ************
+		cardList.add(card2); // ************ !!!Test!!! ************
+		cardList.add(card3); // ************ !!!Test!!! ************
 		
 		Date selTime = bookService.selectedTime(selectedTime);
 		
@@ -98,6 +123,8 @@ public class BookController {
     	System.out.println(relativePath);
     	concertVO.setPosterUrl(relativePath);
 		
+    	model.addAttribute("conTimeId", conTimeId);
+    	model.addAttribute("cardList", cardList);
 		model.addAttribute("selectedSeats", selectedSeats);
 		model.addAttribute("selTime", selTime);
 		model.addAttribute("concertVO", concertVO);
@@ -106,13 +133,38 @@ public class BookController {
 		return "/payment";
 	}
 	
-	// get요청으로 payment을 요청하면 home화면으로 돌려보냄
+	// get 요청으로 payment 요청을 보내면 home 화면으로 돌려보냄
 	@GetMapping("/payment")
 	public String redirectPayment() {
 		return "redirect:/";
 	}
 	
-
+	@PostMapping("/bookOK")
+	public String bookOK(@RequestParam("concertId") String concertId,
+						@RequestParam("actionCardId") String cardId,
+						@RequestParam("price") String price,
+						@RequestParam("selectedSeats") String selectedSeats,
+						@RequestParam("selTime") String selTime,
+						@RequestParam("actionPayType") String payType,
+						@RequestParam("conTimeId") String conTimeId,
+						HttpServletRequest request,
+						Model model) {
+		System.out.println("BookController 컨트롤러의 bookOK() 메소드 실행");
+		
+//		int consumerId = (int) request.getSession().getAttribute("consumerId");
+		int consumerId = 1;
+		
+		bookService.insertBook(consumerId, concertId, cardId, price, selectedSeats, selTime, payType, conTimeId);
+		
+		
+		
+		return "/bookOK";
+	}
 	
+	// get 요청으로 bookOK 요청을 보내면 home 화면으로 돌려보냄
+	@GetMapping("/bookOK")
+	public String redirectBookOK() {
+		return "redirect:/";
+	}
 
 }

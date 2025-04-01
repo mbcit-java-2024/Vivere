@@ -151,6 +151,7 @@
 				<input type="hidden" name="totalPrice"/>
 				<input type="hidden" name="selectedSeats"/>
 				<input type="hidden" name="selectedTime"/>
+				<input type="hidden" name="conTimeId"/>
 				
 				<div class="sideDetail">
 					<input id="goToPay" class="sideDetail" type="submit" value="예매하기" disabled="disabled"/>

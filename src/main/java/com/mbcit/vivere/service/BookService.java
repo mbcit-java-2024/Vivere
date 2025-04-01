@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mbcit.vivere.dao.BookDAO;
+import com.mbcit.vivere.dao.ConcertDAO;
 import com.mbcit.vivere.vo.BookVO;
+import com.mbcit.vivere.vo.ConcertTimeVO;
 import com.mbcit.vivere.vo.concertSeatVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,9 @@ public class BookService {
 	
 	@Autowired
 	private BookDAO bookDAO;
+	
+	@Autowired
+	private ConcertDAO concertDAO;
 	
 	public List<String> getBookedSeats(int conTimeId) {
 		System.out.println("BookService 클래스의 getBookedSeats() 메소드 실행");
@@ -67,6 +72,58 @@ public class BookService {
 		}
         
         return date;
+	}
+
+	public void insertBook(int consumerId, String concertId, String cardId, String price, String selectedSeats,
+							String selTime, String payType, String conTimeId) {
+		System.out.println("BookService 클래스의 insertBook() 메소드 실행");
+		
+		String[] seats = selectedSeats.split(", ");
+		System.out.println("이게 selTime 변환전: " + selTime);
+		
+		String consumerIdStr = String.format("%3s", consumerId).replace(' ', '0');
+		String concertIdStr = String.format("%3s", concertId).replace(' ', '0');
+		SimpleDateFormat sdfNow = new SimpleDateFormat("yyMMdd");
+		Date now = new Date();
+		String OrderDateStr = sdfNow.format(now);
+//		bookNum 규칙 = consumerId(000) + concertId(000) + orderDate(yyMMdd) (총 12자리)
+		String bookNum = consumerIdStr + concertIdStr + OrderDateStr;
+		ConcertTimeVO conTimeVO = concertDAO.getConcertTimeById(Integer.parseInt(conTimeId));
+		
+		for (int i = 0; i < seats.length; i++) {
+			
+			char lineNum = seats[i].substring(0, 1).charAt(0);
+			int seatNum = Integer.parseInt(seats[i].substring(1));
+			concertSeatVO conSeat = new concertSeatVO();
+			conSeat.setConcertId(Integer.parseInt(concertId));
+			conSeat.setConcertTimeId(conTimeVO.getId());
+			conSeat.setLineNum(lineNum);
+			conSeat.setSeatNum(seatNum);
+			String grade = concertDAO.getGrade(conSeat);
+			
+			BookVO book = new BookVO();
+			book.setConsumerId(consumerId);
+			book.setConcertId(Integer.parseInt(concertId));
+			if (cardId.equals("") || null == cardId) {
+				book.setCardId(0);
+			} else {
+				book.setCardId(Integer.parseInt(cardId));
+			}
+			book.setBookNum(bookNum);
+			book.setPrice(Integer.parseInt(price));
+			book.setSeatNum(seats[i]);
+			book.setGrade(grade);
+			book.setOrderDate(now);
+			book.setConcertTime(conTimeVO.getConcertTime());
+			book.setPayType(Short.parseShort(payType));
+			
+			System.out.println("bookVO" + i + ": " + book);
+			
+			concertDAO.updateBookYN(conSeat);
+//			System.out.println("updateBookYN 실행 완료");
+			
+		}
+		
 	}
 
 }

@@ -9,7 +9,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<title>관리자 페이지 - 문의 내용 리스트</title>
+<title>관리자 페이지 - 문의 내역 리스트</title>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
 <style>
@@ -212,6 +212,17 @@ function updateQnarep(id) {
 	   	let qnaId = $("#answerForm-"+id).find("input[name='qnaId']").val();
 	    console.log('insertRep:::::::::::::::::::::::qnaId::::::'+qnaId);
 	    
+	    if ('' == input) {
+	    	alert('답변 제목을 입력하세요.');
+	    	return;
+	    }
+	    if ('' == textarea) {
+	    	alert('답변 내용을 입력하세요');
+	    	return;
+	    }
+	    
+	    
+	    
 	    let param = {
 	    		title: input
 	    		, content: textarea
@@ -232,7 +243,6 @@ function updateQnarep(id) {
 	            console.log('success:::::::::::111::::::::::::' + JSON.stringify(data));
 	            if ('0' == data.code) {
 	            	 location.reload();
-	            	 // location.href = '/orderOKPage?orderIds=' + data.orderIds;
 	            } else {
             		if (null != data.message) {
             			alert(data.message);
@@ -301,7 +311,8 @@ function updateQnarep(id) {
         답변 내용: ${qna.content}
       </div>
 
-      <button class="answer-btn edit" onclick="toggleEditForm(${qna.rep_id})">✏ 답변수정</button>
+      <button class="answer-btn edit" onclick="toggleEditForm(${qna.rep_id})">✏ 답변 수정</button>
+      <button class="answer-btn edit" onclick="location.href='/deleteRep/${qna.rep_id}'">🗑 답변 삭제</button>
 
       <div class="answer-edit-form" id="editForm-${qna.rep_id}">
         <form action="" method="">

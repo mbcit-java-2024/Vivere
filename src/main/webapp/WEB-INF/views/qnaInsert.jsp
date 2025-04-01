@@ -67,13 +67,14 @@ textarea {
 }
 </style>
 
+<script type="text/javascript"></script>
+
 </head>
 <body>
 	<form action="/qnaInsertOK" method="post">
-		<!-- 여기서 이렇게하고 -->
 		<div class="form-container">
-			<input type="text" name="qna_title" placeholder="문의 제목 입력칸" />
-			<textarea name="qna_content" placeholder="문의 내용 입력칸"></textarea>
+			<input type="text" name="qna_title" placeholder="문의 제목 입력칸" required />
+			<textarea name="qna_content" placeholder="문의 내용 입력칸"required ></textarea>
 			<button type="submit" class="submit-btn">문의 저장</button>
 		</div>
 	</form>

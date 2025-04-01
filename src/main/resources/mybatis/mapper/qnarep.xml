@@ -17,6 +17,10 @@
 		, content = #{content}
 		WHERE id = #{rep_id}
 	</update>
+	<delete id="deleteRep" parameterType="qnarepVO">
+		DELETE FROM qnarep
+		WHERE id = #{id} 
+	</delete>
 
 
 </mapper>

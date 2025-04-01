@@ -213,7 +213,7 @@ function updateReview(id) {
 	function reviewInsert(id) { 
 	    console.log('reviewInsert:::::::::::::::::::::id::::::::'+id);
 	    
-	    let textarea = $("#reviewForm-"+id).find("textarea[name='content']").val();
+	    let textarea = $("#reviewForm-"+id).find("textarea[name='content']").val().trim();
 	    console.log('reviewInsert:::::::::::::::::::::::textarea::::::'+textarea);
 	    let concertId = $("#reviewForm-"+id).find("input[name='concertId']").val();
 	    console.log('reviewInsert:::::::::::::::::::::::concertId::::::'+concertId);
@@ -221,6 +221,15 @@ function updateReview(id) {
 	    console.log('reviewInsert:::::::::::::::::::::::bookId::::::'+bookId);
 	    let rate = $("#reviewForm-" + id).find("input[name='rate']").val();
 	    console.log('reviewInsert::::::::::::::rate:::::::' + rate);
+	    
+	    if (-1 == rate) {
+	    	alert('별점을 0~5점으로 입력하세요.');
+	    	return;
+	    }
+	    if ('' == textarea) {
+	    	alert('리뷰내용을 입력하세요.');
+	    	return;
+	    }
 	    
 	    let param = {
 	    		content: textarea
@@ -243,7 +252,6 @@ function updateReview(id) {
 	            console.log('success:::::::::::111::::::::::::' + JSON.stringify(data));
 	            if ('0' == data.code) {
 	            	 location.reload();
-	            	 // location.href = '/orderOKPage?orderIds=' + data.orderIds;
 	            } else {
             		if (null != data.message) {
             			alert(data.message);
@@ -297,14 +305,14 @@ function updateReview(id) {
 	<!-- ✅ 리뷰가 있는 공연 -->
 	<h2 class="section-title">✅ 리뷰 작성 완료된 공연</h2>
 	<c:forEach var="pastBook" items="${pastBook}">
-		<c:if test="${not empty pastBook.content}">
+		<c:if test="${not empty pastBook.review_id}">
 			<div class="concert-box">
 				<!-- 공연 정보 공통 -->
 				<h3>${pastBook.title}</h3>
 				<div class="concert-header">
 					<div class="concert-info">
 						<p>
-							<strong>공연 번호:</strong> ${pastBook.id}
+							<strong>공연 번호:</strong> ${pastBook.id} 
 						</p>
 						<p>
 							<strong>홀 타입:</strong>
@@ -345,10 +353,16 @@ function updateReview(id) {
 					<p>
 						<strong>내 별점:</strong>
 						<c:forEach var="i" begin="1" end="5">
+							<span class="star<c:if test='${i <= pastBook.rate}'> active</c:if>" style="font-size: 24px;">
 							<c:choose>
 								<c:when test="${i <= pastBook.rate}">★</c:when>
 								<c:otherwise>☆</c:otherwise>
 							</c:choose>
+							</span>
+							<%-- <c:choose>
+								<c:when test="${i <= pastBook.rate}">★</c:when>
+								<c:otherwise>☆</c:otherwise>
+							</c:choose> --%>
 						</c:forEach>
 					</p>
 					<button class="review-btn" onclick="showEditForm(${pastBook.id})">✏
@@ -393,7 +407,7 @@ function updateReview(id) {
 	<!-- ❗ 리뷰가 없는 공연 -->
 	<h2 class="section-title">📝 리뷰 쓰기 전인 공연</h2>
 	<c:forEach var="pastBook" items="${pastBook}">
-		<c:if test="${empty pastBook.content}">
+		<c:if test="${empty pastBook.review_id}">
 			<div class="concert-box">
 				<!-- 공연 정보 공통 -->
 				<h3>${pastBook.title}</h3>

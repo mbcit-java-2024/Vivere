@@ -16,7 +16,8 @@ public interface QnaDAO {
 
 	int update(Map<String, Object> param);
 
+	QnaVO selectQnacontent(QnaVO qnaVO);
 
-
+	void delete(QnaVO qnaVO);
 
 }

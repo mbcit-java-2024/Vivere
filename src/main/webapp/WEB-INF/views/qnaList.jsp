@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>구매자 페이지 - 문의 내역</title>
+<title>구매자 페이지 - 문의 내역 리스트</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
 * {
@@ -224,6 +224,7 @@ function updateQna(id) {
       </div>
 
       <button class="btn" onclick="toggleEditForm(${qna.qna_id})">✏ 문의 수정</button>
+      <button class="btn" onclick="location.href='/deleteQna/${qna.qna_id}'">🗑 문의 삭제</button>
 
       <div class="edit-form" id="editForm-${qna.qna_id}">
         <form action="/qna/update" method="post">

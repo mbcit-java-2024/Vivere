@@ -1,5 +1,6 @@
 package com.mbcit.vivere.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -15,5 +16,6 @@ public interface ReviewDAO {
 
 	void delete(ReviewVO reviewVO);
 
+	List<ReviewVO> reviewListByConcert(int concertId);
 
 }

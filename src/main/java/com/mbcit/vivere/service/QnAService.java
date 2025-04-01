@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.mbcit.vivere.dao.QnaDAO;
 import com.mbcit.vivere.vo.QnaVO;
+import com.mbcit.vivere.vo.QnarepVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,6 +30,11 @@ public class QnAService {
 	public int update(Map<String, Object> param) {
 		return qnaDAO.update(param);
 	}
+
+	public void delete(QnaVO qnaVO) {
+		qnaDAO.delete(qnaVO);
+	}
+
 
 
 

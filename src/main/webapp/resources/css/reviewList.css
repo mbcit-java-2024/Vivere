@@ -1,0 +1,40 @@
+@charset "UTF-8";
+
+
+.review-box {
+	background-color: #FFFFFF;
+	border: 1px solid #DDD;
+	border-left: 6px solid #F5DEB3;
+	padding: 20px;
+	margin-bottom: 16px;
+	border-radius: 10px;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.review-header {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 8px;
+}
+
+.review-rate {
+	font-size: 20px;
+	color: #FFD700; /* 노란 별 */
+	font-weight: bold;
+}
+
+.consumer {
+	font-size: 14px;
+	color: #555;
+}
+
+.review-content {
+	font-size: 15px;
+	margin: 10px 0;
+}
+
+.review-date {
+	font-size: 12px;
+	color: #999;
+	text-align: right;
+}

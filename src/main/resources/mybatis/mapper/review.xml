@@ -14,13 +14,19 @@
 		UPDATE vivere.review
 		SET rate = #{rate}
 		, content = #{content}
-		WHERE id = #{review_id}; 
+		WHERE id = #{review_id}
+		AND consumerId = 1;
 	</update>
 	<delete id="delete" parameterType="reviewVO">
 		DELETE FROM review
 		WHERE id = #{id} 
 		AND consumerId = 1;
 	</delete>
+	
+	<select id="reviewListByConcert" parameterType="int" resultType="reviewVO">	
+	select * from review
+	where concertId = #{id}
+	</select>
 </mapper>
 
 

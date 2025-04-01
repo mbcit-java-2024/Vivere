@@ -12,6 +12,7 @@ public class ReviewVO {
     private int id;
     private int consumerId;
     private int concertId;
+    private String userId;
     private float rate;
     private String content;
     private Date createDate;

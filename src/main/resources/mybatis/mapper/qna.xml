@@ -10,13 +10,11 @@
 		,b.content
 		,b.createDate
 		,b.updateDate
-		,a.id AS
-		qna_id
+		,a.id AS qna_id
 		,b.id AS rep_id
 		,a.consumerId
 		,a.title AS qna_title
-		,a.content AS
-		qna_content
+		,a.content AS qna_content
 		,a.createDate AS qna_createDate
 		,a.updateDate AS
 		qna_updateDate
@@ -26,8 +24,7 @@
 		<if test="consumerId !=null and  consumerId !='' ">
 			and consumerId = 1
 		</if>
-		ORDER BY
-		a.createDate DESC
+		ORDER BY a.createDate DESC
 	</select>
 	<insert id="insert" parameterType="qnaVO">
 		INSERT INTO vivere.qna
@@ -41,6 +38,11 @@
 		WHERE id = #{qna_id}
 		AND consumerId = 1; 
 	</update>
+	<delete id="delete" parameterType="qnaVO">
+		DELETE FROM qna
+		WHERE id = #{id} 
+		AND consumerId = 1;
+	</delete>
 
 </mapper>
 

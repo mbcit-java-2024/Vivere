@@ -7,6 +7,8 @@
 <meta charset="UTF-8">
 <title>공연 정보</title>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<!-- 공연 디테일 페이지에 보여줄 리뷰 리스트의 css를 연결하는 코드 -->
+<link rel="stylesheet" type="text/css" href="/resources/css/reviewList.css" />
 </head>
 <body>
 <!-- 관리자 로그인 시에만 보이는 버튼 -->
@@ -45,7 +47,29 @@
 <div>
 	${concertVO.description}
 </div>
-	
+
+
+<!-- 리뷰 목록 -->
+ <h2>📋 전체 리뷰 목록</h2>
+
+  <c:forEach var="review" items="${reviewList}">
+    <div class="review-box">
+      <div class="review-header">
+        <div class="review-rate">
+          <c:forEach begin="1" end="${review.rate}" var="i">
+            ★
+          </c:forEach>
+        </div>
+        <div class="consumer">작성자: ${review.userId}</div>
+      </div>
+      <div class="review-content">
+        ${review.content}
+      </div>
+      <div class="review-date">
+        작성일: <fmt:formatDate value="${review.createDate}" pattern="yyyy-MM-dd HH:mm"/>
+      </div>
+    </div>
+  </c:forEach>
 
 </body>
 </html>

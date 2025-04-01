@@ -1,5 +1,6 @@
 package com.mbcit.vivere.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,10 @@ public class ReviewService {
 
 	public void delete(ReviewVO reviewVO) {
 		reviewDAO.delete(reviewVO);
+	}
+
+	public List<ReviewVO> reviewListByConcert(int concertId) {
+		return reviewDAO.reviewListByConcert(concertId);
 	}
 
 

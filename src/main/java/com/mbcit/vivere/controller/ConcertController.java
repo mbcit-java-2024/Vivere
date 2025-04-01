@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mbcit.vivere.service.ConcertService;
+import com.mbcit.vivere.service.ReviewService;
 import com.mbcit.vivere.vo.ConcertTimeVO;
 import com.mbcit.vivere.vo.ConcertVO;
+import com.mbcit.vivere.vo.ReviewVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,6 +27,9 @@ public class ConcertController {
 	
 	@Autowired
 	private ConcertService concertService;
+	
+	@Autowired
+	private ReviewService reviewService;
 	
 	@RequestMapping("/insertConcert")
 	public String insertConcert() {
@@ -85,9 +90,13 @@ public class ConcertController {
 //		해당 공연의 시간정보 
 		List<ConcertTimeVO> conTimeList = concertService.getConcertTimes(concertId);
 		
+		// reviewListByConcert 
+		List<ReviewVO> reviewList = reviewService.reviewListByConcert(concertId);
+		
 //		jsp 로 필요한 정보 보내기
 		model.addAttribute("concertVO", concertVO);
 		model.addAttribute("conTimeList", conTimeList);
+		model.addAttribute("reviewList", reviewList);
 		
 		return "/concertView";
 	}

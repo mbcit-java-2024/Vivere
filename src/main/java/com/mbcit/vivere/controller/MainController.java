@@ -11,14 +11,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mbcit.vivere.eNum.Grade;
 import com.mbcit.vivere.service.BookService;
+import com.mbcit.vivere.service.QnARepService;
 import com.mbcit.vivere.service.QnAService;
 import com.mbcit.vivere.service.ReviewService;
 import com.mbcit.vivere.vo.BookVO;
+import com.mbcit.vivere.vo.ConcertVO;
 import com.mbcit.vivere.vo.ConsumerVO;
 import com.mbcit.vivere.vo.QnaVO;
+import com.mbcit.vivere.vo.QnarepVO;
 import com.mbcit.vivere.vo.ReviewVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +37,8 @@ public class MainController {
 	private QnAService qnaService;
 	@Autowired
 	private ReviewService reviewService;
+	@Autowired
+	private QnARepService qnaRepService;
 	
 	@RequestMapping("/")
 	public String main() {
@@ -40,6 +46,7 @@ public class MainController {
 		
 		return "/main";
 	}
+	
 	
 	@GetMapping("/pastBook")
 	public String pastBook(Model model, BookVO bookVO) {
@@ -165,16 +172,70 @@ public class MainController {
 //			int userType = (int) session.getAttribute("userType"); 
 		
 //		if (consumerVO.getGrade() != Grade.ADMIN) {
-//			qnaVO.setConsumerId(1); 
-//			result ="/qnaList";
+			qnaVO.setConsumerId(1); 
+			result ="/qnaList";
 //		} else {
-			consumerVO.setGrade(Grade.ADMIN);
-			result = "/managerQnaList";
+//			consumerVO.setGrade(Grade.ADMIN);
+//			result = "/managerQnaList";
 //		}
 		qnaList = qnaService.qnaList(qnaVO);
 		
 		model.addAttribute("qnaList", qnaList);
 		log.info("qnaList" + qnaList);
+//		else {
+//			result = "/login"; // 로그인 페이지로
+//		}
+		return result;
+	}
+	@GetMapping("/deleteQna/{id}")
+	public String deleteQna(Model model, QnaVO qnaVO, @PathVariable int id) {
+		// 수빈 
+		log.info("MainController 의 deleteQna() 메소드 실행");
+		String result = "/";
+		ConsumerVO consumerVO = new ConsumerVO();
+		List<QnaVO> qnaList = new ArrayList<QnaVO>();
+		
+		// ProductController에서 로그인 여부 확인
+//		HttpSession session = request.getSession(false);
+//		if (session != null && session.getAttribute("userType") != null) { 
+//			int userType = (int) session.getAttribute("userType"); 
+		
+//		if (consumerVO.getGrade() != Grade.ADMIN) { 
+			qnaVO.setConsumerId(1); 
+			result ="redirect:/qnaList";
+//		} else {
+//			consumerVO.setGrade(Grade.ADMIN);
+//			result = "redirect:/managerQnaList";
+//		}
+		qnaVO.setId(id);
+		qnaService.delete(qnaVO);
+//		else {
+//			result = "/login"; // 로그인 페이지로
+//		}
+		return result;
+	}
+	@GetMapping("/deleteRep/{id}")
+	public String deleteRep(Model model, QnarepVO qnarepVO, @PathVariable int id) {
+		// 수빈 
+		log.info("MainController 의 deleteRep() 메소드 실행");
+		String result = "/";
+		ConsumerVO consumerVO = new ConsumerVO();
+		List<QnaVO> qnaList = new ArrayList<QnaVO>();
+		
+		// ProductController에서 로그인 여부 확인
+//		HttpSession session = request.getSession(false);
+//		if (session != null && session.getAttribute("userType") != null) { 
+//			int userType = (int) session.getAttribute("userType"); 
+		
+//		if (consumerVO.getGrade() != Grade.ADMIN) {
+//		qnaVO.setConsumerId(1); 
+//		result ="redirect:/qnaList";
+//		} else {
+			consumerVO.setGrade(Grade.ADMIN);
+			result = "redirect:/qnaList";
+//		}
+		qnarepVO.setId(id);
+		qnaRepService.deleteRep(qnarepVO);
 //		else {
 //			result = "/login"; // 로그인 페이지로
 //		}

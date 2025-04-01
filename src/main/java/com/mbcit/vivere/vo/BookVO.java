@@ -27,7 +27,7 @@ public class BookVO {
     private String posterUrl;
     private int categoryId;
     
-    private int review_id;
+    private Integer review_id;
     private String content;
     private float rate;
     private Date createDate;

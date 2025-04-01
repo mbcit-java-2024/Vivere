@@ -14,4 +14,6 @@ public interface QnarepDAO {
 
 	int updateRep(Map<String, Object> param);
 
+	void deleteRep(QnarepVO qnarepVO);
+
 }

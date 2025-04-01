@@ -11,17 +11,29 @@ import com.mbcit.vivere.vo.concertSeatVO;
 @Mapper
 public interface ConcertDAO {
 	
+//	concert
 	ConcertVO getConcertById(int id);
-	List<ConcertTimeVO> getConcertTimes(int id);
 	void insert(ConcertVO vo);
 	ConcertVO selectByPosterUrl(String posterUrl);
-	void insertConcertTime(ConcertTimeVO concertTimeVo);
-	void insertConcertSeat(concertSeatVO vo);
 	List<ConcertVO> getConcertListByTime();
 	List<ConcertVO> getConcertListByTimeAndCategoryId(int categoryId);
 	void deleteConcert(int concertId);
-	void deleteConcertTimesById(int concertId);
-	void deleteConcertSeatsById(int concertId);
+	void updateWithoutPoster(ConcertVO vo);
+//	concertTime	
+	List<ConcertTimeVO> getConcertTimes(int id);
+	void insertConcertTime(ConcertTimeVO concertTimeVo);
+	void deleteConcertTimesByConcertId(int concertId);
+	void deleteConcertTimeById(int concertTimeId);
+	ConcertTimeVO getConcertTimeByConcertIdAndTime(ConcertTimeVO co);
+	ConcertTimeVO getConcertTimeById(int timeId);
+	int getConcertTimeIdByConcertId(int concertId);
+//	concertSeat
+	void insertConcertSeat(concertSeatVO vo);
+	void deleteConcertSeatsByConcertId(int concertId);
+	void updateConcertTime(ConcertTimeVO vo);
+	void deleteConcertSeatsByConcertTimeId(int concertTimeId);
+	List<concertSeatVO> getConcertSeatListByGrade(concertSeatVO vo);
+	void update(ConcertVO vo);
 	
 
 }

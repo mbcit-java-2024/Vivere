@@ -33,6 +33,21 @@
 		AND c.categoryId = #{categoryId};
 	</select>
 	
+	<select id="getConcertTimeByConcertIdAndTime" parameterType="concertTimeVO" resultType="concertTimeVO">
+		select * from concertTime where concertId = #{concertId} AND concertTime = #{concertTime}
+	</select>
+	
+	<select id="getConcertTimeById" parameterType="int" resultType="concertTimeVO">
+		select * from concertTime where id = #{id}
+	</select>	
+	
+	<select id="getConcertTimeIdByConcertId" parameterType="int" resultType="int">
+		SELECT id FROM concertTime WHERE concertId = #{concertId} LIMIT 1
+	</select>	
+	
+	<select id="getConcertSeatListByGrade" parameterType="concertSeatVO" resultType="concertSeatVO">
+		SELECT * FROM concertseat WHERE concertId = #{concertId} AND concertTimeId = #{concertTimeId} AND grade = #{grade}
+	</select>	
 	
 	<!-- insert  -->
 	<insert id="insert" parameterType="concertVO">
@@ -50,16 +65,45 @@
 		insert into concertSeat (concertId, concertTimeId, lineNum, seatNum, grade,	bookYN)
 		values (#{concertId}, #{concertTimeId}, #{lineNum}, #{seatNum}, #{grade}, false)
 	</insert>
+	
+	<!-- update -->
+	<update id="updateConcertTime" parameterType="concertTimeVO">
+		update concertTime set concertTime = #{concertTime} where id = #{id}
+	</update>
+	
+	<update id="updateWithoutPoster" parameterType="concertVO">
+		update concert set title = #{title}, hallType = #{hallType}, description = #{description}, categoryId = #{categoryId}, 
+			totalSeat =#{totalSeat}, priceVIP = #{priceVIP}, priceR = #{priceR}, priceS = #{priceS}, priceA = #{priceA}, 
+			countVIP = #{countVIP}, countR = #{countR}, countS = #{countS},countA = #{countA}, equalPrice = #{equalPrice},
+			updateDate = now()
+		where id = #{id}
+	</update>
+	
+	<update id="update" parameterType="concertVO">
+		update concert set title = #{title}, hallType = #{hallType}, description = #{description}, categoryId = #{categoryId}, 
+			totalSeat =#{totalSeat}, priceVIP = #{priceVIP}, priceR = #{priceR}, priceS = #{priceS}, priceA = #{priceA}, 
+			countVIP = #{countVIP}, countR = #{countR}, countS = #{countS},countA = #{countA}, equalPrice = #{equalPrice},
+			updateDate = now(), posterUrl = #{posterUrl}
+		where id = #{id}
+	</update>
 
 	<!-- delete -->
 	<delete id="deleteConcert" parameterType="int">
 		DELETE FROM concert WHERE id = #{concertId}
 	</delete>
-	<delete id="deleteConcertTimesById" parameterType="int">
+	
+	<delete id="deleteConcertTimesByConcertId" parameterType="int">
 		DELETE FROM concerttime WHERE concertId = #{concertId}
 	</delete>
-	<delete id="deleteConcertSeatsById" parameterType="int">
+	<delete id="deleteConcertTimesById" parameterType="int">
+		DELETE FROM concerttime WHERE id = #{concertTimeId}
+	</delete>
+	
+	<delete id="deleteConcertSeatsByConcertId" parameterType="int">
 		DELETE FROM concertseat WHERE concertId = #{concertId}
+	</delete>
+	<delete id="deleteConcertSeatsByConcertTimeId" parameterType="int">
+		DELETE FROM concertseat WHERE concertTimeId = #{concertTimeId}
 	</delete>
 
 </mapper>

@@ -2,11 +2,12 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>공연 등록</title>
+<title>공연 수정</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <%
 	// 현재 날짜와 시간을 "yyyy-MM-dd'T'HH:mm" 형식으로 구함
@@ -20,9 +21,12 @@
 <script>
 
 let selectedSeats = {vip: [], r: [], s: [], a: []};
+let ajaxRequests = [];
 let selectedHall = ""; // 선택된 공연장 (gaudium, felice)
 let maxValues = {0: 480, 1: 210};
 let maxValue;
+// 'firstRun' 변수를 사용하여 첫 실행을 추적
+var firstRun = true;
 
 /* 체크박스 검증 함수 : 좌석 체크박스가 생성/바뀔 때마다 실행함 */
 // 인수: 해당 체크박스의 value, 체크인지 해제인지 알려주는 boolean, 해당 체크박스의 seatType 
@@ -59,10 +63,181 @@ function handleSeatSelection(seatName, isChecked, seatType) {
 	for (let seatType in selectedSeats){
 		$("input.seatCount[data-type="+seatType+"]").val(selectedSeats[seatType]?.length || 0);
 	}
+	
 }
 
+$(document).ready(function() {
+    if (firstRun) {
+    	let concertId = document.getElementById('concertId').value;
+    	/* ==================== 기존 좌석 설정 정보 넣어주기 =================== */
+    	  	selectedHall = $("input[name='hallType']:checked").val() === "0" ? "gaudium" : "felice";
+    	    
+    		if ($(".seatType:checked").val() === "equal") {
+    	            $(".seatType").not($(".seatType:checked")).prop("checked", false).prop("disabled", true);
+    	            $("#seatContainer").empty().append("<div id='seat_equal'><span> 전좌석 동일가: </span> 가격: <input type='number' name='equalPrice' required value='${concertVO.equalPrice}'></div>");
+    	    }else{
+    	    	
+    	    //	ajax로 기존에 선택된 좌석 배치 selectedSeats[type] 에 넣어주기
+    	    for (let seatType in selectedSeats){
+    	    	 let request = $.ajax({
+    		        url: "/getSelectedSeats",
+    		        type: "POST",
+    		        data: { seatType: seatType, concertId: concertId },
+    		        dataType: "text",  // JSON 대신 'text' 사용
+    		        success: function(response) {
+    		            console.log(response); // 원본 데이터 확인
+    		            if (response && response.trim() !== ""){
+    			          let dataArray = response.split(","); // 쉼표로 분할하여 배열 생성
+    		              selectedSeats[seatType] = dataArray;
+    		            }
+    		        },
+    		        error: function(xhr, status, error) {
+    		            console.error("AJAX 오류 발생:", error);
+    		        }
+    		    });
+    			ajaxRequests.push(request); // 요청을 배열에 저장
+    	    }
+    	    $.when.apply($, ajaxRequests).done(function () {
+    	        for (let seatType in selectedSeats) {
+    	        	console.log('selectedSeats['+seatType+'].length: '+ selectedSeats[seatType].length)
+    	        	console.log('selectedSeats['+seatType+']: '+ selectedSeats[seatType])
+    	            // 불러온 selectedSeats 데이터에 맞게 체크 박스 활성화
+    	            if (selectedSeats[seatType].length > 0 ){
+    	            		
+    	        	    // 좌석개수: <input type="number" name="vipCount" class="seatCount" data-type="vip">
+    	        	    // 가격: <input type="number" name="vipPrice">
+    	        	    let seatId = "seat_" + seatType;
+    	        	    let countName = "count"+seatType.toUpperCase();
+    	        	    let priceName = "price"+seatType.toUpperCase();
+    	        	    let elCount = '';
+    	        	    let elPrice = '';
+    	        	    if (seatType === "vip"){
+    	        	    	elCount = ${concertVO.countVIP};
+    	        			elPrice = ${concertVO.priceVIP};
+    	        	    } else if (seatType === "r"){
+    	        	    	elCount = ${concertVO.countR};
+    	        			elPrice = ${concertVO.priceR};
+    	        	    } else if (seatType === "s"){
+    	        	    	elCount = ${concertVO.countS};
+    	        			elPrice = ${concertVO.priceS};
+    	        	    } else if (seatType === "a"){
+    	        	    	elCount = ${concertVO.countA};
+    	        			elPrice = ${concertVO.priceA};
+    	        	    }
+    	        	
+    	                let seatForm = "<div id="+seatId+"><span>"+seatType.toUpperCase()+": </span>"+
+    	                " 좌석 개수: <input type=\"number\" name="+ countName +" class=\"seatCount\""+
+    	                	" data-type=\""+seatType+"\" min=\"1\" max=\""+ maxValue+"\" value=\""+elCount+"\"required>"+
+    	                "가격: <input type=\"number\" name=\""+priceName+"\" value=\""+elPrice+"\" required></div>";
+    	                
+    	                $("#seatContainer").append(seatForm);
+    	        	
+    	        		let pick_seatDiv = "<div id=\"pick_seat_"+seatType+"\" class=\"divCard\"></div>";
+    	        		$("#seatSelectionContainer").append(pick_seatDiv); // divCard를 추가
+    	                
+    	        		updateSeatSelectionUI();
+    	        	
+    	        	/* ====================== 좌석 UI 업데이트: '좌석선택' 에 변화주기 =================================== */
+    	        	    function updateSeatSelectionUI() {
+    	        	        let container = $("#pick_seat_"+ seatType);
+    	        	        // console.log("#pick_seat_"+seatType+": "+container.length);
+    	        	        container.empty();
+    	        	
+    	        	        // 공연장에 따라 출력할 레이아웃 생성 및 변수에 저장
+    	        	        let seatLayout = generateSeatLayout(selectedHall);
+    	        	        // console.log("seatLayout: "+ seatLayout.length);
+    	        	        
+    	        	        // 체크된 상태인 seatType 에 따라 각각 하나씩 추가
+    	        	        container.append(seatLayout);
+    	        	
+    	        	    }
+    	        	/* ===================================== 좌석 배치 생성 함수 =================================== */
+    	        	
+    	        	    function generateSeatLayout(hallType) {
+    	        	       // let divCard = $("<div>").addClass("divCard");
+    	        	        let divCard = $("#pick_seat_"+ seatType);
+    	        	       // console.log("generate pick_seat: " + divCard.length);
+    	        	        let pickSeat = $("<div>").attr("id", "pickSeat");
+    	        	        let rows, seatsPerRow, breakPoints;
+    	        			
+    	        	        // 홀타입별 행과 좌석수 초기화
+    	        	        if (hallType === "gaudium") {
+    	        	            rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T"];
+    	        	            seatsPerRow = 24;
+    	        	            breakPoints = [6, 18];
+    	        	        } else {
+    	        	            rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O"];
+    	        	            seatsPerRow = 14;
+    	        	            breakPoints = [7];
+    	        	        }
+    	        			
+    	        	        pickSeat.append("<div><p>"+seatType.toUpperCase()+"</p></div>");
+    	        	        // rows 에 저장된 객체 하나씩 반복하며 행 1줄 생성 실행. : for (String lineNume : rows)
+    	        	        rows.forEach((lineNum) => {
+    	        	            let rowDiv = $("<div>");
+    	        	            // 왼쪽 줄 번호
+    	        	            rowDiv.append($("<span>").addClass("lineNum clickable-span").text(lineNum).attr("id", seatType+"_"+lineNum)); 
+    	        				
+    	        	            // 체크박스 1줄 생성
+    	        	            for (let j = 1; j <= seatsPerRow; j++) {
+    	        	                let seatNum = j.toString().padStart(2, "0"); // 01, 02 형식
+    	        	                let seatName = lineNum + seatNum;
+    	        	               // console.log("forEach문 seatType: "+ seatType);
+    	        					
+    	        	               // 체크박스 1개 생성
+    	        	                let seatCheckbox = $("<input>", {
+    	        	                	id: seatType+"_"+seatName,
+    	        	                    type: "checkbox",
+    	        	                    class: lineNum + " "+ seatType + " seat",
+    	        	                    name: seatType+"Seats",
+    	        	                    value: seatName
+    	       			                }); // 체크박스 1개 생성완료
+    	        	                
+    	        					// 만약 value 가 selectedSeat[type]에 있으면 체크박스를 체크 혹은 disable 시킨다.
+    	        					for (let type in selectedSeats) {
+    	        						if (selectedSeats[type].includes(seatName) && seatType != type) {
+    	        				        // 해당하는 seatType 이 아닌 selectedSeats에 이미 있으면 disabled 처리
+    	        					        seatCheckbox.prop("disabled", true); 
+    	        					    } else if (selectedSeats[type].includes(seatName) && seatType == type){
+    	        				        // 해당하는 seatType 이 아닌 selectedSeats에 이미 있으면 체크 처리
+    	        					        seatCheckbox.prop("checked", true); 
+    	        					    }
+    	        					}
+    	        	
+    	        	                // 행 div 에 체크박스를 넣는다.
+    	        	                rowDiv.append(seatCheckbox);
+    	        	
+    	        	                // 복도로 나뉜 열에 해당하면 행 div 에 체크박스 대신 공간을 넣는다.
+    	        	                if (breakPoints.includes(j)) {
+    	        	                    rowDiv.append("&nbsp;&nbsp;&nbsp;"); // 공간 추가
+    	        	                }
+    	        	            }// 체크박스 1줄 생성 for 반복문 끝
+    	        	            
+    	        	
+    	        	            rowDiv.append($("<span>").addClass("lineNum").text(lineNum)); // 오른쪽 줄 번호
+    	        	            rowDiv.append("<br/>"); // 줄바꿈
+    	        	
+    	        	            if (hallType === "gaudium" && lineNum === "J") {
+    	        	                rowDiv.append("<br/>"); // 특정 줄 이후 공간 추가
+    	        	            }
+    	        	
+    	        	            // 생성된 행 1개를 pickSeat div 에 넣기
+    	        	            pickSeat.append(rowDiv);
+    	        	        });
+    	        			
+    	        	        divCard.append(pickSeat);
+    	        	        return divCard;
+    	        		} // generateSeatLayout 끝
+    	            } // selectedSeats[seatType] && selectedSeats[seatType].length > 0 끝	
+    	        } // for 반복 끝 
+    		
+    	    }); // $.when.apply 끝
+    	    } // === else 끝
+    	/* ===================================== 기존 데이터 집어넣기 끝 ==================================== */
+        firstRun = false;
+    }
+    
 /* ====================== 등급별 좌석 번호 선택 ======================== */
-$(document).ready(function () {
     /* 좌석 체크박스(input[type=checkbox].seat)가 바뀔때마다 체크박스 검증함수 실행 */
     $(document).on('change', 'input[type="checkbox"].seat', function(){
     	// 해당 체크박스의 value 값 가져오기
@@ -78,6 +253,7 @@ $(document).ready(function () {
     
 	/* =============== 공연장 선택 감지: 결과를 selectHall 변수에 넣어준다. ============= */
 	 $("input[name='hallType']").change(function () {
+    	console.log("seatType")
      	selectedHall = $(this).val() === "0" ? "gaudium" : "felice";
      	let selectedValue = $(this).val(); // 선택된 라디오 버튼 값
         maxValue = maxValues[selectedValue]; // 해당 좌석 등급의 최대값 가져오기
@@ -187,6 +363,12 @@ $(document).ready(function () {
 	        // 체크된 상태인 seatType 에 따라 각각 하나씩 추가
 	        container.append(seatLayout);
 	
+	        // 선택된 좌석 개수만큼 자동 체크
+	    /*     for (let seatType in selectedSeats) {
+	            selectedSeats[seatType].forEach(seat => {
+	                $(`input.seat[value='${seat}']`).prop("checked", true);
+	            });
+	        } */
 	    }
 
     /* ===================================== 좌석 배치 생성 함수 =================================== */
@@ -320,18 +502,109 @@ $(document).ready(function() {
     });
 });
 
-/* ====================== 공연 시간 설정 ================================== */
+/* ====================== 공연 시간 수정 ================================== */
+/* 공연 시간 추가 */
 function addTimeInput() {
+   	console.log("addTimeInput() 함수 실행")
     var div = document.createElement("div");
     div.innerHTML = `
-        <input type="datetime-local" name="concertDateTime" min="<%= now %>" required>
+        <input type="datetime-local" name="concertDateTime" min="<%= now %>" onchange="addConcertTime(this)" required>
         <button type="button" onclick="removeInput(this)">삭제</button>
     `;
     document.getElementById("timeInputs").appendChild(div);
 }
 
+/* 추가한 공연시간 저장 */
+function addConcertTime(input) {
+   	console.log("addConcertTime() 함수 실행")
+   	
+    var timeDiv = input.parentElement; // input이 속한 div
+    var concertDateTime = input.value;
+    var concertId = document.getElementById('concertId').value;
+   	console.log("입력된 concertDateTime: "+ concertDateTime)
+   	console.log("concertId: " + concertId); // 콘솔에 값 확인
+
+    if (!concertDateTime) {
+    	console.log("입력된 값 없음")
+    	return; // 값이 없으면 아무것도 안 함
+    }
+
+    // 이미 저장된 값이면 
+    var existingId = timeDiv.querySelector("input[name='concertTimeId']");
+   	console.log("existingId: "+ existingId)
+    if (existingId) {
+    	// 공연 시간 수정 함수 실행
+    	console.log("DB에 있는 시간 수정 실행")
+    	updateConcertTime(input);
+    	return;
+    }else{
+	   	console.log("새 시간 생성 및 저장")
+	    $.ajax({
+	        type: "POST",
+	        url: "/addConcertTime",
+	        data: { concertId: concertId, concertDateTime: concertDateTime },
+	        contentType: "application/x-www-form-urlencoded",
+	        success: function(response) {
+	            if (response.success) {
+			   	console.log("새 시간 저장 성공")
+	                // DB에 저장된 concertTimeId를 hidden input으로 추가
+	                var hiddenInput = document.createElement("input");
+	                hiddenInput.type = "hidden";
+	                hiddenInput.name = "concertTimeId";
+	                hiddenInput.value = response.concertTimeId; // 서버에서 반환한 ID
+	
+	                timeDiv.appendChild(hiddenInput);
+				   	console.log("concertTimeId hidden input 넣기 성공")
+	                return;
+	            } else {
+	                alert("저장 실패!");
+	            }
+	        }
+	    });
+    }
+}
+
+/* 공연 시간 수정 */
+function updateConcertTime(input) {
+   	console.log("updateConcertTime() 함수 실행")
+    let timeDiv = input.parentElement;
+    let concertTimeId = timeDiv.querySelector("input[name='concertTimeId']").value;
+    let newDateTime = input.value;
+
+    $.ajax({
+        type: "POST",
+        url: "/updateConcertTime",
+        data: { timeId: concertTimeId, newConcertDateTime: newDateTime },
+        success: function(response) {
+            if (response !== "success") {
+                alert("수정 실패!");
+            }
+        }
+    });
+}
+
+/* 공연 시간 삭제 */
 function removeInput(button) {
-    button.parentElement.remove();
+	let timeDiv = button.parentElement; // 삭제할 div
+	let concertTimeId = timeDiv.querySelector("input[name='concertTimeId']")?.value;
+    
+	 if (concertTimeId) { // 기존 DB에 있는 데이터라면 AJAX로 삭제
+         $.ajax({
+             type: "POST",
+             url: "/deleteConcertTime",
+             data: { timeId: concertTimeId },
+             success: function(response) {
+                 if (response === "success") {
+                     timeDiv.remove(); // 화면에서 삭제
+                 } else {
+                     alert("삭제 실패!");
+                 }
+             }
+         });
+     } else {
+         timeDiv.remove(); // 새로 추가된 입력창이라면 그냥 화면에서만 삭제
+     }
+ 
 }
 
 /* ========================== 제출전 조건 확인 ============================ */
@@ -371,15 +644,18 @@ $(document).ready(function() {
 	    return seatList;
 	}
 	
-	/* ========================== 제출조건 확인 함수 ==========================*/
+	/* ========================== 수정 제출조건 확인 함수 ==========================*/
 	function confirmSubmit() {
 	    console.log("제출 조건 확인 함수 실행")
-	
+	    
 	    let selectedSeatTypes = $(".seatType:checked").map(function() {
 	        return this.value;
 	    }).get();
 	    console.log("selectedSeatTypes: "+ selectedSeatTypes);
 		
+	    selectedHall = $("input[name='hallType']:checked").val() === "0" ? "gaudium" : "felice";
+    	console.log("selectedHall: "+ selectedHall);
+
 	    if (typeof selectedHall === "undefined" || !selectedHall) {
 	        alert("공연장을 선택하세요.");
 	        return false;
@@ -468,7 +744,7 @@ $(document).ready(function() {
 		    } else {
 			    console.log("제출 조건 확인 함수 실행: 조건2 클리어")
 		    }
-
+	   		
 	    }
         
    		return true;
@@ -504,7 +780,8 @@ $(document).ready(function() {
 </head>
 <body>
 
-<form id="myForm" action="insertConcertOK" method="post" enctype="multipart/form-data" onsubmit="return confirmSubmit()">
+<form id="myForm" action="updateConcertOK" method="post" enctype="multipart/form-data" onsubmit="return confirmSubmit()">
+	<input type="hidden" id="concertId" name="concertId" value="${concertVO.id}">
 	<table >
 		<tr>
 			<td>제목</td>
@@ -553,11 +830,24 @@ $(document).ready(function() {
 		<tr>
 			<td>좌석 등급</td>
 			<td>
-			    <label><input type="checkbox" class="seatType" value="vip"> VIP</label>
-			    <label><input type="checkbox" class="seatType" value="r"> R</label>
-			    <label><input type="checkbox" class="seatType" value="s"> S</label>
-			    <label><input type="checkbox" class="seatType" value="a"> A</label>
-			    <label><input type="checkbox" class="seatType" value="equal"> equal</label>
+				<c:if test="${not empty selectedSeatTypes}">
+					<c:forEach var="seatType" items="${seatTypes}">
+						<c:if test="${selectedSeatTypes.contains(seatType)}">
+						    <label><input type="checkbox" class="seatType" value=${seatType } checked="checked"> ${fn:toUpperCase(seatType)}</label>
+						</c:if>
+						<c:if test="${not selectedSeatTypes.contains(seatType)}">
+						    <label><input type="checkbox" class="seatType" value=${seatType }> ${fn:toUpperCase(seatType)}</label>
+						</c:if>
+					</c:forEach>
+			   		<label><input type="checkbox" class="seatType" value="equal"> equal</label>
+				</c:if>
+				<c:if test="${empty selectedSeatTypes}">
+			    	<label><input type="checkbox" class="seatType" value="vip"> VIP</label>
+				    <label><input type="checkbox" class="seatType" value="r"> R</label>
+				    <label><input type="checkbox" class="seatType" value="s"> S</label>
+				    <label><input type="checkbox" class="seatType" value="a"> A</label>
+				    <label><input type="checkbox" class="seatType" value="equal" checked="checked"> equal</label>
+				</c:if>
 			    <div id="seatContainer"></div>
 	 		</td>
 		</tr>
@@ -575,7 +865,8 @@ $(document).ready(function() {
 		        <c:forEach var="conTime" items="${conTimeList}">
 		        <fmt:formatDate value="${conTime.concertTime}" pattern="yyyy-MM-dd'T'HH:mm" var="dateTime"/>
 		        <div>
-		            <input type="datetime-local" name="concertDateTime" min="<%= now %>" value="${dateTime}" required>
+		        	<input type="hidden" name="concertTimeId" value="${conTime.id}">
+		            <input type="datetime-local" name="concertDateTime" min="<%= now %>" value="${dateTime}" onchange="addConcertTime(this)" required>
 		            <button type="button" onclick="removeInput(this)">삭제</button>
 		        </div>
 		        </c:forEach>
@@ -600,6 +891,7 @@ $(document).ready(function() {
 		</tr> 
 	              
 	</table>
+	<input type="hidden" id="isSeatTypeChange" name="isSeatTypeChange" value="false">
 	<button type="submit" id="submitBtn">저장</button>
 	<button type="button" onclick="location.href='deleteConcert?concertId=${concertVO.id}'">삭제</button>
 </form>

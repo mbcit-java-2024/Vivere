@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -69,29 +67,36 @@ public class ConcertService {
 		}
 		
 	}
+	
+//	공연 날짜/시간을 문자열로 받아서 Date 타입으로 변환시켜 리턴하는 메소드
+	public Date concertTimeStringToDate (String concertDateTime) {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+		Date concertTime;
+		try {
+			concertTime = formatter.parse(concertDateTime);
+			return concertTime;
+
+		} catch (ParseException e) {
+			log.info("공연 시간 변환 중 문제 발생");
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 //	공연 날짜, 시간 저장하는 메소드
-	public void saveConcertTime(ConcertVO vo, String[] concertTimes) {
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+	public void saveConcertTimes(ConcertVO vo, String[] concertTimes) {
 		ConcertVO cvo = concertDAO.selectByPosterUrl(vo.getPosterUrl());
 		
 		for (int i = 0; i < concertTimes.length; i++) {
-			String dateTimeStr = concertTimes[i];  // "2024-03-25'T'14:30"
-			Date concertTime;
-			try {
-				concertTime = formatter.parse(dateTimeStr);
-				log.info("dateTimeStr: " + dateTimeStr);
-				log.info("concertTime: " + concertTime);
+				String dateTimeStr = concertTimes[i];  // "2024-03-25'T'14:30"
+				Date concertTime = concertTimeStringToDate(dateTimeStr);
+//				log.info("dateTimeStr: " + dateTimeStr);
+//				log.info("concertTime: " + concertTime);
 				
 				ConcertTimeVO concertTimeVo = new ConcertTimeVO();
 				concertTimeVo.setConcertId(cvo.getId());
 				concertTimeVo.setConcertTime(concertTime);
 				concertDAO.insertConcertTime(concertTimeVo);
-
-			} catch (ParseException e) {
-				e.printStackTrace();
-				log.info("공연 시간 저장중 문제 발생");
-			} 		
 		}
 	}
 	
@@ -100,8 +105,13 @@ public class ConcertService {
 			Optional<String[]> sOptionalSeats, Optional<String[]> aOptionalSeats) {
 		log.info("ConcertService 클래스의 saveConcertSeats() 메소드");
 		
-//		concertId 로 concertTime 객체 리스트를 받아온다. 
-		ConcertVO conVo = concertDAO.selectByPosterUrl(vo.getPosterUrl());
+		ConcertVO conVo = new ConcertVO();
+//		concertId 로 concertTime 객체 리스트를 받아온다.
+		if(vo.getId() == 0) {
+			conVo = concertDAO.selectByPosterUrl(vo.getPosterUrl());
+		}else {
+			conVo = concertDAO.getConcertById(vo.getId());
+		}
 		List<ConcertTimeVO> conTimes = concertDAO.getConcertTimes(conVo.getId());
 		log.info("conVo: "+ conVo.toString());
 		log.info("conTimes: "+ conTimes);
@@ -205,30 +215,30 @@ public class ConcertService {
     	}
     }
     
-//	ConcertVO를 받아 각 콘서트 객체의 공연시작일과 마지막일을 넣어주고 포스터url을 상대경로로 바꿔주는 메소드    
+//  ConcertVO를 받아 각 콘서트 객체의 공연시작일과 마지막일을 넣어주고 포스터url을 상대경로로 바꿔주는 메소드    
     public ConcertVO setTimeAndPoster(ConcertVO vo){
     	log.info("ConcertService 클래스의 setTimeAndPoster(ConcertVO) 메소드 실행");
     	// 콘서트 아이디로 콘서트 시간 정보를 가져온다. 
     	List<ConcertTimeVO> conTimes = concertDAO.getConcertTimes(vo.getId());
     	vo.setStartDate(conTimes.get(0).getConcertTime());
     	vo.setEndDate(conTimes.get(conTimes.size() - 1).getConcertTime());
-    	
-//    	File file = new File(vo.getPosterUrl());
-//    	String fileName = file.getName(); // 파일명만 추출
-//    	String relativePath = "/posters/" + fileName;
+      
+//      File file = new File(vo.getPosterUrl());
+//      String fileName = file.getName(); // 파일명만 추출
+//      String relativePath = "/posters/" + fileName;
     	String relativePath = relativePath(vo.getPosterUrl());
     	vo.setPosterUrl(relativePath);
-    	
+      
     	return vo;
     }
-    
+   
     public String relativePath(String posterUrl) {
     	// ConcertVO 마다 posterUrl 을 상대경로로 바꿔준다.
     	File file = new File(posterUrl);
     	String fileName = file.getName(); // 파일명만 추출
     	String relativePath = "/posters/" + fileName;
     	log.info("이미지 상대 경로: " + relativePath);
-    	
+      
     	return relativePath;
     }
 //	List<ConcertVO>를 받아 각 콘서트 객체의 공연시작일과 마지막일을 넣어주고 포스터url을 상대경로로 바꿔주는 메소드    
@@ -262,7 +272,7 @@ public class ConcertService {
 		return concertVO;
 	}
 
-//	concertTime 전체 List를 가져오는 메소드
+//	concertId로 concertTime 전체 List를 가져오는 메소드
 	public List<ConcertTimeVO> getConcertTimes(int id) {
 		System.out.println("ConcertService 클래스의 getConcertTimes() 메소드 실행");
 		List<ConcertTimeVO> conTimes = concertDAO.getConcertTimes(id);
@@ -318,6 +328,7 @@ public class ConcertService {
 //	cocertId를 받아 DB의 concert, concerttime, concertseat 테이블에서 해당하는 데이터와 
 //	posters 폴더의 포스터 이미지를 삭제하는 메소드
 	public void deleteConcert(int concertId) {
+		log.info("ConcertService 클래스의 deleteConcert() 메소드 실행");
 		// 이미지 파일 삭제 (poster 폴더에 있는 파일 삭제)
 		String absolutePath = concertDAO.getConcertById(concertId).getPosterUrl(); // DB에 저장된 절대 경로
 		if (absolutePath != null && !absolutePath.isEmpty()) {
@@ -327,8 +338,116 @@ public class ConcertService {
 			}
 		}
 		concertDAO.deleteConcert(concertId);
-		concertDAO.deleteConcertTimesById(concertId);
-		concertDAO.deleteConcertSeatsById(concertId);
+		concertDAO.deleteConcertTimesByConcertId(concertId);
+		concertDAO.deleteConcertSeatsByConcertId(concertId);
+	}
+
+//	concertTimeId를 받아 concertTime 1건과 해당하는 concertSeats를 삭제하는 메소드
+	public void deleteConcertTime(int concertTimeId) {
+		System.out.println("ConcertService 클래스의 deleteConcertTime() 메소드 실행");
+		concertDAO.deleteConcertTimeById(concertTimeId);
+		concertDAO.deleteConcertSeatsByConcertTimeId(concertTimeId);
+	}
+
+//	concertTimeVO를 받아 concertTime 1건을 저장하는 메소드
+	public void saveConcertTime(ConcertTimeVO newConcertTime) {
+		System.out.println("ConcertService 클래스의 saveConcertTime() 메소드 실행");
+		concertDAO.insertConcertTime(newConcertTime);
+	}
+
+//	concertTimeVO(concertId, concertTime)을 받아 concertTimeVO 1건을 리턴하는 메소드
+	public ConcertTimeVO getConcertTimeByConcertIdAndTime(ConcertTimeVO vo) {
+		System.out.println("ConcertService 클래스의 getConcertTimeByConcertIdAndTime() 메소드 실행");
+		ConcertTimeVO concertTimeVO = concertDAO.getConcertTimeByConcertIdAndTime(vo);
+		return concertTimeVO;
+	}
+
+//	concertTimeId와 newConcertDateTime 문자열을 받아 해당하는 id의 concertTime 1건을 수정하는 메소드
+	public void updateConcertTime(int timeId, String newConcertDateTime) {
+		System.out.println("ConcertService 클래스의 updateConcertTime() 메소드 실행");
+		ConcertTimeVO vo = concertDAO.getConcertTimeById(timeId);
+		vo.setConcertTime(concertTimeStringToDate(newConcertDateTime));
+		concertDAO.updateConcertTime(vo);
+	}
+
+//	concertVO 1건을 얻어와서 해당 공연의 좌석등급들을 리턴하는 메소드
+	public List<String> getSelectedSeatTypes(ConcertVO concertVO) {
+		System.out.println("ConcertService 클래스의 getSelectedSeatTypes() 메소드 실행");
+		List<String> seatTypes = new ArrayList<>();
+		if (concertVO.getEqualPrice() == 0) {
+			if (concertVO.getCountVIP() > 0) {seatTypes.add("vip");} 
+			if (concertVO.getCountR() > 0) {seatTypes.add("r");}
+			if (concertVO.getCountS() > 0) {seatTypes.add("s");} 
+			if (concertVO.getCountA() > 0) {seatTypes.add("a");} 
+			return seatTypes;
+		} else {
+			log.info("selectedSeatType: equal");
+			return null;
+		}
+	}
+
+//	concertId와 grade 를 받아와서 등급에 해당하는 좌석번호를 목록으로 받아 ,로 연결한 문자열로 리턴하는 메소드
+	public String getSelectedSeatsByGrade(String seatType, int concertId) {
+		System.out.println("ConcertService 클래스의 getSelectedSeatsByGrade() 메소드 실행");
+		String result ="";
+		List<String> seatNames = new ArrayList<>();
+ 		// 콘서트 아이디로 콘서트 타임아이디 1건 얻어오기
+		int conTimeId = concertDAO.getConcertTimeIdByConcertId(concertId);
+		log.info("conTimeId: "+ conTimeId);
+		
+		// 콘서트 아이디, 콘서트 타임 아이디, 좌석등급으로 concertSeat 얻어오기
+		concertSeatVO vo = new concertSeatVO();
+		vo.setConcertId(concertId);
+		vo.setConcertTimeId(conTimeId);
+		vo.setGrade(seatType);
+		List<concertSeatVO> selectedSeats = concertDAO.getConcertSeatListByGrade(vo);
+		
+		// selectedSeats 에서 lineNum 과 seatNum 을 조합해서 seatName 만들어서 String에 추가하기
+		for (concertSeatVO conSeat : selectedSeats) {
+			String seatName = conSeat.getLineNum() + String.format("%02d", conSeat.getSeatNum());
+			seatNames.add(seatName);
+		}
+		result = String.join(",",seatNames);
+		
+		return result;
+	}
+
+	public void updateConcert(HttpServletRequest request, ConcertVO vo, MultipartFile file) {
+		System.out.println("ConcertService 클래스의 updateConcert() 메소드 실행");
+		if (file.isEmpty()) {
+			concertDAO.updateWithoutPoster(vo);
+		} else {
+			log.info("포스터 수정");
+			// 기존 이미지 파일 삭제 (poster 폴더에 있는 파일 삭제)
+			String absolutePath = concertDAO.getConcertById(vo.getId()).getPosterUrl(); // DB에 저장된 절대 경로
+		try {
+			if (absolutePath != null && !absolutePath.isEmpty()) {
+				File file1 = new File(absolutePath);
+				if (file1.exists()) {
+					file1.delete(); // 이미지 파일 삭제
+				}
+			}
+			
+//			이미지 경로 저장
+			String filePath = imageToUrl(request.getServletContext().getRealPath("/posters/"), file, vo.getTitle());
+			vo.setPosterUrl(filePath);
+			
+			vo.setTotalSeat((int) vo.getTotalSeat());
+			concertDAO.update(vo);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			log.info("콘서트 포스터 수정중 문제발생");
+		}
+		}
+		
+		
+	}
+
+//	
+	public void deleteConcertSeats(int id) {
+		log.info("ConcertService 클래스의 deleteConcertSeats() 메소드 실행");
+		concertDAO.deleteConcertSeatsByConcertId(id);
 	}
 
 

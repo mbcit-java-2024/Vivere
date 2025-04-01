@@ -121,7 +121,7 @@ public class BookService {
 			
 			concertDAO.updateBookYN(conSeat);
 //			System.out.println("updateBookYN 실행 완료");
-			
+			bookDAO.insertBook(book);
 		}
 		
 	}

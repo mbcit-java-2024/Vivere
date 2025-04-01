@@ -16,4 +16,6 @@ public interface BookDAO {
 
 	List<concertSeatVO> getConcertSeatByConTimeId(int conTimeId);
 
+	void insertBook(BookVO bookVO);
+
 }

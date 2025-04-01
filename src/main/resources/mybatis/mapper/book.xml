@@ -10,7 +10,6 @@
 		select * from concertSeat where concertTimeId = #{conTimeId} and bookYN;
 	</select>
 
-
 	<select id="pastBook" parameterType="bookVO" resultType="bookVO">
 		SELECT a.id
 		, a.consumerId
@@ -48,6 +47,11 @@
 		resultType="concertSeatVO">
 		select * from concertSeat where concertTimeId = #{conTimeId}
 	</select>
+	
+	<insert id="insertBook" parameterType="bookVO">
+		insert into book (consumerId, concertId, cardId, bookNum, price, seatNum, grade, orderDate, concertTime, payType)
+		values (#{consumerId}, #{concertId}, #{cardId}, #{bookNum}, #{price}, #{seatNum}, #{grade}, #{orderDate}, #{concertTime}, #{payType})
+	</insert>
 
 </mapper>
 

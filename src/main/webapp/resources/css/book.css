@@ -124,6 +124,7 @@
 .seat input:disabled + span {
     background-color: lightgray !important;
     border-color: lightgray !important;
+    cursor: default;
 }
 
 .gradeExample {
@@ -148,6 +149,7 @@
 	display: flex;
 	background-color: #FCFCFC;
 	box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+	cursor: default;
 }
 .lineNum {
 	color: gray;
@@ -185,6 +187,7 @@
 	margin-bottom: 20px;
 	background-color: #FCFCFC;
 	box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+	cursor: default;
 }
 .info {
 	margin-top: 30px; 

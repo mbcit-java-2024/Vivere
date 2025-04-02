@@ -1,0 +1,100 @@
+@charset "UTF-8";
+.main {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.box {
+	border: 1px solid black;
+	width: 900px;
+	font-weight: bold;
+	padding: 10px;
+	margin: 10px;
+	border-radius: 10px;
+	background-color: #FCFCFC;
+	box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+.subTitle {
+	width: 900px;
+	margin-bottom: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 5px;
+	background-color: #78171C;
+	color: white;
+	height: 30px;
+}
+.mg-left {
+	margin-left: 10px;
+}
+.text-gray {
+	font-weight: normal;
+	color: gray;
+	font-size: 14px;
+}
+#discount {
+	width: 100%;
+	height: 25px;
+	text-align: center;
+}
+.price {
+	text-align: right;
+	padding-right: 10px;
+}
+.tableTitle {
+	padding-left: 10px;
+	text-align: left;
+	width: 160px;
+}
+.button {
+	width: 50%;
+	height: 50px;
+	border-radius: 5px;
+	font-weight: bold;
+	font-size: 18px;
+	border: 0;
+	color: white;
+	background-color: #78171C;
+	cursor: pointer;
+	transition: all 0.3s ease-in-out;
+}
+.pay {
+	 background-color: #CDAA39;
+}
+.pay:hover {
+	width:100%;
+	height:52px;
+}
+.creditCardBox {
+	border: 1px solid black;
+	border-radius: 5px;
+	height: 200px;
+	margin: 10px 10px;
+	padding: 20px;
+	background-color: #DEDEDE;
+	display: flex;
+	flex-wrap: nowrap;
+	overflow-x: auto;
+	overflow-y: hidden;
+	white-space: nowrap;
+	justify-content: left;
+	align-items: center;
+}
+.creditCard {
+	border: 1px solid black;
+	border-radius: 10px;
+	width: 240px;
+	height: 160px;
+	background-color: white;
+	box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+	justify-content: center; /* 수평 중앙 정렬 */
+	align-items: center;
+	display:flex;
+	flex-shrink: 0;
+	text-align: center;
+}
+#radioCard, #radioRemit {
+	display: none;
+}

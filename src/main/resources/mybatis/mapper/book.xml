@@ -62,6 +62,11 @@
 		where id = #{id}
 	</select>
 	
+	<select id="getBooksByBookNum" parameterType="String" resultType="bookVO">
+		select * from book
+		where bookNum = #{bookNum}
+	</select>
+	
 	<insert id="insertBook" parameterType="bookVO">
 		insert into book (consumerId, concertId, cardId, bookNum, price, seatNum, grade, orderDate, concertTime, payType)
 		values (#{consumerId}, #{concertId}, #{cardId}, #{bookNum}, #{price}, #{seatNum}, #{grade}, #{orderDate}, #{concertTime}, #{payType})

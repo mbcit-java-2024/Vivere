@@ -11,15 +11,11 @@ import com.mbcit.vivere.vo.concertSeatVO;
 public interface BookDAO {
 
 	List<concertSeatVO> selectBookedSeats(int conTimeId);
-
 	List<BookVO> pastBook(BookVO bookVO);
-
 	List<concertSeatVO> getConcertSeatByConTimeId(int conTimeId);
-
 	void insertBook(BookVO bookVO);
-
 	int getConcertSeatIdByColums(concertSeatVO concertSeatVO);
-
 	boolean selectBookYNById(int csId);
+	List<BookVO> getBooksByBookNum(String bookNum);
 
 }

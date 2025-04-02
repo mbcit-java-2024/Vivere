@@ -21,10 +21,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 public class QnAController {
+	
 	@Autowired
 	private QnARepService qnaRepService;
 	@Autowired
 	private QnAService qnaService;
+	
 	@RequestMapping(value="/insertRep", method=RequestMethod.POST) 
 	public Map<String, Object> insertRep(@RequestBody Map<String, Object> param, HttpServletRequest req) {
 		log.info("QnAController ========1==========insertRep::::param===" + param);
@@ -102,7 +104,6 @@ public class QnAController {
 //			resultMap.put("code", "-1");// 성공여부 0:성공, 그외:실패
 //			resultMap.put("message", "로그인하십시오.");// 에러메세지
 //			resultMap.put("resultCnt", resultCnt);
-		
 //		}
 		
 		

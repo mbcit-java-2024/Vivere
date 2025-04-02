@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mbcit.vivere.service.BookService;
 import com.mbcit.vivere.service.CardService;
 import com.mbcit.vivere.service.ConcertService;
+import com.mbcit.vivere.vo.BookVO;
 import com.mbcit.vivere.vo.CardVO;
 import com.mbcit.vivere.vo.ConcertTimeVO;
 import com.mbcit.vivere.vo.ConcertVO;
@@ -174,10 +175,12 @@ public class BookController {
 //		int consumerId = (int) request.getSession().getAttribute("consumerId");
 		int consumerId = 1;
 		
-		bookService.insertBook(consumerId, concertId, cardId, price, selectedSeats, selTime, payType, conTimeId);
+		String bookNum = bookService.insertBook(consumerId, concertId, cardId, price, selectedSeats, selTime, payType, conTimeId);
 		
+		List<BookVO> books = bookService.getBooksByBookNum(bookNum);
+//		System.out.println("books: " + books);
 		
-		
+		model.addAttribute("books", books);
 		return "/bookOK";
 	}
 	

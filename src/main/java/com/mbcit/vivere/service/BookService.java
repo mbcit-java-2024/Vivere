@@ -74,7 +74,7 @@ public class BookService {
         return date;
 	}
 
-	public void insertBook(int consumerId, String concertId, String cardId, String price, String selectedSeats,
+	public String insertBook(int consumerId, String concertId, String cardId, String price, String selectedSeats,
 							String selTime, String payType, String conTimeId) {
 		System.out.println("BookService 클래스의 insertBook() 메소드 실행");
 		
@@ -83,7 +83,7 @@ public class BookService {
 		
 		String consumerIdStr = String.format("%3s", consumerId).replace(' ', '0');
 		String concertIdStr = String.format("%3s", concertId).replace(' ', '0');
-		SimpleDateFormat sdfNow = new SimpleDateFormat("yyMMdd");
+		SimpleDateFormat sdfNow = new SimpleDateFormat("yyMMddHHmmss");
 		Date now = new Date();
 		String OrderDateStr = sdfNow.format(now);
 //		bookNum 규칙 = consumerId(000) + concertId(000) + orderDate(yyMMdd) (총 12자리)
@@ -105,7 +105,7 @@ public class BookService {
 			book.setConsumerId(consumerId);
 			book.setConcertId(Integer.parseInt(concertId));
 			if (cardId.equals("") || null == cardId) {
-				book.setCardId(0);
+				book.setCardId(0); // 0 이면 무통장입금 사용
 			} else {
 				book.setCardId(Integer.parseInt(cardId));
 			}
@@ -123,7 +123,7 @@ public class BookService {
 //			System.out.println("updateBookYN 실행 완료");
 			bookDAO.insertBook(book);
 		}
-		
+		return bookNum;
 	}
 	
 	public boolean isBooked(int concertId, String conTimeId, String lineNum, String seatNum) {
@@ -149,6 +149,11 @@ public class BookService {
 		int csId = bookDAO.getConcertSeatIdByColums(conseat);
 		
 		return csId;
+	}
+
+	public List<BookVO> getBooksByBookNum(String bookNum) {
+		
+		return bookDAO.getBooksByBookNum(bookNum);
 	}
 
 }

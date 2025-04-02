@@ -8,11 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @Slf4j
 public class BookVO {
-
+	
 	private int id;
     private int consumerId;
     private int concertId;
-    private int CardId;
+    private int cardId;
     private String bookNum;
     private String seatNum;
     private int price;
@@ -26,9 +26,10 @@ public class BookVO {
     private String posterUrl;
     private int categoryId;
     
-    private Integer review_id;
+    private int review_id;
     private String content;
     private float rate;
     private Date createDate;
     private Date updateDate;
+    
 }

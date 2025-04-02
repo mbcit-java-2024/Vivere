@@ -98,6 +98,16 @@ public class BookController {
 						Model model) {
 		System.out.println("BookController 컨트롤러의 payment() 메소드 실행");
 		
+		String[] seats = selectedSeats.split(", ");
+		for (String seat : seats) {
+//			System.out.println(seat);
+			String lineNum = seat.substring(0, 1);
+			String seatNum = seat.substring(1);
+			if (bookService.isBooked(concertVO.getId(), conTimeId, lineNum, seatNum)) {
+				return "/bookFail";
+			}
+		}
+		
 //		로그인 완료되면 살리기
 //		int consumerId = (int) request.getSession().getAttribute("consumerId");
 		int consumerId = 1;
@@ -150,6 +160,16 @@ public class BookController {
 						HttpServletRequest request,
 						Model model) {
 		System.out.println("BookController 컨트롤러의 bookOK() 메소드 실행");
+		
+		String[] seats = selectedSeats.split(", ");
+		for (String seat : seats) {
+//			System.out.println(seat);
+			String lineNum = seat.substring(0, 1);
+			String seatNum = seat.substring(1);
+			if (bookService.isBooked(Integer.parseInt(concertId), conTimeId, lineNum, seatNum)) {
+				return "/bookFail";
+			}
+		}
 		
 //		int consumerId = (int) request.getSession().getAttribute("consumerId");
 		int consumerId = 1;

@@ -18,4 +18,8 @@ public interface BookDAO {
 
 	void insertBook(BookVO bookVO);
 
+	int getConcertSeatIdByColums(concertSeatVO concertSeatVO);
+
+	boolean selectBookYNById(int csId);
+
 }

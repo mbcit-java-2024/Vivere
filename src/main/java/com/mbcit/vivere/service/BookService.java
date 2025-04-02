@@ -125,6 +125,31 @@ public class BookService {
 		}
 		
 	}
+	
+	public boolean isBooked(int concertId, String conTimeId, String lineNum, String seatNum) {
+		System.out.println("BookService 클래스의 isBooked() 메소드 실행");
+		
+		int csId = getConcertSeatIdByColumns(concertId, conTimeId, lineNum, seatNum);
+		boolean isBook = bookDAO.selectBookYNById(csId);
+		if (isBook) {
+			return true;
+		}
+		return false;
+	}
+
+	private int getConcertSeatIdByColumns(int concertId, String conTimeId, String lineNum, String seatNum) {
+		System.out.println("BookService 클래스의 getConcertSeatIdByColums() 메소드 실행");
+		
+		concertSeatVO conseat = new concertSeatVO();
+		conseat.setConcertId(concertId);
+		conseat.setConcertTimeId(Integer.parseInt(conTimeId));
+		conseat.setLineNum(lineNum.charAt(0));
+		conseat.setSeatNum(Integer.parseInt(seatNum));
+		
+		int csId = bookDAO.getConcertSeatIdByColums(conseat);
+		
+		return csId;
+	}
 
 }
 

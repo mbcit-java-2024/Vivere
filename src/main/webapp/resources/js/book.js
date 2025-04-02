@@ -28,7 +28,7 @@ function changeTime() {
        		// console.log(response);
         	response.bookedSeats.forEach(function(seat) {
         		// console.log(seat);
-        		$(`input[name=` + seat + `]`).prop("disabled", true);
+//        		$(`input[name=` + seat + `]`).prop("disabled", true);
         	});
         	response.allSeats.forEach(function(seat) {
         		const lineNum = seat.lineNum;

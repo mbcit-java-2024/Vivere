@@ -48,6 +48,20 @@
 		select * from concertSeat where concertTimeId = #{conTimeId}
 	</select>
 	
+	<select id="getConcertSeatIdByColums" parameterType="concertSeatVO" resultType="int">
+		select id 
+		from concertSeat 
+		where concertId = #{concertId} 
+		and concertTimeId = #{concertTimeId}
+		and lineNum = #{lineNum}
+		and seatNum = #{seatNum}
+	</select>
+	
+	<select id="selectBookYNById" parameterType="int" resultType="boolean">
+		select bookYN from concertSeat
+		where id = #{id}
+	</select>
+	
 	<insert id="insertBook" parameterType="bookVO">
 		insert into book (consumerId, concertId, cardId, bookNum, price, seatNum, grade, orderDate, concertTime, payType)
 		values (#{consumerId}, #{concertId}, #{cardId}, #{bookNum}, #{price}, #{seatNum}, #{grade}, #{orderDate}, #{concertTime}, #{payType})

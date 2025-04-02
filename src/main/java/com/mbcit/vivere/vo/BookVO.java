@@ -16,7 +16,6 @@ public class BookVO {
     private String bookNum;
     private String seatNum;
     private int price;
-    private int seatCnt;
     private String grade;
     private Date orderDate;
     private Date concertTime;

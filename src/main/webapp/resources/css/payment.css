@@ -87,14 +87,51 @@
 	border-radius: 10px;
 	width: 240px;
 	height: 160px;
-	background-color: white;
+	background-color: #CDAA39;
 	box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
 	justify-content: center; /* 수평 중앙 정렬 */
 	align-items: center;
 	display:flex;
 	flex-shrink: 0;
 	text-align: center;
+	font-weight: bold;
 }
 #radioCard, #radioRemit {
 	display: none;
 }
+.bookInfo-title {
+	font-weight: bold;
+	font-size: 26px;
+	width: 900px;
+	margin: 30px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: black;
+}
+.infoTitle {
+	/* align-content: flex-start; */
+	line-height: 2.1;
+	width: 120px;
+	color: #78171C;
+}
+.infoContent {
+	line-height: 2.1;
+}
+.bt900 {
+	width: 900px; 
+	height: 45px; 
+	border-radius: 5px; 
+	border: 0;
+	background-color: #CDAA39;
+	box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+	cursor: pointer;
+	font-weight: bold;
+	font-size: 18px;
+}
+
+
+
+
+
+

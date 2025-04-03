@@ -125,7 +125,7 @@
 					</table>
 				</c:if>
 			</div>
-			<form action="/payment" method="POST">
+			<form action="/payment" method="POST" onsubmit="return doubleCheck()">
 				<div class="sideDetail mgb">
 					<div style="height: 187px;">
 						<h3 style="margin: 0px;">선택 좌석</h3>

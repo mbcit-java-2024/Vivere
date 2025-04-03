@@ -12,7 +12,7 @@
 <script src="/resources/js/payment.js" defer></script>
 
 </head>
-<body>
+<body style="background-color: #EEEEEE">
 
 <fmt:formatDate value="${selTime}" pattern="yyyy년 MM월 dd일" var="selectDate"/>
 <fmt:formatDate value="${selTime}" pattern="HH시mm분" var="selectTime"/>

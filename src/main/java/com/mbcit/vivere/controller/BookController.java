@@ -182,7 +182,12 @@ public class BookController {
 		List<BookVO> books = bookService.getBooksByBookNum(bookNum);
 //		System.out.println("books: " + books);
 		
+		ConcertVO conVO = concertService.getConcertById(books.get(0).getConcertId());
+		conVO.setPosterUrl(concertService.relativePath(conVO.getPosterUrl()));
+		
+		model.addAttribute("conVO", conVO);
 		model.addAttribute("books", books);
+		model.addAttribute("selectedSeats", selectedSeats);
 		return "/bookOK";
 	}
 	
@@ -191,5 +196,22 @@ public class BookController {
 	public String redirectBookOK() {
 		return "redirect:/";
 	}
+	
+	@RequestMapping("/test/bookOK")
+	public String test(Model model) {
+		
+		String bookNum = "001001250403142424";
+		String selectedSeats = "N09, N10";
+		List<BookVO> books = bookService.getBooksByBookNum(bookNum);
+		
+		ConcertVO conVO = concertService.getConcertById(books.get(0).getConcertId());
+		conVO.setPosterUrl(concertService.relativePath(conVO.getPosterUrl()));
+		
+		model.addAttribute("conVO", conVO);
+		model.addAttribute("books", books);
+		model.addAttribute("selectedSeats", selectedSeats);
+		return "/bookOK";
+	}
+	
 
 }

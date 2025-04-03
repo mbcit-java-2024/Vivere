@@ -99,3 +99,11 @@ function submitChange(totalPrice) {
 	}
 }
 
+function doubleCheck() {
+	if (confirm("예약 후에는 좌석을 변경할 수 없습니다.")) {
+		return true;
+	} else {
+		return false;
+	}
+}
+

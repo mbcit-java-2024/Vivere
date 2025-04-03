@@ -44,7 +44,9 @@ public class BookController {
 	private CardService cardService;
 	
 	@RequestMapping("/book")
-	public String book(HttpServletRequest request, Model model) {
+	public String book(HttpServletRequest request, Model model
+//					, @RequestParam int concertId, @RequestParam int timeIndex
+					) {
 		System.out.println("BookController 컨트롤러의 book() 메소드 실행");
 		
 		int concertId = 1; // ************ !!!concertId 가져오게 추가해야됨!!! ************ 

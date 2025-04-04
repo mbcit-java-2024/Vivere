@@ -13,11 +13,11 @@
 <body>
 
 <h1>VIVERE ART HALL</h1>
-	<%--  <c:if test="${i == 0 }"> --%>
+<c:if test="${sessionScope.loginUser.grade eq 'ADMIN'}">
 	<div style="display:flex; justify-content: right">
 		<a style="text-decoration: none; color: gray;" href="/carouselList">메인표지 등록/수정</a>
 	</div>
-	<%-- </c:if> --%>
+</c:if>
 <!-- Carousel -->
 <div id="demo" class="carousel slide" data-bs-ride="carousel">
 

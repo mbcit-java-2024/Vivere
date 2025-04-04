@@ -132,7 +132,7 @@ public class BookController {
 		Date selTime = bookService.selectedTime(selectedTime);
 		
 		System.out.println(concertVO.getPosterUrl());
-    	String relativePath = concertService.relativePath(concertVO.getPosterUrl());
+    	String relativePath = concertService.relativePath(concertVO.getPosterUrl(), "/posters/");
     	System.out.println(relativePath);
     	concertVO.setPosterUrl(relativePath);
 		
@@ -183,7 +183,7 @@ public class BookController {
 //		System.out.println("books: " + books);
 		
 		ConcertVO conVO = concertService.getConcertById(books.get(0).getConcertId());
-		conVO.setPosterUrl(concertService.relativePath(conVO.getPosterUrl()));
+		conVO.setPosterUrl(concertService.relativePath(conVO.getPosterUrl(), "/posters/"));
 		
 		model.addAttribute("conVO", conVO);
 		model.addAttribute("books", books);
@@ -205,7 +205,7 @@ public class BookController {
 		List<BookVO> books = bookService.getBooksByBookNum(bookNum);
 		
 		ConcertVO conVO = concertService.getConcertById(books.get(0).getConcertId());
-		conVO.setPosterUrl(concertService.relativePath(conVO.getPosterUrl()));
+		conVO.setPosterUrl(concertService.relativePath(conVO.getPosterUrl(),"/posters/"));
 		
 		model.addAttribute("conVO", conVO);
 		model.addAttribute("books", books);

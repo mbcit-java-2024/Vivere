@@ -94,13 +94,14 @@
 		</div>
 	</nav>
 
-	<!-- 검색창 -->
+	<!-- 검색창 
 	<form class="search-form" action="" method="get">
 		<input type="text" name="keyword" placeholder="공연 검색어를 입력하세요" />
 		<button type="submit">
 			<i class="fas fa-search"></i> 검색하기
 		</button>
 	</form>
+	-->
 
 </body>
 </html>

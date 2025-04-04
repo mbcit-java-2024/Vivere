@@ -9,6 +9,9 @@
 <meta charset="UTF-8">
 <title>공연 수정</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/js/bootstrap.bundle.min.js"></script>
+
 <%
 	// 현재 날짜와 시간을 "yyyy-MM-dd'T'HH:mm" 형식으로 구함
 	java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm");

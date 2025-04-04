@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,27 +13,34 @@
 <body>
 
 <h1>VIVERE ART HALL</h1>
+	<%--  <c:if test="${i == 0 }"> --%>
+	<div style="display:flex; justify-content: right">
+		<a style="text-decoration: none; color: gray;" href="/carouselList">메인표지 등록/수정</a>
+	</div>
+	<%-- </c:if> --%>
 <!-- Carousel -->
 <div id="demo" class="carousel slide" data-bs-ride="carousel">
 
   <!-- Indicators/dots -->
   <div class="carousel-indicators">
-    <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
-    <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
-    <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+  	<c:forEach varStatus="i" items="${carouselList }">
+  		<c:if test="${i.index == 0 }">
+		    <button type="button" data-bs-target="#demo" data-bs-slide-to="${i.index }" class="active"></button>
+  		</c:if>
+  		<c:if test="${i.index != 0 }">
+		    <button type="button" data-bs-target="#demo" data-bs-slide-to="${i.index }"></button>
+  		</c:if>
+  	</c:forEach>
   </div>
+
 
   <!-- The slideshow/carousel -->
   <div class="carousel-inner">
+  	<c:forEach var="vo" items="${carouselList }">
     <div class="carousel-item active">
-      <img src="la.jpg" alt="Los Angeles" class="d-block w-100">
+      <img src="${vo.carouselUrl }" class="d-block w-100">
     </div>
-    <div class="carousel-item">
-      <img src="chicago.jpg" alt="Chicago" class="d-block w-100">
-    </div>
-    <div class="carousel-item">
-      <img src="ny.jpg" alt="New York" class="d-block w-100">
-    </div>
+  	</c:forEach>
   </div>
 
   <!-- Left and right controls/icons -->
@@ -41,7 +51,6 @@
     <span class="carousel-control-next-icon"></span>
   </button>
 </div>
-<a href="/carouselList">표지 등록</a><br/><br/>
 <a href="/insertConcert">공연 등록</a><br/><br/>
 <a href="/concertList">공연 목록</a><br/><br/>
 <a href="/book">공연 예약 book.jsp</a>

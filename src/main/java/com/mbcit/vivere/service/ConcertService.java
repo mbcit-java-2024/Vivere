@@ -454,6 +454,7 @@ public class ConcertService {
 
 //	concertId로 carouselUrl 1건 꺼내오기
 	public String getCarouselUrlByConcertId(int concertId) {
+		log.info("ConcertService 클래스의 getCarouselUrlByConcertId() 메소드 실행");
 		if (concertDAO.getCarouselByConcertId(concertId) != null) {
 			String carouselUrl = concertDAO.getCarouselByConcertId(concertId).getCarouselUrl();
 			return carouselUrl;
@@ -463,30 +464,57 @@ public class ConcertService {
 
 	// carouselVO 1건 저장하기
 	public void insertCarouselUrl(CarouselVO carVO) {
+		log.info("ConcertService 클래스의 insertCarouselUrl() 메소드 실행");
 		concertDAO.insertCarousel(carVO);
 	}
 
 	// main 표지에 걸린 carouselVO 들만 리스트로 받아서 리턴하는 메소드
 	public List<CarouselVO> getCarouselListByStatus() {
+		log.info("ConcertService 클래스의 getCarouselListByStatus() 메소드 실행");
 		List<CarouselVO> carList = concertDAO.getCarouselListByStatus();
+		for (CarouselVO vo : carList) {
+			vo.setCarouselUrl(relativePath(vo.getCarouselUrl(), "/carousel/"));
+		}
 		return carList;
 	}
 
 	// concertId 로 carousel 1건 가져오기
 	public CarouselVO getCarouselByConcertId(int concertId) {
+		log.info("ConcertService 클래스의 getCarouselByConcertId() 메소드 실행");
 		CarouselVO vo = concertDAO.getCarouselByConcertId(concertId);
 		return vo;
 	}
 
 	// carousel 1건 수정하기
 	public void updateCarouselUrl(CarouselVO carVO) {
+		log.info("ConcertService 클래스의 updateCarouselUrl() 메소드 실행");
 		concertDAO.updateCarouselUrl(carVO);
 	}
 
-	// carousel 1건 삭제하기
+	// DB에서 carousel 1건 삭제하고 posters 폴더의 포스터 이미지를 삭제하는 메소드
 	public void deleteCarousel(int concertId) {
-		// TODO Auto-generated method stub
+		log.info("ConcertService 클래스의 deleteCarousel() 메소드 실행");
 		
+		// 이미지 파일 삭제 (poster 폴더에 있는 파일 삭제)
+		String absolutePath = concertDAO.getCarouselByConcertId(concertId).getCarouselUrl(); // DB에 저장된 절대 경로
+		if (absolutePath != null && !absolutePath.isEmpty()) {
+			File file = new File(absolutePath);
+			if (file.exists()) {
+				file.delete(); // 이미지 파일 삭제
+			}
+		}
+		
+		// DB 에서 삭제
+		concertDAO.deleteCarouselUrl(concertId);
+	}
+
+	// concertId들을 받아 해당하는 carousel status 변경하기
+	public void updateCarouselStatus(List<Integer> selectedConIds) {
+		log.info("ConcertService 클래스의 updateCarouselStatus() 메소드 실행");
+		concertDAO.resetCarouselStatus();
+		for (int concertId : selectedConIds) {
+			concertDAO.updateCarouselStatus(concertId);
+		}
 	}
 
 

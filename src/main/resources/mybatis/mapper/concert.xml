@@ -123,6 +123,17 @@
 		set carouselUrl = #{carouselUrl}
 		where concertId = #{concertId} 
 	</update>
+	
+	<update id="resetCarouselStatus" >
+		update carousel 
+		set status = 0
+	</update>
+	
+	<update id="updateCarouselStatus" >
+		update carousel 
+		set status = 1
+		where concertId = #{concertId}
+	</update>
 
 	<!-- delete -->
 	<delete id="deleteConcert" parameterType="int">
@@ -141,6 +152,10 @@
 	</delete>
 	<delete id="deleteConcertSeatsByConcertTimeId" parameterType="int">
 		DELETE FROM concertseat WHERE concertTimeId = #{concertTimeId}
+	</delete>
+	
+	<delete id="deleteCarouselUrl" parameterType="int">
+		DELETE FROM carousel WHERE concertId = #{concertId}
 	</delete>
 
 </mapper>

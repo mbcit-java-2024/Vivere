@@ -18,6 +18,15 @@
     .drop-area.bg-light {
         background-color: #f0f0f0;
     }
+	.btn-secondary {
+	  background-color: black; /* 기본보다 어두운 파랑 */
+	  border-color: black;
+	}
+	.btn-secondary:hover {
+	  background-color: white; /* 기본보다 어두운 파랑 */
+	  border-color: black;
+	  color: black;
+	}
 </style>
 <script>
 $(document).ready(function () {
@@ -170,7 +179,9 @@ $(document).ready(function () {
     });
 
     $('#deleteBtn').on('click', function () {
-        const concertId = $('#updateConcertId').val();
+    	console.log('삭제 클릭')
+        const concertId = $(this).data('id');
+        const formData = new FormData();
         formData.append("concertId", concertId);
         $.ajax({
             url: "/deleteCarousel",
@@ -187,37 +198,70 @@ $(document).ready(function () {
             }
         });
     });
+    
+    // main 에 걸 공연 1개 이상 선택 확인
+    $('#myForm').on('submit', function(e) {
+        // 체크된 체크박스 개수 확인
+        const checkedCount = $('input[name="selectedIds"]:checked').length;
+        
+        if (checkedCount === 0) {
+          alert("하나 이상의 공연을 선택해주세요.");
+          e.preventDefault(); // 폼 제출 막기
+        }
+      });
+
 });
 </script>
 </head>
 
 <body>
 
+<form id="myForm" action="/carouselListOK" method="post">
 <div class="d-flex justify-content-between align-items-center my-2 container">
-<table class="table">
-	<thead>
+<table class="table mt-5">
+	<thead >
 		<tr >
-              <td style="width: 200px" > 공연제목 선택 </td>
-              <td style="width: 600px; display: flex; justify-content: center"> 메인 표지 이미지파일 등록</td>
-              <td ></td>
+              <th style="width: 200px; text-align: center;" > 공연제목 선택 <br/><br/> </th>
+              <th style="width: 600px; display: flex; justify-content: center"> 메인 표지 이미지파일 등록 <br/><br/></th>
+              <td style="width: 200px;"> <br/><br/></td>
 		</tr>
 	</thead>
 <c:forEach var="concertVO" items="${concertList}">
       <tbody>
         <tr>
-          <th scope="row" style="width: 200px">${concertVO.title}</th>
+          <td scope="row" style="width: 200px">
+            <c:set var="hasCarousel" value="false" />
+			
+			  <!-- carList 안의 concertId와 con.id 비교 -->
+			  <c:forEach var="car" items="${carouselList}">
+			    <c:if test="${car.concertId == concertVO.id}">
+			      <c:set var="hasCarousel" value="true" />
+			    </c:if>
+			  </c:forEach>
+			  
+          <c:if test="${hasCarousel}">
+          	<input type="checkbox" class="btn-check" id="btn-check-${concertVO.id }" 
+          		name="selectedIds" value="${concertVO.id }" checked="checked">
+			<label class="btn" for="btn-check-${concertVO.id }">${concertVO.title}</label>
+          </c:if>
+          <c:if test="${not hasCarousel}">
+          	<input type="checkbox" class="btn-check" id="btn-check-${concertVO.id }" 
+          		name="selectedIds" value="${concertVO.id }">
+			<label class="btn" for="btn-check-${concertVO.id }">${concertVO.title}</label>
+          </c:if>
+          </td>
           <c:choose>
             <c:when test="${not empty concertVO.carouselUrl}">
               <td style="width: 600px">메인표지: ${concertVO.carouselUrl}</td>
               <td>
-                <button class="btn btn-sm btn-primary open-update-btn" data-id="${concertVO.id}">수정</button>
-                <button class="btn btn-sm btn-primary delete-btn" data-id="${concertVO.id}">삭제</button>
+                <button type="button" style="background-color: #CDAA39; border-color: #CDAA39" class="btn btn-sm btn-primary open-update-btn" data-id="${concertVO.id}">수정</button>
+                <button type="button" style="background-color: #78171C; border-color: #78171C" class="btn btn-sm btn-primary" id="deleteBtn" data-id="${concertVO.id}">삭제</button>
               </td>
             </c:when>
             <c:otherwise>
               <td style="width: 600px"></td>
               <td>
-                <button class="btn btn-sm btn-primary open-insert-btn" data-id="${concertVO.id}">파일등록</button>
+                <button type="button" class="btn btn-sm btn-primary open-insert-btn btn-dark" data-id="${concertVO.id}">파일등록</button>
               </td>
             </c:otherwise>
           </c:choose>
@@ -226,6 +270,11 @@ $(document).ready(function () {
 </c:forEach>
 </table>
 </div>
+<div style="display: flex; justify-content: center;">
+	<button class="btn m-2 btn-secondary" type="submit">저장하기</button>
+	<button class="btn m-2 btn-outline-dark" style="border-color: black;" type="button" onclick="location.href='/'">메인홈으로</button>
+</div>              
+</form>
 
 <!-- Upload Modal -->
 <div class="modal fade" id="uploadModal" tabindex="-1">
@@ -274,7 +323,7 @@ $(document).ready(function () {
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-          <button type="button" class="btn btn-primary" id="updateBtn">수정</button>
+          <button type="button" style="background-color: #CDAA39; border-color: #CDAA39;" class="btn btn-primary" id="updateBtn">수정</button>
         </div>
       </form>
     </div>

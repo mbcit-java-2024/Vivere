@@ -42,6 +42,9 @@ public interface ConcertDAO {
 	void insertCarousel(CarouselVO carVO);
 	List<CarouselVO> getCarouselListByStatus();
 	void updateCarouselUrl(CarouselVO carVO);
+	void deleteCarouselUrl(int concertId);
+	void resetCarouselStatus();
+	void updateCarouselStatus(int concertId);
 	
 
 }

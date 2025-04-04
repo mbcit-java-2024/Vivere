@@ -52,9 +52,11 @@ public class MainController {
 	private ConcertService concertService;
 	
 	@RequestMapping("/")
-	public String main() {
+	public String main(Model model) {
 		log.info("MainController 의 main() 메소드 실행");
 		
+		List<CarouselVO> carouselList = concertService.getCarouselListByStatus();
+		model.addAttribute("carouselList", carouselList);
 		return "/main";
 	}
 
@@ -77,9 +79,19 @@ public class MainController {
 		
 //		현재 메인표지로 선택된 carouselList
 		List<CarouselVO> carouselList = concertService.getCarouselListByStatus();
+		
 		model.addAttribute("concertList", concertList);
 		model.addAttribute("carouselList", carouselList);
 		return "/carouselList";
+	}
+	
+	@RequestMapping("/carouselListOK")
+	public String carouselListOK(@RequestParam("selectedIds") List<Integer> selectedConIds) {
+		log.info("MainController 의 carouselList() 메소드 실행");
+//		메인 표지로 선택된 concertId들이 든 리스트의 상태값을 1 로 바꾸기
+		concertService.updateCarouselStatus(selectedConIds);
+
+		return "redirect:/";
 	}
 	
 //	이미지 파일과 concertId를 받아 CarouselVO 1건을 생성해서 DB에 저장
@@ -124,13 +136,12 @@ public class MainController {
 		return "성공";
 	}
 	
-//	이미지 파일과 concertId를 받아 CarouselVO 1건을 DB에서 삭제
+//	concertId를 받아 CarouselVO 1건을 DB에서 삭제
 	@PostMapping("/deleteCarousel")
 	@ResponseBody
 	public String deleteCarousel( @RequestParam("concertId") int concertId){
 		log.info("MainController 의 deleteCarousel() 메소드 실행");
 		concertService.deleteCarousel(concertId);
-		
 		return "성공";
 	}
 	

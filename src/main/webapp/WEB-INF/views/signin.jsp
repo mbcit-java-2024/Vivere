@@ -285,5 +285,6 @@
 		
         <button type="submit" class="submit-btn">가입하기</button>
     </form>
+	<!--push를 위한 주석-->
 </body>
 </html>

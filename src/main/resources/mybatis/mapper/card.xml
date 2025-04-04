@@ -24,6 +24,8 @@
     <select id="getCardById" parameterType="int" resultType="cardVO">
         select * from card where id = #{id}
     </select>
+    	<!--push를 위한 주석-->
+
     
 </mapper>
 

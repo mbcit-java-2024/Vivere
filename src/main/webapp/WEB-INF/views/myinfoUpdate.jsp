@@ -228,6 +228,8 @@
 
         <button type="submit" class="submit-btn">수정하기</button>
     </form>
+	<!--push를 위한 주석-->
+
 </div>
 </body>
 </html>

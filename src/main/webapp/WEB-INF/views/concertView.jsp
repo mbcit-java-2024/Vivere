@@ -7,22 +7,35 @@
 <meta charset="UTF-8">
 <title>공연 정보</title>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<link rel="stylesheet" type="text/css" href="/resources/css/reviewList.css" />
+<!-- <link rel="stylesheet" type="text/css" href="/resources/css/reviewList.css" />-->
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
+<!-- header 
+-->
+<header>
+   <jsp:include page="./include/header.jsp"/>
+</header>
 <body>
+
 <!-- 관리자 로그인 시에만 보이는 버튼 -->
 <button onclick="location.href='/updateConcert?concertId=${concertVO.id}'">수정</button>
 <button onclick="location.href='/concertData?concertId=${concertVO.id}'">통계</button>
 
 <!-- 공연 정보 -->
-<div style="display: flex;">
-	<h2>${concertVO.title }</h2> &nbsp;&nbsp;&nbsp;
+<div class="container" style="display: flex;">
+	<div>
+	<h2 class="display-4 float-start">${concertVO.title }</h2> &nbsp;&nbsp;&nbsp;
+	</div>
+	<div>
 	<fmt:formatDate value="${concertVO.startDate}" pattern="yy.MM.dd" var="startDate"/>
 	<fmt:formatDate value="${concertVO.endDate}" pattern="yy.MM.dd" var="endDate"/>
-	<h5>${startDate} ~ ${endDate}</h5>
+	<h5 class="float-end">${startDate} ~ ${endDate}</h5>
+	</div>
 </div>
 
-<div style="display: flex;">
+<div class="container" style="display: flex;">
 	<div style="width: 50%">
 		<img alt="공연포스터" src="${concertVO.posterUrl}" style="width: 100%; ">
 	</div>
@@ -70,4 +83,10 @@
   </c:forEach>
 
 </body>
+
+<!-- footer -->
+<footer>
+   <jsp:include page="./include/footer.jsp"/>
+</footer>
+
 </html>

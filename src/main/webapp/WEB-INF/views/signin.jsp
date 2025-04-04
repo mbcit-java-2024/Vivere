@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>회원가입</title>
@@ -292,9 +292,9 @@
 		        </div>
 		    </div>
 		</div>
+</div>
 		
         <button type="submit" class="submit-btn">가입하기</button>
     </form>
-</div>
 </body>
 </html>

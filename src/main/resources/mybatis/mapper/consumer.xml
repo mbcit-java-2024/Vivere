@@ -26,7 +26,27 @@
 	<select id="findPwByIdAndEmail" resultType="consumerVO">
 	    select * from consumer where userId = #{userId} and email = #{email}
 	</select>
-		
+	
+	<update id="updateConsumer" parameterType="consumerVO">
+	    update consumer
+	    set
+	        pw = #{pw},
+	        name = #{name},
+	        birth = #{birth},
+	        gender = #{gender},
+	        phone = #{phone},
+	        email = #{email},
+	        address = #{address},
+	        detailAddress = #{detailAddress},
+	        receive = #{receive},
+	        updateDate = now()
+	    where userId = #{userId}
+	</update>
+	
+	<delete id="deleteConsumerByUserId" parameterType="string">
+	    delete from consumer where userId = #{userId}
+	</delete>
+	
 </mapper>
 
 

@@ -13,4 +13,6 @@ public interface ConsumerDAO {
 	ConsumerVO findByUserId(String userId);
 	ConsumerVO findIdByNameAndEmail(@Param("name") String name, @Param("email") String email);
 	ConsumerVO findPwByIdAndEmail(@Param("userId") String userId,@Param("email") String email);
+	void updateConsumer(ConsumerVO vo);
+	void deleteConsumerByUserId(String userId);
 }

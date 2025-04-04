@@ -7,7 +7,29 @@
 	<select id="getCardListByConsumerId" parameterType="int" resultType="cardVO">
 		select * from card where consumerId = #{consumerId}
 	</select>
-
+	
+	<select id="getCardByConsumerId" parameterType="int" resultType="cardVO">
+	    select * from card where consumerId = #{consumerId}
+	</select>
+	
+	<insert id="insertCard" parameterType="cardvo">
+	    insert into card (
+	        consumerId, pw, cardNum, cvc, validDate, bankName, createDate
+	    ) values (
+	        #{consumerId}, #{pw}, #{cardNum}, #{cvc}, #{validDate}, #{bankName}, now()
+	    )
+	</insert>    
+	
+<update id="updateCard" parameterType="cardvo">
+    update card
+    set
+        pw = #{pw},
+        cardNum = #{cardNum},
+        cvc = #{cvc},
+        validDate = #{validDate},
+        bankName = #{bankName}
+    where id = #{id}
+</update>
 </mapper>
 
 

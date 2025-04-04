@@ -81,6 +81,23 @@ public class LoginService {
 	    	
 	    }		
 	}
+	
+	public void updateInfo(ConsumerVO vo, String originalPw) {
+		
+	    if (vo.getPw() == null || vo.getPw().trim().isEmpty()) {
+	        vo.setPw(originalPw);
+	    }
+	    consumerDAO.updateConsumer(vo);
+	}
+	
+	public ConsumerVO findByUserId(String userId) {
+	    return consumerDAO.findByUserId(userId);
+	}
+	
+	public void deleteConsumer(String userId) {
+	    consumerDAO.deleteConsumerByUserId(userId);
+	}
+	
 }
 
 

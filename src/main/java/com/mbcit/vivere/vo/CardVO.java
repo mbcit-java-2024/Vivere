@@ -11,9 +11,10 @@ public class CardVO {
 
     private int id;
     private int consumerId;
+    private String bankName;
     private String pw;
     private String cardNum;
     private int cvc;
-    private Date validDate;
+    private String validDate;
     private Date createDate;
 }

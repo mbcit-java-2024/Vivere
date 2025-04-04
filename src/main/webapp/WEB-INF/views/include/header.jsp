@@ -46,7 +46,10 @@
 					onclick="toggleGuideDropdown()">이용안내 ▾</button>
 				<div id="guideDropdown" class="guide-dropdown-menu">
 					<a href="cancel_notice.jsp">예약/취소 안내</a> <a href="map.jsp">오시는
-						길</a> <a href="info.jsp">시설 안내</a> <a href="notice.jsp">공지사항</a>
+						길</a> <a href="info.jsp">시설 안내</a> 
+						<c:if test="${not empty consumerVO.Grade eq 'ADMIN'}">
+							<a href="/noticeList">공지사항</a>
+						</c:if>
 				</div>
 			</div>
 

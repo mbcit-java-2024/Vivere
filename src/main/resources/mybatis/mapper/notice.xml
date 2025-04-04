@@ -4,7 +4,17 @@
 
 <mapper namespace="com.mbcit.vivere.dao.NoticeDAO">
 
+	<select id="selectNoticeList" parameterType="noticeVO"
+		resultType="noticeVO">
+		SELECT id, title, content, status, createDate, updateDate
+		FROM vivere.notice;
+	</select>
 
+	<insert id="insert" parameterType="noticeVO">
+		INSERT INTO notice
+		(title, content, status, createDate)
+		VALUES(#{title}, #{content}, #{status}, now())
+	</insert>
 
 </mapper>
 

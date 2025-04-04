@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mbcit.vivere.dao.ConcertDAO;
+import com.mbcit.vivere.vo.CarouselVO;
 import com.mbcit.vivere.vo.ConcertTimeVO;
 import com.mbcit.vivere.vo.ConcertVO;
 import com.mbcit.vivere.vo.concertSeatVO;
@@ -226,17 +227,17 @@ public class ConcertService {
 //      File file = new File(vo.getPosterUrl());
 //      String fileName = file.getName(); // 파일명만 추출
 //      String relativePath = "/posters/" + fileName;
-    	String relativePath = relativePath(vo.getPosterUrl());
+    	String relativePath = relativePath(vo.getPosterUrl(), "/posters/");
     	vo.setPosterUrl(relativePath);
       
     	return vo;
     }
    
-    public String relativePath(String posterUrl) {
+    public String relativePath(String posterUrl, String folder) {
     	// ConcertVO 마다 posterUrl 을 상대경로로 바꿔준다.
     	File file = new File(posterUrl);
     	String fileName = file.getName(); // 파일명만 추출
-    	String relativePath = "/posters/" + fileName;
+    	String relativePath = folder + fileName;
     	log.info("이미지 상대 경로: " + relativePath);
       
     	return relativePath;
@@ -443,14 +444,49 @@ public class ConcertService {
 			log.info("콘서트 포스터 수정중 문제발생");
 		}
 		}
-		
-		
 	}
 
 //	
 	public void deleteConcertSeats(int id) {
 		log.info("ConcertService 클래스의 deleteConcertSeats() 메소드 실행");
 		concertDAO.deleteConcertSeatsByConcertId(id);
+	}
+
+//	concertId로 carouselUrl 1건 꺼내오기
+	public String getCarouselUrlByConcertId(int concertId) {
+		if (concertDAO.getCarouselByConcertId(concertId) != null) {
+			String carouselUrl = concertDAO.getCarouselByConcertId(concertId).getCarouselUrl();
+			return carouselUrl;
+		}
+		return "";
+	}
+
+	// carouselVO 1건 저장하기
+	public void insertCarouselUrl(CarouselVO carVO) {
+		concertDAO.insertCarousel(carVO);
+	}
+
+	// main 표지에 걸린 carouselVO 들만 리스트로 받아서 리턴하는 메소드
+	public List<CarouselVO> getCarouselListByStatus() {
+		List<CarouselVO> carList = concertDAO.getCarouselListByStatus();
+		return carList;
+	}
+
+	// concertId 로 carousel 1건 가져오기
+	public CarouselVO getCarouselByConcertId(int concertId) {
+		CarouselVO vo = concertDAO.getCarouselByConcertId(concertId);
+		return vo;
+	}
+
+	// carousel 1건 수정하기
+	public void updateCarouselUrl(CarouselVO carVO) {
+		concertDAO.updateCarouselUrl(carVO);
+	}
+
+	// carousel 1건 삭제하기
+	public void deleteCarousel(int concertId) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

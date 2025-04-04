@@ -1,8 +1,13 @@
 package com.mbcit.vivere.controller;
 
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,13 +17,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mbcit.vivere.eNum.Grade;
 import com.mbcit.vivere.service.BookService;
+import com.mbcit.vivere.service.ConcertService;
 import com.mbcit.vivere.service.QnARepService;
 import com.mbcit.vivere.service.QnAService;
 import com.mbcit.vivere.service.ReviewService;
 import com.mbcit.vivere.vo.BookVO;
+import com.mbcit.vivere.vo.CarouselVO;
 import com.mbcit.vivere.vo.ConcertVO;
 import com.mbcit.vivere.vo.ConsumerVO;
 import com.mbcit.vivere.vo.QnaVO;
@@ -39,6 +48,8 @@ public class MainController {
 	private ReviewService reviewService;
 	@Autowired
 	private QnARepService qnaRepService;
+	@Autowired
+	private ConcertService concertService;
 	
 	@RequestMapping("/")
 	public String main() {
@@ -46,7 +57,84 @@ public class MainController {
 		
 		return "/main";
 	}
+
+// ===================== 표지 이미지 (carousel) ========================
+
+	@RequestMapping("/carouselList")
+	public String carouselList(Model model) {
+		log.info("MainController 의 carouselList() 메소드 실행");
+//		현재 상영중인 공연 리스트에 carouselUrl을 추가해서 받아가기
+		List<ConcertVO> concertList = concertService.getConcertListByTime();
+		for (ConcertVO vo : concertList) {
+			String carouselUrl = concertService.getCarouselUrlByConcertId(vo.getId());
+			log.info(vo.getId()+". "+ carouselUrl);
+			if (carouselUrl != null && !carouselUrl.trim().isEmpty()){
+				vo.setCarouselUrl(concertService.relativePath(concertService.getCarouselUrlByConcertId(vo.getId()),"/carousel/"));
+			}else {
+				vo.setCarouselUrl("");
+			}
+		}
+		
+//		현재 메인표지로 선택된 carouselList
+		List<CarouselVO> carouselList = concertService.getCarouselListByStatus();
+		model.addAttribute("concertList", concertList);
+		model.addAttribute("carouselList", carouselList);
+		return "/carouselList";
+	}
 	
+//	이미지 파일과 concertId를 받아 CarouselVO 1건을 생성해서 DB에 저장
+	@PostMapping("/insertCarouselOK")
+	@ResponseBody
+	public String insertCarouselOK( HttpServletRequest request,
+			@RequestParam("concertId") int concertId,
+	        @RequestParam("images") MultipartFile imageFile) throws IOException {
+		log.info("MainController 의 insertCarouselOK() 메소드 실행");
+
+	    if (imageFile.isEmpty()) {
+	        return "파일이 없습니다.";
+	    }
+	    
+	    ConcertVO conVO = concertService.getConcertById(concertId);
+	    CarouselVO carVO = new CarouselVO();
+	    carVO.setConcertId(concertId);
+	    carVO.setCarouselUrl(concertService.imageToUrl (request.getServletContext().getRealPath("/carousel/"), imageFile, conVO.getTitle()+"_메인표지"));
+	    concertService.insertCarouselUrl(carVO);
+
+	    return "성공";
+	}
+	
+//	이미지 파일과 concertId를 받아 CarouselVO 1건을 DB에서 수정
+	@PostMapping("/updateCarouselOK")
+	@ResponseBody
+	public String updateCarouselOK( HttpServletRequest request,
+			@RequestParam("concertId") int concertId,
+			@RequestParam("images") MultipartFile imageFile) throws IOException {
+		log.info("MainController 의 updateCarouselOK() 메소드 실행");
+		
+		if (imageFile.isEmpty()) {
+			return "파일이 없습니다.";
+		}
+		
+		ConcertVO conVO = concertService.getConcertById(concertId);
+		CarouselVO carVO = concertService.getCarouselByConcertId(concertId);
+		carVO.setConcertId(concertId);
+		carVO.setCarouselUrl(concertService.imageToUrl (request.getServletContext().getRealPath("/carousel/"), imageFile, conVO.getTitle()+"_메인표지"));
+		concertService.updateCarouselUrl(carVO);
+		
+		return "성공";
+	}
+	
+//	이미지 파일과 concertId를 받아 CarouselVO 1건을 DB에서 삭제
+	@PostMapping("/deleteCarousel")
+	@ResponseBody
+	public String deleteCarousel( @RequestParam("concertId") int concertId){
+		log.info("MainController 의 deleteCarousel() 메소드 실행");
+		concertService.deleteCarousel(concertId);
+		
+		return "성공";
+	}
+	
+// ===================== 표지 이미지 (carousel) 끝 ========================
 	
 	@GetMapping("/pastBook")
 	public String pastBook(Model model, BookVO bookVO) {

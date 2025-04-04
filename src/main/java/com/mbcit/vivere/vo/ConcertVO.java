@@ -15,6 +15,7 @@ public class ConcertVO {
     private int totalSeat;
     private int status;
     private String posterUrl;
+    private String carouselUrl;
     private int equalPrice;
     private int priceVIP;
     private int priceR;

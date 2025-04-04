@@ -51,8 +51,6 @@
     <span class="carousel-control-next-icon"></span>
   </button>
 </div>
-<a href="/insertConcert">공연 등록</a><br/><br/>
-<a href="/concertList">공연 목록</a><br/><br/>
 <a href="/book">공연 예약 book.jsp</a>
 
 <!-- header -->

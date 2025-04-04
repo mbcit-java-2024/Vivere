@@ -43,7 +43,7 @@
 			<!-- 이용안내 드롭다운 -->
 			<div class="guide-dropdown">
 				<button id="guideButton" class="dropdown-toggle"
-					onclick="toggleGuideDropdown()">이용안내 ▾</button>
+					onclick="toggleGuideDropdown()">이용안내</button>
 				<div id="guideDropdown" class="guide-dropdown-menu">
 					<a href="cancel_notice.jsp">예약/취소 안내</a> <a href="map.jsp">오시는
 						길</a> <a href="info.jsp">시설 안내</a> 
@@ -58,8 +58,8 @@
 				<button id="dropdownButton" class="dropdown-toggle"
 					onclick="toggleDropdown()">
 					<c:choose>
-						<c:when test="${empty loginUser}">로그인 ▾</c:when>
-						<c:otherwise>${loginUser} ▾</c:otherwise>
+						<c:when test="${empty loginUser}">로그인</c:when>
+						<c:otherwise>${loginUser}</c:otherwise>
 					</c:choose>
 				</button>
 				<div id="loginDropdown" class="dropdown-menu">
@@ -84,9 +84,9 @@
 				</div>
 			</div>
 
-			<a href="/insertConcert">공연 등록</a>  
 
-			<c:if test="${not empty consumerVO.Grade eq 'ADMIN'}">
+			<c:if test="${sessionScope.loginUser.grade eq 'ADMIN'}">
+				<a href="/insertConcert">공연 등록</a>  
 				<div class="rep-box" style="text-align: center;">
 					<button onclick="location.href='/qnaList'">문의 답변 쓰러가기</button>
 				</div>

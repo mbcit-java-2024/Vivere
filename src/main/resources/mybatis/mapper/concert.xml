@@ -57,7 +57,16 @@
 		and seatNum = #{seatNum} 
 		limit 1
 	</select>	
+
+	<select id="getCarouselByConcertId" parameterType="int" resultType="carouselVO">
+		select * from carousel where concertId = #{concertId}
+	</select>	
 	
+	<select id="getCarouselListByStatus" resultType="carouselVO">
+		select * from carousel where status = 1
+	</select>	
+	
+
 	<!-- insert  -->
 	<insert id="insert" parameterType="concertVO">
 		insert into concert (title, hallType, description, categoryId, totalSeat, posterUrl, priceVIP,
@@ -73,6 +82,10 @@
 	<insert id="insertConcertSeat" parameterType="concertSeatVO">
 		insert into concertSeat (concertId, concertTimeId, lineNum, seatNum, grade,	bookYN)
 		values (#{concertId}, #{concertTimeId}, #{lineNum}, #{seatNum}, #{grade}, false)
+	</insert>
+	
+	<insert id="insertCarousel" parameterType="carouselVO">
+		insert into carousel (concertId, carouselUrl) values (#{concertId}, #{carouselUrl})
 	</insert>
 	
 	<!-- update -->
@@ -103,6 +116,12 @@
 		and concertTimeId = #{concertTimeId} 
 		and lineNum = #{lineNum} 
 		and seatNum = #{seatNum}
+	</update>
+	
+	<update id="updateCarouselUrl" parameterType="carouselVO">
+		update carousel 
+		set carouselUrl = #{carouselUrl}
+		where concertId = #{concertId} 
 	</update>
 
 	<!-- delete -->

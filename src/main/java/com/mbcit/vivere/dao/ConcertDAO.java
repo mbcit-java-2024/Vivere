@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.mbcit.vivere.vo.CarouselVO;
 import com.mbcit.vivere.vo.ConcertTimeVO;
 import com.mbcit.vivere.vo.ConcertVO;
 import com.mbcit.vivere.vo.concertSeatVO;
@@ -36,6 +37,11 @@ public interface ConcertDAO {
 	void update(ConcertVO vo);
 	String getGrade(concertSeatVO concertSeatVO);
 	void updateBookYN(concertSeatVO concertSeatVO);
+//	carousel
+	CarouselVO getCarouselByConcertId(int concertId);
+	void insertCarousel(CarouselVO carVO);
+	List<CarouselVO> getCarouselListByStatus();
+	void updateCarouselUrl(CarouselVO carVO);
 	
 
 }

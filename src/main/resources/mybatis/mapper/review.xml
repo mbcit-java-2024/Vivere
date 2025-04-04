@@ -5,8 +5,8 @@
 <mapper namespace="com.mbcit.vivere.dao.ReviewDAO">
 	<insert id="insert" parameterType="java.util.HashMap">
 		INSERT INTO vivere.review
-		(concertId, rate, content, createDate, updateDate)
-		VALUES(#{concertId}, #{rate}, #{content}, now(),
+		(consumerId, concertId, rate, content, createDate, updateDate)
+		VALUES(1, #{concertId}, #{rate}, #{content}, now(),
 		now());
 	</insert>
 

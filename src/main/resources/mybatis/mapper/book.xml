@@ -18,7 +18,6 @@
 		, a.bookNum
 		,
 		a.price
-		, a.seatCnt
 		, a.seatNum
 		, a.grade
 		, a.orderDate

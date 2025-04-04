@@ -222,8 +222,8 @@ function updateReview(id) {
 	    let rate = $("#reviewForm-" + id).find("input[name='rate']").val();
 	    console.log('reviewInsert::::::::::::::rate:::::::' + rate);
 	    
-	    if (-1 == rate) {
-	    	alert('별점을 0~5점으로 입력하세요.');
+	    if (0 == rate) {
+	    	alert('별점을 1~5점으로 입력하세요.');
 	    	return;
 	    }
 	    if ('' == textarea) {
@@ -481,7 +481,9 @@ function updateReview(id) {
 			</div>
 		</c:if>
 	</c:forEach>
-
+<footer>
+	<jsp:include page="./include/footer.jsp"/>
+</footer>
 
 </body>
 </html>

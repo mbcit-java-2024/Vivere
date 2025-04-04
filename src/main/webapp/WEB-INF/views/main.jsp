@@ -10,9 +10,19 @@
 
 <h1>VIVERE ART HALL</h1>
 
-<a href="/insertConcert">공연 등록</a><br/><br/>
-<a href="/concertList">공연 목록</a><br/><br/>
-<a href="/book">공연 예약 book.jsp</a>
+<!-- 공연 포스터 회전목마 -->
+
+<!-- header -->
+<header>
+	<jsp:include page="./include/header.jsp"/>
+</header>
+
+
+<!-- footer -->
+<footer>
+	<jsp:include page="./include/footer.jsp"/>
+</footer>
+
 
 </body>
 </html>

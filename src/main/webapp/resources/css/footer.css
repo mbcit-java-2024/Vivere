@@ -1,0 +1,60 @@
+body {
+	margin: 0;
+	padding: 0;
+	font-family: 'Apple SD Gothic Neo', sans-serif;
+}
+
+footer {
+	background-color: #f9f9f9;
+	padding: 30px 0;
+	border-top: 1px solid #ccc;
+}
+
+.footer-container {
+	max-width: 1000px;
+	margin-left: 460px;
+	display: flex;
+	justify-content: center;
+	gap: 80px;
+	padding: 20px;
+}
+
+.footer-menu {
+	display: flex;
+	gap: 80px;
+}
+
+.footer-section {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+}
+
+.footer-section h4 {
+	margin: 0;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.footer-section p, .footer-section a {
+	font-size: 14px;
+	margin: 0;
+	color: #555;
+	text-decoration: none;
+}
+
+.sns-icons {
+	display: flex;
+	gap: 10px;
+}
+
+.sns-icons a {
+	font-size: 20px;
+	color: #555;
+	margin-right: 12px;
+}
+
+.sns-icons a:hover {
+	color: #000;
+}

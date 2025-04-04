@@ -113,30 +113,30 @@
             <div class="form-group">
                 <label>카드번호</label>
                 <div class="card-inputs">
-                    <input type="text" name="card1" maxlength="4" required>
-                    <input type="text" name="card2" maxlength="4" required>
-                    <input type="text" name="card3" maxlength="4" required>
-                    <input type="text" name="card4" maxlength="4" required>
+					<input type="text" name="card1" required pattern="\d{4}">
+					<input type="text" name="card2" required pattern="\d{4}">
+					<input type="text" name="card3" required pattern="\d{4}">
+					<input type="text" name="card4" required pattern="\d{4}">
                 </div>
             </div>
 
             <!-- 카드 비밀번호 -->
-            <div class="form-group">
-                <label>카드 비밀번호 (숫자 4자리)</label>
-                <input type="password" name="pw" maxlength="4" required>
-            </div>
+			<div class="form-group">
+			    <label>카드 비밀번호 (숫자 4자리)</label>
+			    <input type="password" name="pw" maxlength="4" required pattern="\d{4}">
+			</div>
 
-            <!-- CVC -->
-            <div class="form-group">
-                <label>CVC</label>
-                <input type="text" name="cvc" maxlength="3" required>
-            </div>
+			<!-- CVC -->
+			<div class="form-group">
+			    <label>CVC</label>
+			    <input type="text" name="cvc" required pattern="\d{3}">
+			</div>
 
-            <!-- 유효기간 -->
-            <div class="form-group">
-                <label>유효기간 (예: 2025-12-31)</label>
-                <input type="text" name="validDate" placeholder="예: 2025-12-31" required>
-            </div>
+			<!-- 유효기간 -->
+			<div class="form-group">
+			    <label>유효기간 (예: 2025-12-31)</label>
+			    <input type="date" name="validDate" required>
+			</div>
 
             <button type="submit" class="submit-btn">등록하기</button>
         </form>

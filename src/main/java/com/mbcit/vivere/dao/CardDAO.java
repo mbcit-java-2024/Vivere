@@ -17,7 +17,9 @@ public interface CardDAO {
 
 	CardVO getCardByConsumerId(int consumerId);
 
-	void updateCard(CardVO cardVO);
+	void deleteCard(int id);
+
+	CardVO getCardById(int cardId);
 	
 	
 }

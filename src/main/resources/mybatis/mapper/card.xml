@@ -12,24 +12,19 @@
 	    select * from card where consumerId = #{consumerId}
 	</select>
 	
-	<insert id="insertCard" parameterType="cardvo">
-	    insert into card (
-	        consumerId, pw, cardNum, cvc, validDate, bankName, createDate
-	    ) values (
-	        #{consumerId}, #{pw}, #{cardNum}, #{cvc}, #{validDate}, #{bankName}, now()
-	    )
-	</insert>    
+	 <insert id="insertCard" parameterType="cardVO">
+        insert into card (consumerId, pw, cardNum, cvc, validDate, bankName, createDate)
+        values (#{consumerId}, #{pw}, #{cardNum}, #{cvc}, #{validDate}, #{bankName}, now())
+    </insert>
 	
-<update id="updateCard" parameterType="cardvo">
-    update card
-    set
-        pw = #{pw},
-        cardNum = #{cardNum},
-        cvc = #{cvc},
-        validDate = #{validDate},
-        bankName = #{bankName}
-    where id = #{id}
-</update>
+	<delete id="deleteCard" parameterType="int">
+        delete from card where id = #{id}
+    </delete>
+    
+    <select id="getCardById" parameterType="int" resultType="cardVO">
+        select * from card where id = #{id}
+    </select>
+    
 </mapper>
 
 

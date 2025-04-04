@@ -174,16 +174,6 @@
 		    return true;
 		}
 		
-		function checkBirth() {
-		    const birth = document.querySelector('input[name="birth"]').value;
-		    const birthRegex = /^\d{8}$/;
-
-		    if (!birthRegex.test(birth)) {
-		        alert("생년월일은 8자리(예: 20000101)로 입력해야 합니다.");
-		        return false;
-		    }
-		    return true;
-		}
 		
 		
 	</script>
@@ -192,7 +182,7 @@
 <body>
 <div class="container">
     <h2>회원가입</h2>
-    <form action="/signinOK" method="post" onsubmit="return checkPasswordMatch() && checkAgreement() && multiIdCheck() && checkPhone() && checkBirth()">
+    <form action="/signinOK" method="post" onsubmit="return checkPasswordMatch() && checkAgreement() && multiIdCheck() && checkPhone()">
 
         <div class="form-group">
             <label>아이디</label>
@@ -219,7 +209,7 @@
 
         <div class="form-group">
             <label>생년월일</label>
-            <input type="text" name="birth" placeholder="생년월일 8자리 입력 (예: 20000101)" required>
+            <input type="date" name="birth" required>
         </div>
 
         <div class="form-group">
@@ -292,7 +282,6 @@
 		        </div>
 		    </div>
 		</div>
-</div>
 		
         <button type="submit" class="submit-btn">가입하기</button>
     </form>

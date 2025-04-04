@@ -59,24 +59,24 @@
 					onclick="toggleDropdown()">
 					<c:choose>
 						<c:when test="${empty loginUser}">로그인</c:when>
-						<c:otherwise>${loginUser}</c:otherwise>
+						<c:otherwise>${loginUser.userId}</c:otherwise>
 					</c:choose>
 				</button>
 				<div id="loginDropdown" class="dropdown-menu">
 					<c:choose>
 						<c:when test="${empty loginUser}">
-							<a href="login.jsp">로그인</a>
-							<a href="signIn.jsp">회원가입</a>
+							<a href="login">로그인</a>
+							<a href="signIn">회원가입</a>
 						</c:when>
 						<c:otherwise>
 							<c:choose>
 								<c:when test="${not empty consumerVO.Grade eq 'ADMIN'}">
 									<a href="/qnaList">문의답변 쓰기</a>
-									<a href="logout.jsp">로그아웃</a>
+									<a href="logout">로그아웃</a>
 								</c:when>
 								<c:otherwise>
-									<a href="myPage.jsp">마이페이지</a>
-									<a href="logout.jsp">로그아웃</a>
+									<a href="myPage">마이페이지</a>
+									<a href="logout">로그아웃</a>
 								</c:otherwise>
 							</c:choose>
 						</c:otherwise>

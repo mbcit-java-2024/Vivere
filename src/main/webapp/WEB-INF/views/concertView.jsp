@@ -12,8 +12,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/js/bootstrap.bundle.min.js"></script>
 
 </head>
-<!-- header 
--->
+<!-- header -->
 <header>
    <jsp:include page="./include/header.jsp"/>
 </header>

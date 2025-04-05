@@ -58,7 +58,6 @@
    <jsp:include page="./include/header.jsp"/>
 </header>
 
-
 <!-- footer -->
 <footer>
    <jsp:include page="./include/footer.jsp"/>

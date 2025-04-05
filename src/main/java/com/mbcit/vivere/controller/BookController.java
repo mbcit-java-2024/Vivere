@@ -187,7 +187,6 @@ public class BookController {
 		
 		model.addAttribute("conVO", conVO);
 		model.addAttribute("books", books);
-		model.addAttribute("selectedSeats", selectedSeats);
 		return "/bookOK";
 	}
 	
@@ -200,8 +199,7 @@ public class BookController {
 	@RequestMapping("/test/bookOK")
 	public String test(Model model) {
 		
-		String bookNum = "001001250403142424";
-		String selectedSeats = "N09, N10";
+		String bookNum = "001001250405142258";
 		List<BookVO> books = bookService.getBooksByBookNum(bookNum);
 		
 		ConcertVO conVO = concertService.getConcertById(books.get(0).getConcertId());
@@ -209,7 +207,6 @@ public class BookController {
 		
 		model.addAttribute("conVO", conVO);
 		model.addAttribute("books", books);
-		model.addAttribute("selectedSeats", selectedSeats);
 		return "/bookOK";
 	}
 	

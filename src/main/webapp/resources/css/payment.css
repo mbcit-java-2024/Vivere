@@ -18,6 +18,9 @@
 	background-color: #FCFCFC;
 	box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
 }
+.mg-top-50 {
+	margin-top: 50px;
+}
 .subTitle {
 	width: 900px;
 	margin-bottom: 10px;
@@ -116,7 +119,7 @@
 	font-weight: bold;
 	font-size: 26px;
 	width: 900px;
-	margin: 30px;
+	margin: 70px;
 	display: flex;
 	justify-content: center;
 	align-items: center;

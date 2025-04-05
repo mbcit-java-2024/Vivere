@@ -16,10 +16,7 @@ nav {
 }
 
 .nav-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding-left: 150px; /* 💡 살짝 오른쪽으로 */
-    padding-right: 30px;
+    justify-content: center;
     display: flex;
     align-items: center;
     gap: 20px;

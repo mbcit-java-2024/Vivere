@@ -20,13 +20,11 @@ window.onload = () => {
 <fmt:formatDate value="${books[0].concertTime}" pattern="HH시 mm분" var="conTime"/>
 
 <div class="wrapper">
+	<%-- <jsp:include page="./include/header.jsp"/> --%>
 	<div class="body-main">
 		<div class="main">
 			<div class="bookInfo-title">
 				예매완료
-			</div>
-			<div>
-				
 			</div>
 			<table class="box" style="border: none;">
 				<tr>

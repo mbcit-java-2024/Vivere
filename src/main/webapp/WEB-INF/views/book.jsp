@@ -86,26 +86,34 @@
 						<h3 style="margin: 0px;">좌석 등급 및 가격 안내</h3><br/>
 						<c:if test="${concertVO.equalPrice == 0}">
 							<table>
-								<tr>
-									<th>VIP</th>
-									<th><div class="gradeExample" style="background-color: #78171C; border-color: black"></div></th>
-									<td class="price">${concertVO.priceVIP}원</td>
-								</tr>
+								<c:if test="${concertVO.countVIP > 0}">
+									<tr>
+										<th>VIP</th>
+										<th><div class="gradeExample" style="background-color: #78171C; border-color: black"></div></th>
+										<td class="price">${concertVO.priceVIP}원</td>
+									</tr>
+								</c:if>
+								<c:if test="${concertVO.countR > 0}">
 								<tr>
 									<th>R</th>
 									<th><div class="gradeExample" style="background-color: #B63330; border-color: #9B2F2A"></div></th>
 									<td class="price">${concertVO.priceR}원</td>
 								</tr>
+								</c:if>
+								<c:if test="${concertVO.countS > 0}">
 								<tr>
 									<th>S</th>
 									<th><div class="gradeExample" style="background-color: #CDAA39; border-color: #4C6A91"></div></th>
 									<td class="price">${concertVO.priceS}원</td>
 								</tr>
+								</c:if>
+								<c:if test="${concertVO.countA > 0}">
 								<tr>
 									<th>A</th>
 									<th><div class="gradeExample" style="background-color: #E5CD94; border-color: #5E8B32"></div></th>
 									<td class="price">${concertVO.priceA}원</td>
 								</tr>
+								</c:if>
 								<tr>
 									<th>-</th>
 									<th><div class="gradeExample" style="background-color: lightgray; border-color: lightgray;"></div></th>

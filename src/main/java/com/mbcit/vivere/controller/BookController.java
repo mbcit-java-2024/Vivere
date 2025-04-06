@@ -49,24 +49,24 @@ public class BookController {
 					) {
 		System.out.println("BookController 컨트롤러의 book() 메소드 실행");
 		
-		int concertId = 1; // ************ !!!concertId 가져오게 추가해야됨!!! ************ 
+		int concertId = 3; // ************ !!!concertId 가져오게 추가해야됨!!! ************ 
 		
 		ConcertVO concertVO = concertService.getConcertById(concertId);
 		
-		List<ConcertTimeVO> conTimes = concertService.getFutureConcertTimes(concertId);
-		Date selDate = conTimes.get(0).getConcertTime(); // ************ selectTime 맞게 들어가려면??? ************ 
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(selDate);
-		Date selectedTime = calendar.getTime();
-		
-		ArrayList<Character> gHall = concertService.getGHallLine();
-		ArrayList<Character> fHall = concertService.getFHallLine();
-		
-		model.addAttribute("gHall", gHall);
-		model.addAttribute("fHall", fHall);
-		model.addAttribute("concertVO", concertVO);
-		model.addAttribute("conTimes", conTimes);
-		model.addAttribute("selectedTime", selectedTime);
+			List<ConcertTimeVO> conTimes = concertService.getFutureConcertTimes(concertId);
+			Date selDate = conTimes.get(0).getConcertTime(); // ************ selectTime 맞게 들어가려면??? ************ 
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(selDate);
+			Date selectedTime = calendar.getTime();
+			
+			ArrayList<Character> gHall = concertService.getGHallLine();
+			ArrayList<Character> fHall = concertService.getFHallLine();
+			
+			model.addAttribute("gHall", gHall);
+			model.addAttribute("fHall", fHall);
+			model.addAttribute("concertVO", concertVO);
+			model.addAttribute("conTimes", conTimes);
+			model.addAttribute("selectedTime", selectedTime);
 		
 		return "/book";
 	}

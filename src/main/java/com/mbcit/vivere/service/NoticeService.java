@@ -19,5 +19,14 @@ public class NoticeService {
 	 public void insert(NoticeVO noticeVO) {
 		 noticeDAO.insert(noticeVO);
 	}
+	public NoticeVO selectNoticeDetail(int id) {
+		return noticeDAO.selectNoticeDetail(id);
+	}
+	public void updateNotice(NoticeVO noticeVO) {
+		noticeDAO.updateNotice(noticeVO);
+	}
+	public void noticeDelete(int id) {
+		noticeDAO.noticeDelete(id);
+	}
 
 }

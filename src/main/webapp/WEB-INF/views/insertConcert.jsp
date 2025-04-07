@@ -543,6 +543,17 @@ $(document).ready(function() {
 	  color: #CDAA39;
 	  border-color: #CDAA39;
 	}
+	.btn-black {
+	  background-color: black;
+	  color: white;
+	  border-color: black;
+	}
+	
+	.btn-black:hover {
+	  background-color: white;
+	  color: black;
+	  border-color: black;
+	}
 </style>
 </head>
 <body>
@@ -636,6 +647,7 @@ $(document).ready(function() {
 	</div>
 	<div class="mb-4 text-center">
 		<button style="width: 200px;" class="btn btn-gold" type="submit" id="submitBtn">저장</button>
+		<button class="btn btn-black" style="width: 200px; type="button" onclick="history.back()">뒤로가기</button>
 	</div>
 </form>
 </div>

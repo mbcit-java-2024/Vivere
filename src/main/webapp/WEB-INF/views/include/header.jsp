@@ -37,19 +37,20 @@
 
 	<nav>
 		<div class="nav-inner">
-			<a href="/">로고</a> <a href="/concertList">공연</a> <a
-				href="monthly.jsp">일정(캘린더)</a>
+			<a href="/">로고</a> <a href="/concertList">공연</a> 
+			<a href="monthly.jsp">일정(캘린더)</a>
 
 			<!-- 이용안내 드롭다운 -->
 			<div class="guide-dropdown">
 				<button id="guideButton" class="dropdown-toggle"
 					onclick="toggleGuideDropdown()">이용안내</button>
 				<div id="guideDropdown" class="guide-dropdown-menu">
-					<a href="cancel_notice.jsp">예약/취소 안내</a> <a href="map.jsp">오시는
-						길</a> <a href="info.jsp">시설 안내</a> 
-						<c:if test="${not empty consumerVO.Grade eq 'ADMIN'}">
-							<a href="/noticeList">공지사항</a>
-						</c:if>
+					<a href="cancel_notice.jsp">예약/취소 안내</a> 
+					<a href="map.jsp">오시는 길</a> 
+					<a href="info.jsp">시설 안내</a> 
+					<c:if test="${not empty consumerVO.Grade eq 'ADMIN'}">
+						<a href="/noticeList">공지사항</a>
+					</c:if>
 				</div>
 			</div>
 

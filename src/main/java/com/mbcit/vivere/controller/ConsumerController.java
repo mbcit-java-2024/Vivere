@@ -109,34 +109,20 @@ public class ConsumerController {
         return "redirect:/mycard";
     }
     
-    
-    @RequestMapping("/mycardUpdate")
-    public String mycardUpdate(Model model, HttpSession session) {
-    	ConsumerVO loginUser = (ConsumerVO) session.getAttribute("loginUser");
-    	        
-        CardVO card = cardService.getCardByConsumerId(loginUser.getId());
-        model.addAttribute("card", card);
-       
-        
-        return "/mycardUpdate";
-    }
-    @RequestMapping("/mycardUpdateOK")
-    public String updateCardOK(HttpServletRequest request, HttpSession session, RedirectAttributes re) {
+    @RequestMapping("/mycardDelete")
+    public String deleteCard(int id, HttpSession session, RedirectAttributes re) {
         ConsumerVO loginUser = (ConsumerVO) session.getAttribute("loginUser");
-
         if (loginUser == null) return "redirect:/login";
 
-        cardService.updateCard(request, loginUser.getId());
-
-        re.addFlashAttribute("msg", "카드 등록 변경이 완료되었습니다.");
+        cardService.deleteCard(id, loginUser.getId());
+        re.addFlashAttribute("msg", "카드가 삭제되었습니다.");
         return "redirect:/mycard";
     }
 
 
-
 }
     
-
+//push를 위한 주석
     
 
 

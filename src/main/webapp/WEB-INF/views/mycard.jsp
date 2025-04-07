@@ -65,58 +65,101 @@
             font-size: 16px;
         }
 
-		.btn {
-		    margin-top: 30px;
-		    display: inline-block;
-		    background-color: black;
-		    color: white;
-		    padding: 10px 20px;
-		    border-radius: 5px;
-		    text-decoration: none;
-		    font-weight: bold;
-		}
+        .card-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 20px;
+        }
 
-		.btn:hover {
-		    background-color: #333;
-		}
+        .card-info {
+            flex: 1;
+        }
+
+        .card-item form {
+            align-self: flex-end;
+        }
+
+        .btn {
+            margin-top: 30px;
+            display: inline-block;
+            background-color: black;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background-color: #333;
+        }
+
+        .btn-delete {
+            background-color: black;
+            color: white;
+            padding: 8px 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-delete:hover {
+            background-color: #333;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid #eee;
+            margin: 20px 0;
+        }
     </style>
 </head>
 <body>
 
-	<c:if test="${not empty msg}">
-	    <script>
-	        alert("${msg}");
-	    </script>
-	</c:if>
-	
-    <div class="container">
-        <%-- sidebar include --%>
-        <jsp:include page="myinfoMenu.jsp" />
+<c:if test="${not empty msg}">
+    <script>
+        alert("${msg}");
+    </script>
+</c:if>
 
-        <div class="content">
-            <h2>등록된 카드 정보</h2>
+<div class="container">
+    <jsp:include page="myinfoMenu.jsp" />
 
-			<c:choose>
-			    <c:when test="${empty cardList}">
-			        <p class="card-box">등록된 카드가 없습니다.</p>
-			        <a href="/mycardInsert" class="btn">카드 등록하기</a>
-			    </c:when>
-			    <c:otherwise>
-			        <div class="card-box">
-			            <c:forEach var="card" items="${cardList}">
-			                <p>거래은행: ${card.bankName}</p>
-			                <p>카드번호: ${card.cardNum}</p>
-			                <p>유효기간: ${card.validDate}</p>
-			                <p>등록일자: <fmt:formatDate value="${card.createDate}" pattern="yyyy-MM-dd" /></p>
-			                <hr/>
-			            </c:forEach>
-			        </div>
-					
-					<a href="/mycardUpdate" class="btn">등록카드 변경하기</a>
-			    </c:otherwise>
-			</c:choose>       
-		 </div>
+    <div class="content">
+        <h2>등록된 카드 정보</h2>
+
+        <c:choose>
+            <c:when test="${empty cardList}">
+                <p class="card-box">등록된 카드가 없습니다.</p>
+                <a href="/mycardInsert" class="btn">카드 등록하기</a>
+            </c:when>
+            <c:otherwise>
+                <div class="card-box">
+                    <c:forEach var="card" items="${cardList}">
+                        <div class="card-item">
+                            <div class="card-info">
+                                <p>거래은행: ${card.bankName}</p>
+                                <p>카드번호: ${card.cardNum}</p>
+                                <p>유효기간: ${card.validDate}</p>
+                                <p>등록일자: <fmt:formatDate value="${card.createDate}" pattern="yyyy-MM-dd" /></p>
+                            </div>
+                            <form action="/mycardDelete" method="post">
+                                <input type="hidden" name="id" value="${card.id}" />
+                                <button type="submit" class="btn-delete">삭제</button>
+                            </form>
+                        </div>
+                        <hr />
+                    </c:forEach>
+                </div>
+
+                <a href="/mycardInsert" class="btn">등록카드 추가</a>
+            </c:otherwise>
+        </c:choose>
     </div>
+</div>
+<!--push를 위한 주석-->
+
 
 </body>
 </html>

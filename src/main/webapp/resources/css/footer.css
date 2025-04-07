@@ -1,4 +1,16 @@
-body {
+html, body {
+	height: 100%;
+	margin: 0;
+}
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+.body-main {
+	flex: 1;
+}
+.footer-body {
 	margin: 0;
 	padding: 0;
 	font-family: 'Apple SD Gothic Neo', sans-serif;
@@ -11,8 +23,6 @@ footer {
 }
 
 .footer-container {
-	max-width: 1000px;
-	margin-left: 460px;
 	display: flex;
 	justify-content: center;
 	gap: 80px;
@@ -21,6 +31,7 @@ footer {
 
 .footer-menu {
 	display: flex;
+	justify-content: center;
 	gap: 80px;
 }
 

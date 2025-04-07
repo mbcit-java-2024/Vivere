@@ -60,14 +60,14 @@ th {
 				<c:if test="${notice.status == 1}">
 					<tr>
 						<td>${notice.id}</td>
-						<td><a class="title-link" href="/notice/view/${notice.id}"
+						<td><a class="title-link" href="/noticeDetail/${notice.id}"
 							style="color: red; font-weight: bold;"> 🔥 ${notice.title} </a></td>
 						<td><fmt:formatDate value="${notice.createDate}"
 								pattern="yyyy-MM-dd HH:mm" /></td>
 						<td>
-							<button onclick="location.href='/editNotice/${notice.id}'">✏
+							<button onclick="location.href='/noticeEdit/${notice.id}'">✏
 								수정</button>
-							<button onclick="location.href='/notice/delete/${notice.id}'">🗑
+							<button onclick="location.href='/noticeDelete/${notice.id}'">🗑
 								삭제</button>
 						</td>
 					</tr>
@@ -79,14 +79,14 @@ th {
 				<c:if test="${notice.status != 1}">
 					<tr>
 						<td>${notice.id}</td>
-						<td><a class="title-link" href="/notice/view/${notice.id}">
+						<td><a class="title-link" href="/noticeDetail/${notice.id}">
 								${notice.title} </a></td>
 						<td><fmt:formatDate value="${notice.createDate}"
 								pattern="yyyy-MM-dd HH:mm" /></td>
 						<td>
-							<button onclick="location.href='/notice/edit/${notice.id}'">✏
+							<button onclick="location.href='/noticeEdit/${notice.id}'">✏
 								수정</button>
-							<button onclick="location.href='/notice/delete/${notice.id}'">🗑
+							<button onclick="location.href='/noticeDelete/${notice.id}'">🗑
 								삭제</button>
 						</td>
 					</tr>

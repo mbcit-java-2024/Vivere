@@ -1,4 +1,7 @@
 @charset "UTF-8";
+.bgi {
+	background-color: #EEEEEE;
+}
 .main {
 	display: flex;
 	flex-direction: column;
@@ -6,7 +9,7 @@
 	align-items: center;
 }
 .box {
-	border: 1px solid black;
+	border: 0;
 	width: 900px;
 	font-weight: bold;
 	padding: 10px;
@@ -15,18 +18,27 @@
 	background-color: #FCFCFC;
 	box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
 }
+.mg-top-50 {
+	margin-top: 50px;
+}
 .subTitle {
 	width: 900px;
 	margin-bottom: 10px;
+	margin-left: 15px;
 	display: flex;
-	justify-content: center;
+	justify-content: left;
 	align-items: center;
 	border-radius: 5px;
-	background-color: #78171C;
-	color: white;
+	/* background-color: #78171C; */
+	color: #78171C;
 	height: 30px;
 }
+.title-hr {
+	height: 2px;
+	background-color: #78171C;
+}
 .mg-left {
+	margin-top: 15px;
 	margin-left: 10px;
 }
 .text-gray {
@@ -49,21 +61,23 @@
 	width: 160px;
 }
 .button {
-	width: 50%;
+	width: 40%;
 	height: 50px;
 	border-radius: 5px;
 	font-weight: bold;
 	font-size: 18px;
 	border: 0;
 	color: white;
-	background-color: #78171C;
+	background-color: #BBBBBB;
 	cursor: pointer;
 	transition: all 0.3s ease-in-out;
+	box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
 }
-.pay {
+.btn-pay {
 	 background-color: #CDAA39;
+	 width: 60%
 }
-.pay:hover {
+.btn-pay:hover {
 	width:100%;
 	height:52px;
 }
@@ -87,7 +101,7 @@
 	border-radius: 10px;
 	width: 240px;
 	height: 160px;
-	background-color: #CDAA39;
+	background-color: #EFEEED;
 	box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
 	justify-content: center; /* 수평 중앙 정렬 */
 	align-items: center;
@@ -95,6 +109,8 @@
 	flex-shrink: 0;
 	text-align: center;
 	font-weight: bold;
+	text-decoration: none;
+	color: black;
 }
 #radioCard, #radioRemit {
 	display: none;
@@ -103,7 +119,7 @@
 	font-weight: bold;
 	font-size: 26px;
 	width: 900px;
-	margin: 30px;
+	margin: 70px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -128,6 +144,8 @@
 	cursor: pointer;
 	font-weight: bold;
 	font-size: 18px;
+	color: white;
+	margin: 20px 0px 80px;
 }
 
 

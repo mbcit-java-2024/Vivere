@@ -152,44 +152,152 @@ public class MainController {
 	public String noticeList(Model model, NoticeVO noticeVO) {
 		// 수빈
 		log.info("MainController 의 noticeList() 메소드 실행");
-
-		List<NoticeVO> noticeList = noticeService.selectNoticeList(noticeVO);
+		String result = "/";
+		ConsumerVO consumerVO = new ConsumerVO();
 		
+//		HttpSession session = request.getSession(false);
+//		if (session != null && session.getAttribute("userType") != null) { 
+//			int userType = (int) session.getAttribute("userType"); 
+
+		 consumerVO.setGrade(Grade.ADMIN);
+		 result = "/noticeList"; 
+		 List<NoticeVO> noticeList = noticeService.selectNoticeList(noticeVO);
+//		}	
+//		else {
+//			result = "/login"; // 로그인 페이지로
+//		}
 
 		model.addAttribute("noticeList", noticeList);
-		return "/noticeList";
+		return result;
 
-//		log.info("pastBook" + pastBook);
-//		model.addAttribute("pastBook", pastBook);
+	}
+	@GetMapping("/noticeDetail/{id}")
+	public String noticeDetail(Model model, NoticeVO noticeVO, @PathVariable int id) {
+		// 수빈
+		log.info("MainController 의 noticeDetail() 메소드 실행");
+		String result = "/";
+		ConsumerVO consumerVO = new ConsumerVO();
+		
+//		HttpSession session = request.getSession(false);
+//		if (session != null && session.getAttribute("userType") != null) { 
+//			int userType = (int) session.getAttribute("userType"); 
+
+		 consumerVO.setGrade(Grade.ADMIN);
+		 result = "/noticeDetail"; 
+		 NoticeVO noticeDetail = noticeService.selectNoticeDetail(id);
+//		}	
+//		else {
+//			result = "/login"; // 로그인 페이지로
+//		}
+		
+		model.addAttribute("noticeDetail", noticeDetail);
+		return result;
+		
+	}
+	@GetMapping("/noticeEdit/{id}")
+	public String noticeEdit(Model model, NoticeVO noticeVO, @PathVariable int id) {
+		// 수빈
+		log.info("MainController 의 noticeEdit() 메소드 실행");
+		String result = "/";
+		ConsumerVO consumerVO = new ConsumerVO();
+//		HttpSession session = request.getSession(false);
+//		if (session != null && session.getAttribute("userType") != null) { 
+//			int userType = (int) session.getAttribute("userType"); 
+
+		 consumerVO.setGrade(Grade.ADMIN);
+		 result = "/noticeEdit"; 
+		 NoticeVO noticeDetail = noticeService.selectNoticeDetail(id);
+//		}	
+//		else {
+//			result = "/login"; // 로그인 페이지로
+//		}
+		
+		model.addAttribute("noticeDetail", noticeDetail);
+		return result;
+		
+	}
+	@PostMapping("/noticeEditOK")
+	public String noticeEditOK(Model model, NoticeVO noticeVO) {
+		// 수빈
+		log.info("MainController 의 noticeEditOK() 메소드 실행");
+		String result = "/";
+		ConsumerVO consumerVO = new ConsumerVO();
+//		HttpSession session = request.getSession(false);
+//		if (session != null && session.getAttribute("userType") != null) { 
+//			int userType = (int) session.getAttribute("userType"); 
+
+		 consumerVO.setGrade(Grade.ADMIN);
+		 result = "redirect:/noticeList"; 
+		 noticeService.updateNotice(noticeVO);
+//		}	
+//		else {
+//			result = "/login"; // 로그인 페이지로
+//		}
+		
+		return result;
+		
 	}
 	@GetMapping("/noticeInsert")
 	public String noticeInsert(Model model, NoticeVO noticeVO) {
 		// 수빈
 		log.info("MainController 의 noticeInsert() 메소드 실행");
+		String result = "/";
+		ConsumerVO consumerVO = new ConsumerVO();
+//		HttpSession session = request.getSession(false);
+//		if (session != null && session.getAttribute("userType") != null) { 
+//			int userType = (int) session.getAttribute("userType"); 
+
+		 consumerVO.setGrade(Grade.ADMIN);
+		 result = "/noticeInsert"; 
+//		}	
+//		else {
+//			result = "/login"; // 로그인 페이지로
+//		}
 		
+		return result;
 		
+	}
+	@GetMapping("/noticeDelete/{id}")
+	public String noticeDelete(Model model, NoticeVO noticeVO, @PathVariable int id) {
+		// 수빈
+		log.info("MainController 의 noticeDelete() 메소드 실행");
+		String result = "/";
+		ConsumerVO consumerVO = new ConsumerVO();
+//		HttpSession session = request.getSession(false);
+//		if (session != null && session.getAttribute("userType") != null) { 
+//			int userType = (int) session.getAttribute("userType"); 
+
+		 consumerVO.setGrade(Grade.ADMIN);
+		 result = "redirect:/noticeList"; 
+		 noticeService.noticeDelete(id);
+//		}	
+//		else {
+//			result = "/login"; // 로그인 페이지로
+//		}
 		
-		
-//		model.addAttribute("noticeList", noticeList);
-		return "/noticeInsert";
-		
-//		log.info("pastBook" + pastBook);
-//		model.addAttribute("pastBook", pastBook);
+		return result;
 	}
 	@PostMapping("/noticeInsertOK")
 	public String noticeInsertOK(Model model, NoticeVO noticeVO) {
 		// 수빈
 		log.info("MainController 의 noticeInsertOK() 메소드 실행");
+		String result = "/";
+		ConsumerVO consumerVO = new ConsumerVO();
 		
+//		HttpSession session = request.getSession(false);
+//		if (session != null && session.getAttribute("userType") != null) { 
+//			int userType = (int) session.getAttribute("userType"); 
+
+		 consumerVO.setGrade(Grade.ADMIN);
+		 result = "redirect:/noticeList"; 
+		 noticeService.insert(noticeVO);
+//		}	
+//		else {
+//			result = "/login"; // 로그인 페이지로
+//		}
 		
-		System.out.println("noticeVO: " + noticeVO);
+		return result;
 		
-		noticeService.insert(noticeVO);
-//		model.addAttribute("noticeList", noticeList);
-		return "redirect:/noticeList";
-		
-//		log.info("pastBook" + pastBook);
-//		model.addAttribute("pastBook", pastBook);
 	}
 	@GetMapping("/pastBook")
 	public String pastBook(Model model, BookVO bookVO) {
@@ -206,14 +314,14 @@ public class MainController {
 //			int userType = (int) session.getAttribute("userType"); 
 
 		// if (consumerVO.getGrade() != Grade.ADMIN) {
-		bookVO.setConsumerId(1);
-		result = "/pastBook";
+			bookVO.setConsumerId(1);
+			result = "/pastBook";
 		// } else {
 		// consumerVO.setGrade(Grade.ADMIN);
 		// result = "/"; // 로그인 페이지로
 		// }
 		pastBook = bookService.pastBook(bookVO);
-
+//		}	
 //		else {
 //			result = "/login"; // 로그인 페이지로
 //		}
@@ -238,15 +346,16 @@ public class MainController {
 //			int userType = (int) session.getAttribute("userType"); 
 
 		// if (consumerVO.getGrade() != Grade.ADMIN) {
-		bookVO.setConsumerId(1);
-		result = "redirect:/pastBook";
+				bookVO.setConsumerId(1);
+				result = "redirect:/pastBook";
 		// } else {
-		// consumerVO.setGrade(Grade.ADMIN);
-		// result = "/"; // 로그인 페이지로
+			// consumerVO.setGrade(Grade.ADMIN);
+			// result = "/"; // 로그인 페이지로
 		// }
 		reviewVO.setId(id);
 		reviewService.delete(reviewVO);
 		// pastBook = bookService.pastBook(bookVO);
+//		}
 //		else {
 //			result = "/login"; // 로그인 페이지로
 //		}
@@ -264,12 +373,13 @@ public class MainController {
 //		if (session != null && session.getAttribute("userType") != null) { 
 //			int userType = (int) session.getAttribute("userType"); 
 
-//		if (consumerVO.getGrade() != Grade.ADMIN) {
-		qnaVO.setConsumerId(1);
-		result = "/qnaInsert";
-//		} else {
-//			consumerVO.setGrade(Grade.ADMIN);
-//			result = "/managerQnaList";
+	//		if (consumerVO.getGrade() != Grade.ADMIN) {
+			qnaVO.setConsumerId(1);
+			result = "/qnaInsert";
+	//		} else {
+	//			consumerVO.setGrade(Grade.ADMIN);
+	//			result = "/managerQnaList";
+	//		}
 //		}
 //		else {
 //			result = "/login"; // 로그인 페이지로
@@ -288,13 +398,14 @@ public class MainController {
 //		if (session != null && session.getAttribute("userType") != null) { 
 //			int userType = (int) session.getAttribute("userType"); 
 
-//		if (consumerVO.getGrade() != Grade.ADMIN) {
-		qnaVO.setConsumerId(1);
-		qnaService.insert(qnaVO);
-		result = "redirect:/qnaList";
-//		} else {
-//			consumerVO.setGrade(Grade.ADMIN);
-//			result = "/managerQnaList";
+	//		if (consumerVO.getGrade() != Grade.ADMIN) {
+			qnaVO.setConsumerId(1);
+			qnaService.insert(qnaVO);
+			result = "redirect:/qnaList";
+	//		} else {
+	//			consumerVO.setGrade(Grade.ADMIN);
+	//			result = "/managerQnaList";
+	//		}
 //		}
 //		else {
 //			result = "/login"; // 로그인 페이지로
@@ -314,17 +425,18 @@ public class MainController {
 //		if (session != null && session.getAttribute("userType") != null) { 
 //			int userType = (int) session.getAttribute("userType"); 
 
-//		if (consumerVO.getGrade() != Grade.ADMIN) {
-		qnaVO.setConsumerId(1);
-		result = "/qnaList";
-//		} else {
-//			consumerVO.setGrade(Grade.ADMIN);
-//			result = "/managerQnaList";
-//		}
+	//		if (consumerVO.getGrade() != Grade.ADMIN) {
+				qnaVO.setConsumerId(1);
+				result = "/qnaList";
+	//		} else {
+//				consumerVO.setGrade(Grade.ADMIN);
+//				result = "/managerQnaList";
+	//		}
 		qnaList = qnaService.qnaList(qnaVO);
 
 		model.addAttribute("qnaList", qnaList);
 		log.info("qnaList" + qnaList);
+//		}	
 //		else {
 //			result = "/login"; // 로그인 페이지로
 //		}
@@ -343,15 +455,16 @@ public class MainController {
 //		if (session != null && session.getAttribute("userType") != null) { 
 //			int userType = (int) session.getAttribute("userType"); 
 
-//		if (consumerVO.getGrade() != Grade.ADMIN) { 
-		qnaVO.setConsumerId(1);
-		result = "redirect:/qnaList";
-//		} else {
-//			consumerVO.setGrade(Grade.ADMIN);
-//			result = "redirect:/managerQnaList";
-//		}
+	//		if (consumerVO.getGrade() != Grade.ADMIN) { 
+			qnaVO.setConsumerId(1);
+			result = "redirect:/qnaList";
+	//		} else {
+	//			consumerVO.setGrade(Grade.ADMIN);
+	//			result = "redirect:/managerQnaList";
+	//		}
 		qnaVO.setId(id);
 		qnaService.delete(qnaVO);
+//		}
 //		else {
 //			result = "/login"; // 로그인 페이지로
 //		}
@@ -370,15 +483,16 @@ public class MainController {
 //		if (session != null && session.getAttribute("userType") != null) { 
 //			int userType = (int) session.getAttribute("userType"); 
 
-//		if (consumerVO.getGrade() != Grade.ADMIN) {
-//		qnaVO.setConsumerId(1); 
-//		result ="redirect:/qnaList";
-//		} else {
-		consumerVO.setGrade(Grade.ADMIN);
-		result = "redirect:/qnaList";
-//		}
+	//		if (consumerVO.getGrade() != Grade.ADMIN) {
+		//		qnaVO.setConsumerId(1); 
+		//		result ="redirect:/qnaList"; // 회원 로그인으로 들어왔을때 관리자 로그인 페이지로 돌아갈건지 // 근데 여기 왔다는건 이미 관리자 로그인
+	//		} else {
+				consumerVO.setGrade(Grade.ADMIN);
+				result = "redirect:/qnaList";
+	//		}
 		qnarepVO.setId(id);
-		qnaRepService.deleteRep(qnarepVO);
+		qnaRepService.deleteRep(qnarepVO); // 이실행문의 위치가 consumerVO.setGrade(Grade.ADMIN);위인지
+//		}
 //		else {
 //			result = "/login"; // 로그인 페이지로
 //		}

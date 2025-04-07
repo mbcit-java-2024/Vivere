@@ -17,7 +17,10 @@ public interface CardDAO {
 
 	CardVO getCardByConsumerId(int consumerId);
 
-	void updateCard(CardVO cardVO);
+	void deleteCard(int id);
+
+	CardVO getCardById(int cardId);
 	
 	
 }
+//push를 위한 주석

@@ -7,14 +7,32 @@
 	<select id="selectNoticeList" parameterType="noticeVO"
 		resultType="noticeVO">
 		SELECT id, title, content, status, createDate, updateDate
-		FROM vivere.notice;
+		FROM vivere.notice
+		ORDER BY createDate DESC
+	</select>
+	<select id="selectNoticeDetail" parameterType="int"
+		resultType="noticeVO">
+		SELECT id, title, content, status, createDate, updateDate
+		FROM vivere.notice
+		where id = ${id}
 	</select>
 
 	<insert id="insert" parameterType="noticeVO">
 		INSERT INTO notice
-		(title, content, status, createDate)
-		VALUES(#{title}, #{content}, #{status}, now())
+		(title,
+		content, status, createDate)
+		VALUES(#{title}, #{content}, #{status},
+		now())
 	</insert>
+
+	<update id="updateNotice" parameterType="noticeVO">
+		UPDATE vivere.notice
+		SET title=#{title}, content=#{content}, status=#{status}, createDate=now(), updateDate=now()
+		WHERE id=#{id};
+	</update>
+	<delete id="noticeDelete" parameterType="int">
+		delete from notice where id = #{id}
+	</delete>
 
 </mapper>
 

@@ -1,5 +1,7 @@
 @charset "UTF-8";
-
+.bgi {
+	background-color: #EEEEEE;
+}
 #pickSeat {
 	width: 600px;
 	justify-content: center;
@@ -144,7 +146,7 @@
 	background-color: #F9F9F9;
 }
 .divCard {
-	border: 1px solid black;
+	border: 0;
 	padding: 20px;
 	display: flex;
 	background-color: #FCFCFC;
@@ -182,7 +184,7 @@
 }
 .mgb {
 	padding: 20px;
-	border: 1px solid black;
+	border: 0;
 	height: 35%;
 	margin-bottom: 20px;
 	background-color: #FCFCFC;
@@ -193,6 +195,7 @@
 	margin-top: 30px; 
 	width: 952px; 
 	display: inline-block;
+	margin-bottom: 30px;
 }
 .price {
 	text-align: right;

@@ -97,13 +97,8 @@
 </head>
 <body>
 	<div class="wrapper">
-		<jsp:include page="./include/header.jsp"/>
-
 	<div class="body-main">
 		<div class="container">
-			<div class="sidebar">
-				<jsp:include page="myinfoMenu.jsp" />
-			</div>
 		    <div class="content">
 		        <h2>카드 등록</h2>
 
@@ -147,15 +142,5 @@
 		        </form>
 		    </div>
 		</div>
-		<!--push를 위한 주석-->
-
-	</div>
-
-	<jsp:include page="./include/footer.jsp"/>
-
-	</div>
-
-
-
 </body>
 </html>

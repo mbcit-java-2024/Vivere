@@ -48,7 +48,7 @@
 					<a href="cancel_notice.jsp">예약/취소 안내</a> 
 					<a href="map.jsp">오시는 길</a> 
 					<a href="info.jsp">시설 안내</a> 
-					<c:if test="${not empty consumerVO.Grade eq 'ADMIN'}">
+					<c:if test="${sessionScope.loginUser.grade eq 'ADMIN'}">
 						<a href="/noticeList">공지사항</a>
 					</c:if>
 				</div>
@@ -71,7 +71,7 @@
 						</c:when>
 						<c:otherwise>
 							<c:choose>
-								<c:when test="${not empty consumerVO.Grade eq 'ADMIN'}">
+								<c:when test="${sessionScope.loginUser.grade eq 'ADMIN'}">
 									<a href="/qnaList">문의답변 쓰기</a>
 									<a href="logout">로그아웃</a>
 								</c:when>

@@ -25,17 +25,18 @@ public class ReviewController {
 	private ReviewService reviewService;
 
 	@RequestMapping(value = "/reviewInsert", method = RequestMethod.POST)
-	public Map<String, Object> reviewInsert(@RequestBody Map<String, Object> param, HttpServletRequest req) {
+	public Map<String, Object> reviewInsert(@RequestBody Map<String, Object> param, HttpServletRequest request) {
 		log.info("ReviewController ========1==========reviewInsert::::param===" + param);
 
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		int resultCnt = 0;
 		ConsumerVO consumerVO = new ConsumerVO();
+		ConsumerVO user = (ConsumerVO) request.getSession().getAttribute("loginUser");
 		// TODO 세션에서 추출할것!!
 //		HttpSession session = req.getSession(false);
-//		if (null != session   && null != session.getAttribute("id")) {
+		if (null != user) {
 //			int consumerId = (int) session.getAttribute("id");
-		param.put("consumerId", 1);
+//		param.put("consumerId", 1);
 		resultMap.put("code", "0");// 성공여부 0:성공, 그외:실패
 		resultMap.put("message", "");// 에러메세지
 		log.info("ReviewController ========2==========reviewInsert::::param===" + param);
@@ -55,27 +56,28 @@ public class ReviewController {
 			resultMap.put("message", e.getMessage());// 에러메세지
 			resultMap.put("resultCnt", resultCnt);
 		}
-//		}  else { 
-//			resultMap.put("code", "-1");// 성공여부 0:성공, 그외:실패
-//			resultMap.put("message", "로그인하십시오.");// 에러메세지
-//			resultMap.put("resultCnt", resultCnt);
+		}  else { 
+			resultMap.put("code", "-1");// 성공여부 0:성공, 그외:실패
+			resultMap.put("message", "로그인하십시오.");// 에러메세지
+			resultMap.put("resultCnt", resultCnt);
 
-//		}
+		}
 
 		return resultMap;
 	}
 	@RequestMapping(value = "/updateReview", method = RequestMethod.POST)
-	public Map<String, Object> updateReview(@RequestBody Map<String, Object> param, HttpServletRequest req) {
+	public Map<String, Object> updateReview(@RequestBody Map<String, Object> param, HttpServletRequest request) {
 		log.info("ReviewController ========1==========updateReview::::param===" + param);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		int resultCnt = 0;
 		ConsumerVO consumerVO = new ConsumerVO();
+		ConsumerVO user = (ConsumerVO) request.getSession().getAttribute("loginUser");
 		// TODO 세션에서 추출할것!!
 //		HttpSession session = req.getSession(false);
-//		if (null != session   && null != session.getAttribute("id")) {
+		if (null != user) {
 //			int consumerId = (int) session.getAttribute("id");
-		param.put("consumerId", 1);
+//		param.put("consumerId", 1);
 		resultMap.put("code", "0");// 성공여부 0:성공, 그외:실패
 		resultMap.put("message", "");// 에러메세지
 		log.info("ReviewController ========2==========updateReview::::param===" + param);
@@ -94,12 +96,12 @@ public class ReviewController {
 			resultMap.put("message", e.getMessage());// 에러메세지
 			resultMap.put("resultCnt", resultCnt);
 		}
-//		}  else { 
-//			resultMap.put("code", "-1");// 성공여부 0:성공, 그외:실패
-//			resultMap.put("message", "로그인하십시오.");// 에러메세지
-//			resultMap.put("resultCnt", resultCnt);
+		}  else { 
+			resultMap.put("code", "-1");// 성공여부 0:성공, 그외:실패
+			resultMap.put("message", "로그인하십시오.");// 에러메세지
+			resultMap.put("resultCnt", resultCnt);
 		
-//		}
+		}
 		
 		return resultMap;
 	}

@@ -6,7 +6,7 @@
 	<insert id="insert" parameterType="java.util.HashMap">
 		INSERT INTO vivere.review
 		(consumerId, concertId, rate, content, createDate, updateDate)
-		VALUES(1, #{concertId}, #{rate}, #{content}, now(),
+		VALUES(#{consumerId}, #{concertId}, #{rate}, #{content}, now(),
 		now());
 	</insert>
 
@@ -15,12 +15,12 @@
 		SET rate = #{rate}
 		, content = #{content}
 		WHERE id = #{review_id}
-		AND consumerId = 1;
+		AND consumerId = #{consumerId};
 	</update>
 	<delete id="delete" parameterType="reviewVO">
 		DELETE FROM review
 		WHERE id = #{id} 
-		AND consumerId = 1;
+		AND consumerId = #{consumerId};
 	</delete>
 	
 	<select id="reviewListByConcert" parameterType="int" resultType="reviewVO">	

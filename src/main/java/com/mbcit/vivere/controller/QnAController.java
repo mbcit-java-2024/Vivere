@@ -28,17 +28,18 @@ public class QnAController {
 	private QnAService qnaService;
 	
 	@RequestMapping(value="/insertRep", method=RequestMethod.POST) 
-	public Map<String, Object> insertRep(@RequestBody Map<String, Object> param, HttpServletRequest req) {
+	public Map<String, Object> insertRep(@RequestBody Map<String, Object> param, HttpServletRequest request) {
 		log.info("QnAController ========1==========insertRep::::param===" + param);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		int resultCnt = 0;		
 		ConsumerVO consumerVO = new ConsumerVO();
+		ConsumerVO user = (ConsumerVO) request.getSession().getAttribute("loginUser");
 		// TODO 세션에서 추출할것!!
 //		HttpSession session = req.getSession(false);
-//		if (null != session   && null != session.getAttribute("id")) {
+		if (null != user) {
 //			int consumerId = (int) session.getAttribute("id");
-			consumerVO.setGrade(Grade.ADMIN);
+//			consumerVO.setGrade(Grade.ADMIN);
 			resultMap.put("code", "0");// 성공여부 0:성공, 그외:실패 
 			resultMap.put("message", "");// 에러메세지
 			log.info("QnAController ========2==========insertRep::::param===" + param);
@@ -58,29 +59,30 @@ public class QnAController {
 				resultMap.put("message", e.getMessage());// 에러메세지 
 				resultMap.put("resultCnt", resultCnt);
 			}
-//		}  else { 
-//			resultMap.put("code", "-1");// 성공여부 0:성공, 그외:실패
-//			resultMap.put("message", "로그인하십시오.");// 에러메세지
-//			resultMap.put("resultCnt", resultCnt);
+		}  else { 
+			resultMap.put("code", "-1");// 성공여부 0:성공, 그외:실패
+			resultMap.put("message", "로그인하십시오.");// 에러메세지
+			resultMap.put("resultCnt", resultCnt);
 			
-//		}
+		}
 		
 		
 
 		return resultMap;
 	}
 	@RequestMapping(value="/updateQna", method=RequestMethod.POST) 
-	public Map<String, Object> updateQna(@RequestBody Map<String, Object> param, HttpServletRequest req) {
+	public Map<String, Object> updateQna(@RequestBody Map<String, Object> param, HttpServletRequest request) {
 		log.info("QnAController ========1==========updateQna::::param===" + param);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		int resultCnt = 0;		
 		ConsumerVO consumerVO = new ConsumerVO();
+		ConsumerVO user = (ConsumerVO) request.getSession().getAttribute("loginUser");
 		// TODO 세션에서 추출할것!!
 //		HttpSession session = req.getSession(false);
-//		if (null != session   && null != session.getAttribute("id")) {
+		if (null != user) {
 //			int consumerId = (int) session.getAttribute("id");
-		param.put("consumerId", 1);
+//		param.put("consumerId", 1);
 		resultMap.put("code", "0");// 성공여부 0:성공, 그외:실패 
 		resultMap.put("message", "");// 에러메세지
 		log.info("QnAController ========2==========updateQna::::param===" + param);
@@ -100,28 +102,29 @@ public class QnAController {
 			resultMap.put("message", e.getMessage());// 에러메세지 
 			resultMap.put("resultCnt", resultCnt);
 		}
-//		}  else { 
-//			resultMap.put("code", "-1");// 성공여부 0:성공, 그외:실패
-//			resultMap.put("message", "로그인하십시오.");// 에러메세지
-//			resultMap.put("resultCnt", resultCnt);
-//		}
+		}  else { 
+			resultMap.put("code", "-1");// 성공여부 0:성공, 그외:실패
+			resultMap.put("message", "로그인하십시오.");// 에러메세지
+			resultMap.put("resultCnt", resultCnt);
+		}
 		
 		
 		
 		return resultMap;
 	}
 	@RequestMapping(value="/updateQnarep", method=RequestMethod.POST) 
-	public Map<String, Object> updateQnarep(@RequestBody Map<String, Object> param, HttpServletRequest req) {
+	public Map<String, Object> updateQnarep(@RequestBody Map<String, Object> param, HttpServletRequest request) {
 		log.info("QnAController ========1==========updateQnarep::::param===" + param);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		int resultCnt = 0;		
 		ConsumerVO consumerVO = new ConsumerVO();
+		ConsumerVO user = (ConsumerVO) request.getSession().getAttribute("loginUser");
 		// TODO 세션에서 추출할것!!
 //		HttpSession session = req.getSession(false);
-//		if (null != session   && null != session.getAttribute("id")) {
+		if (null != user) {
 //			int consumerId = (int) session.getAttribute("id");
-		consumerVO.setGrade(Grade.ADMIN);
+//		consumerVO.setGrade(Grade.ADMIN);
 		resultMap.put("code", "0");// 성공여부 0:성공, 그외:실패 
 		resultMap.put("message", "");// 에러메세지
 		log.info("QnAController ========2==========updateQnarep::::param===" + param);
@@ -141,12 +144,12 @@ public class QnAController {
 			resultMap.put("message", e.getMessage());// 에러메세지 
 			resultMap.put("resultCnt", resultCnt);
 		}
-//		}  else { 
-//			resultMap.put("code", "-1");// 성공여부 0:성공, 그외:실패
-//			resultMap.put("message", "로그인하십시오.");// 에러메세지
-//			resultMap.put("resultCnt", resultCnt);
+		}else { 
+			resultMap.put("code", "-1");// 성공여부 0:성공, 그외:실패
+			resultMap.put("message", "로그인하십시오.");// 에러메세지
+			resultMap.put("resultCnt", resultCnt);
 		
-//		}
+		}
 		
 		
 		

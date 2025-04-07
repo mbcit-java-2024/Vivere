@@ -22,26 +22,26 @@
 		FROM qna a LEFT JOIN qnarep b ON a.id = b.qnaid
 		where 1=1
 		<if test="consumerId !=null and  consumerId !='' ">
-			and consumerId = 1
+			and consumerId = #{consumerId}
 		</if>
 		ORDER BY a.createDate DESC
 	</select>
 	<insert id="insert" parameterType="qnaVO">
 		INSERT INTO vivere.qna
 		(consumerId, title, content, createDate, updateDate)
-		VALUES(1, #{qna_title}, #{qna_content}, now(), now());
+		VALUES(#{consumerId}, #{qna_title}, #{qna_content}, now(), now());
 	</insert>
 	<update id="update" parameterType="java.util.HashMap">
 		UPDATE vivere.qna
 		SET title = #{qna_title}
 		, content = #{qna_content}
 		WHERE id = #{qna_id}
-		AND consumerId = 1; 
+		AND consumerId = #{consumerId}; 
 	</update>
 	<delete id="delete" parameterType="qnaVO">
 		DELETE FROM qna
 		WHERE id = #{id} 
-		AND consumerId = 1;
+		AND consumerId = #{consumerId};
 	</delete>
 
 </mapper>

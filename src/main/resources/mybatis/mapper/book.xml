@@ -37,7 +37,7 @@
 		FROM book a LEFT JOIN concert b ON a.concertId = b.id
 		LEFT JOIN review r ON a.concertId = r.concertId and a.consumerId = r.consumerId
 		WHERE 1=1
-		and a.consumerId = 1
+		and a.consumerId = #{consumerId}
 		and concertTime <![CDATA[<=]]> now()
 		ORDER BY r.createDate DESC
 	</select>

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -149,17 +150,23 @@ public class MainController {
 	
 // ===================== 표지 이미지 (carousel) 끝 ========================
 	@GetMapping("/noticeList")
-	public String noticeList(Model model, NoticeVO noticeVO) {
+	public String noticeList(Model model, NoticeVO noticeVO, HttpServletRequest request) {
 		// 수빈
 		log.info("MainController 의 noticeList() 메소드 실행");
 		String result = "/";
 		ConsumerVO consumerVO = new ConsumerVO();
 		
+		
+		ConsumerVO user = (ConsumerVO) request.getSession().getAttribute("loginUser");
+		if (null == user) {
+			return "/login";
+		}
+		
 //		HttpSession session = request.getSession(false);
 //		if (session != null && session.getAttribute("userType") != null) { 
 //			int userType = (int) session.getAttribute("userType"); 
 
-		 consumerVO.setGrade(Grade.ADMIN);
+//		 consumerVO.setGrade(Grade.ADMIN);
 		 result = "/noticeList"; 
 		 List<NoticeVO> noticeList = noticeService.selectNoticeList(noticeVO);
 //		}	
@@ -172,17 +179,20 @@ public class MainController {
 
 	}
 	@GetMapping("/noticeDetail/{id}")
-	public String noticeDetail(Model model, NoticeVO noticeVO, @PathVariable int id) {
+	public String noticeDetail(Model model, NoticeVO noticeVO, @PathVariable int id, HttpServletRequest request) {
 		// 수빈
 		log.info("MainController 의 noticeDetail() 메소드 실행");
 		String result = "/";
 		ConsumerVO consumerVO = new ConsumerVO();
-		
+		ConsumerVO user = (ConsumerVO) request.getSession().getAttribute("loginUser");
+		if (null == user) {
+			return "/login";
+		}
 //		HttpSession session = request.getSession(false);
 //		if (session != null && session.getAttribute("userType") != null) { 
 //			int userType = (int) session.getAttribute("userType"); 
 
-		 consumerVO.setGrade(Grade.ADMIN);
+//		 consumerVO.setGrade(Grade.ADMIN);
 		 result = "/noticeDetail"; 
 		 NoticeVO noticeDetail = noticeService.selectNoticeDetail(id);
 //		}	
@@ -195,16 +205,20 @@ public class MainController {
 		
 	}
 	@GetMapping("/noticeEdit/{id}")
-	public String noticeEdit(Model model, NoticeVO noticeVO, @PathVariable int id) {
+	public String noticeEdit(Model model, NoticeVO noticeVO, @PathVariable int id, HttpServletRequest request) {
 		// 수빈
 		log.info("MainController 의 noticeEdit() 메소드 실행");
 		String result = "/";
 		ConsumerVO consumerVO = new ConsumerVO();
+		ConsumerVO user = (ConsumerVO) request.getSession().getAttribute("loginUser");
+		if (null == user) {
+			return "/login";
+		}
 //		HttpSession session = request.getSession(false);
 //		if (session != null && session.getAttribute("userType") != null) { 
 //			int userType = (int) session.getAttribute("userType"); 
 
-		 consumerVO.setGrade(Grade.ADMIN);
+//		 consumerVO.setGrade(Grade.ADMIN);
 		 result = "/noticeEdit"; 
 		 NoticeVO noticeDetail = noticeService.selectNoticeDetail(id);
 //		}	
@@ -217,16 +231,20 @@ public class MainController {
 		
 	}
 	@PostMapping("/noticeEditOK")
-	public String noticeEditOK(Model model, NoticeVO noticeVO) {
+	public String noticeEditOK(Model model, NoticeVO noticeVO, HttpServletRequest request) {
 		// 수빈
 		log.info("MainController 의 noticeEditOK() 메소드 실행");
 		String result = "/";
 		ConsumerVO consumerVO = new ConsumerVO();
+		ConsumerVO user = (ConsumerVO) request.getSession().getAttribute("loginUser");
+		if (null == user) {
+			return "/login";
+		}
 //		HttpSession session = request.getSession(false);
 //		if (session != null && session.getAttribute("userType") != null) { 
 //			int userType = (int) session.getAttribute("userType"); 
 
-		 consumerVO.setGrade(Grade.ADMIN);
+//		 consumerVO.setGrade(Grade.ADMIN);
 		 result = "redirect:/noticeList"; 
 		 noticeService.updateNotice(noticeVO);
 //		}	
@@ -238,16 +256,20 @@ public class MainController {
 		
 	}
 	@GetMapping("/noticeInsert")
-	public String noticeInsert(Model model, NoticeVO noticeVO) {
+	public String noticeInsert(Model model, NoticeVO noticeVO, HttpServletRequest request) {
 		// 수빈
 		log.info("MainController 의 noticeInsert() 메소드 실행");
 		String result = "/";
 		ConsumerVO consumerVO = new ConsumerVO();
+		ConsumerVO user = (ConsumerVO) request.getSession().getAttribute("loginUser");
+		if (null == user) {
+			return "/login";
+		}
 //		HttpSession session = request.getSession(false);
 //		if (session != null && session.getAttribute("userType") != null) { 
 //			int userType = (int) session.getAttribute("userType"); 
 
-		 consumerVO.setGrade(Grade.ADMIN);
+//		 consumerVO.setGrade(Grade.ADMIN);
 		 result = "/noticeInsert"; 
 //		}	
 //		else {
@@ -258,16 +280,20 @@ public class MainController {
 		
 	}
 	@GetMapping("/noticeDelete/{id}")
-	public String noticeDelete(Model model, NoticeVO noticeVO, @PathVariable int id) {
+	public String noticeDelete(Model model, NoticeVO noticeVO, @PathVariable int id, HttpServletRequest request) {
 		// 수빈
 		log.info("MainController 의 noticeDelete() 메소드 실행");
 		String result = "/";
 		ConsumerVO consumerVO = new ConsumerVO();
+		ConsumerVO user = (ConsumerVO) request.getSession().getAttribute("loginUser");
+		if (null == user) {
+			return "/login";
+		}
 //		HttpSession session = request.getSession(false);
 //		if (session != null && session.getAttribute("userType") != null) { 
 //			int userType = (int) session.getAttribute("userType"); 
 
-		 consumerVO.setGrade(Grade.ADMIN);
+//		 consumerVO.setGrade(Grade.ADMIN);
 		 result = "redirect:/noticeList"; 
 		 noticeService.noticeDelete(id);
 //		}	
@@ -278,17 +304,21 @@ public class MainController {
 		return result;
 	}
 	@PostMapping("/noticeInsertOK")
-	public String noticeInsertOK(Model model, NoticeVO noticeVO) {
+	public String noticeInsertOK(Model model, NoticeVO noticeVO, HttpServletRequest request) {
 		// 수빈
 		log.info("MainController 의 noticeInsertOK() 메소드 실행");
 		String result = "/";
 		ConsumerVO consumerVO = new ConsumerVO();
+		ConsumerVO user = (ConsumerVO) request.getSession().getAttribute("loginUser");
+		if (null == user) {
+			return "/login";
+		}
 		
 //		HttpSession session = request.getSession(false);
 //		if (session != null && session.getAttribute("userType") != null) { 
 //			int userType = (int) session.getAttribute("userType"); 
 
-		 consumerVO.setGrade(Grade.ADMIN);
+//		 consumerVO.setGrade(Grade.ADMIN);
 		 result = "redirect:/noticeList"; 
 		 noticeService.insert(noticeVO);
 //		}	
@@ -300,21 +330,24 @@ public class MainController {
 		
 	}
 	@GetMapping("/pastBook")
-	public String pastBook(Model model, BookVO bookVO) {
+	public String pastBook(Model model, BookVO bookVO, HttpServletRequest request) {
 		// 수빈
 		log.info("MainController 의 pastBook() 메소드 실행");
 
 		String result = "/";
 		ConsumerVO consumerVO = new ConsumerVO();
 		List<BookVO> pastBook = new ArrayList<BookVO>();
-
+		ConsumerVO user = (ConsumerVO) request.getSession().getAttribute("loginUser");
+		if (null == user) {
+			return "/login";
+		}
 		// ProductController에서 로그인 여부 확인
 //		HttpSession session = request.getSession(false);
 //		if (session != null && session.getAttribute("userType") != null) { 
 //			int userType = (int) session.getAttribute("userType"); 
 
 		// if (consumerVO.getGrade() != Grade.ADMIN) {
-			bookVO.setConsumerId(1);
+//			bookVO.setConsumerId(1);
 			result = "/pastBook";
 		// } else {
 		// consumerVO.setGrade(Grade.ADMIN);
@@ -332,21 +365,24 @@ public class MainController {
 	}
 	
 	@GetMapping("/deleteReivew/{id}")
-	public String deleteReivew(Model model, BookVO bookVO, ReviewVO reviewVO, @PathVariable int id) {
+	public String deleteReivew(Model model, BookVO bookVO, ReviewVO reviewVO, @PathVariable int id, HttpServletRequest request) {
 		// 수빈
 		log.info("MainController 의 deleteReivew() 메소드 실행::::::::id:::::::::" + id);
 
 		String result = "/";
 		ConsumerVO consumerVO = new ConsumerVO();
 		List<BookVO> pastBook = new ArrayList<BookVO>();
-
+		ConsumerVO user = (ConsumerVO) request.getSession().getAttribute("loginUser");
+		if (null == user) {
+			return "/login";
+		}
 		// ProductController에서 로그인 여부 확인
 //		HttpSession session = request.getSession(false);
 //		if (session != null && session.getAttribute("userType") != null) { 
 //			int userType = (int) session.getAttribute("userType"); 
 
 		// if (consumerVO.getGrade() != Grade.ADMIN) {
-				bookVO.setConsumerId(1);
+//				bookVO.setConsumerId(1);
 				result = "redirect:/pastBook";
 		// } else {
 			// consumerVO.setGrade(Grade.ADMIN);
@@ -362,19 +398,22 @@ public class MainController {
 		return result;
 	}
 	@GetMapping("/qnaInsert")
-	public String qnaInsert(Model model, QnaVO qnaVO) {
+	public String qnaInsert(Model model, QnaVO qnaVO, HttpServletRequest request) {
 		// 수빈
 		log.info("MainController 의 qnaInsert() 메소드 실행");
 		String result = "/";
 		ConsumerVO consumerVO = new ConsumerVO();
-
+		ConsumerVO user = (ConsumerVO) request.getSession().getAttribute("loginUser");
+		if (null == user) {
+			return "/login";
+		}
 		// ProductController에서 로그인 여부 확인
 //		HttpSession session = request.getSession(false);
 //		if (session != null && session.getAttribute("userType") != null) { 
 //			int userType = (int) session.getAttribute("userType"); 
 
 	//		if (consumerVO.getGrade() != Grade.ADMIN) {
-			qnaVO.setConsumerId(1);
+//			qnaVO.setConsumerId(1);
 			result = "/qnaInsert";
 	//		} else {
 	//			consumerVO.setGrade(Grade.ADMIN);
@@ -387,19 +426,22 @@ public class MainController {
 		return result;
 	}
 	@PostMapping("/qnaInsertOK")
-	public String qnaInsertOK(Model model, QnaVO qnaVO) {
+	public String qnaInsertOK(Model model, QnaVO qnaVO, HttpServletRequest request) {
 		// 수빈
 		log.info("MainController 의 qnaInsert() 메소드 실행");
 		String result = "/";
 		ConsumerVO consumerVO = new ConsumerVO();
-
+		ConsumerVO user = (ConsumerVO) request.getSession().getAttribute("loginUser");
+		if (null == user) {
+			return "/login";
+		}
 		// ProductController에서 로그인 여부 확인
 //		HttpSession session = request.getSession(false);
 //		if (session != null && session.getAttribute("userType") != null) { 
 //			int userType = (int) session.getAttribute("userType"); 
 
 	//		if (consumerVO.getGrade() != Grade.ADMIN) {
-			qnaVO.setConsumerId(1);
+//			qnaVO.setConsumerId(1);
 			qnaService.insert(qnaVO);
 			result = "redirect:/qnaList";
 	//		} else {
@@ -413,27 +455,31 @@ public class MainController {
 		return result;
 	}
 	@GetMapping("/qnaList")
-	public String qnaList(Model model, QnaVO qnaVO) {
+	public String qnaList(Model model, QnaVO qnaVO, HttpServletRequest request) {
 		// 수빈
 		log.info("MainController 의 qnaList() 메소드 실행");
 		String result = "/";
 		ConsumerVO consumerVO = new ConsumerVO();
 		List<QnaVO> qnaList = new ArrayList<QnaVO>();
-
+		ConsumerVO user = (ConsumerVO) request.getSession().getAttribute("loginUser");
+		if (null == user) {
+			result = "/login";
+		}
 		// ProductController에서 로그인 여부 확인
 //		HttpSession session = request.getSession(false);
 //		if (session != null && session.getAttribute("userType") != null) { 
 //			int userType = (int) session.getAttribute("userType"); 
-
-	//		if (consumerVO.getGrade() != Grade.ADMIN) {
-				qnaVO.setConsumerId(1);
+		else {
+			if (user.getGrade() != Grade.ADMIN) {
+//				qnaVO.setConsumerId(1);
 				result = "/qnaList";
-	//		} else {
+			} else {
 //				consumerVO.setGrade(Grade.ADMIN);
-//				result = "/managerQnaList";
-	//		}
+				result = "/managerQnaList";
+			}
+		}
 		qnaList = qnaService.qnaList(qnaVO);
-
+		
 		model.addAttribute("qnaList", qnaList);
 		log.info("qnaList" + qnaList);
 //		}	
@@ -443,20 +489,23 @@ public class MainController {
 		return result;
 	}
 	@GetMapping("/deleteQna/{id}")
-	public String deleteQna(Model model, QnaVO qnaVO, @PathVariable int id) {
+	public String deleteQna(Model model, QnaVO qnaVO, @PathVariable int id, HttpServletRequest request) {
 		// 수빈
 		log.info("MainController 의 deleteQna() 메소드 실행");
 		String result = "/";
 		ConsumerVO consumerVO = new ConsumerVO();
 		List<QnaVO> qnaList = new ArrayList<QnaVO>();
-
+		ConsumerVO user = (ConsumerVO) request.getSession().getAttribute("loginUser");
+		if (null == user) {
+			return "/login";
+		}
 		// ProductController에서 로그인 여부 확인
 //		HttpSession session = request.getSession(false);
 //		if (session != null && session.getAttribute("userType") != null) { 
 //			int userType = (int) session.getAttribute("userType"); 
 
 	//		if (consumerVO.getGrade() != Grade.ADMIN) { 
-			qnaVO.setConsumerId(1);
+//			qnaVO.setConsumerId(1);
 			result = "redirect:/qnaList";
 	//		} else {
 	//			consumerVO.setGrade(Grade.ADMIN);
@@ -471,13 +520,16 @@ public class MainController {
 		return result;
 	}
 	@GetMapping("/deleteRep/{id}")
-	public String deleteRep(Model model, QnarepVO qnarepVO, @PathVariable int id) {
+	public String deleteRep(Model model, QnarepVO qnarepVO, @PathVariable int id, HttpServletRequest request) {
 		// 수빈
 		log.info("MainController 의 deleteRep() 메소드 실행");
 		String result = "/";
 		ConsumerVO consumerVO = new ConsumerVO();
 		List<QnaVO> qnaList = new ArrayList<QnaVO>();
-
+		ConsumerVO user = (ConsumerVO) request.getSession().getAttribute("loginUser");
+		if (null == user) {
+			return "/login";
+		}
 		// ProductController에서 로그인 여부 확인
 //		HttpSession session = request.getSession(false);
 //		if (session != null && session.getAttribute("userType") != null) { 
@@ -487,7 +539,7 @@ public class MainController {
 		//		qnaVO.setConsumerId(1); 
 		//		result ="redirect:/qnaList"; // 회원 로그인으로 들어왔을때 관리자 로그인 페이지로 돌아갈건지 // 근데 여기 왔다는건 이미 관리자 로그인
 	//		} else {
-				consumerVO.setGrade(Grade.ADMIN);
+//				consumerVO.setGrade(Grade.ADMIN);
 				result = "redirect:/qnaList";
 	//		}
 		qnarepVO.setId(id);

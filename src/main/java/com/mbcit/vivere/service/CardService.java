@@ -1,5 +1,7 @@
 package com.mbcit.vivere.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,24 +36,35 @@ public class CardService {
 	}
 
 	public void insertCard(HttpServletRequest request, int consumerId) {
-	    String cardNum = String.join("-",
-	        request.getParameter("card1"),
-	        request.getParameter("card2"),
-	        request.getParameter("card3"),
-	        request.getParameter("card4")
-	    );
-
 	    CardVO card = new CardVO();
+
 	    card.setConsumerId(consumerId);
-	    card.setCardNum(cardNum);
 	    card.setPw(request.getParameter("pw"));
+
+	    String cardNum = request.getParameter("card1") + "-" +
+	                     request.getParameter("card2") + "-" +
+	                     request.getParameter("card3") + "-" +
+	                     request.getParameter("card4");
+
+	    card.setCardNum(cardNum); 
 	    card.setCvc(Integer.parseInt(request.getParameter("cvc")));
-	    card.setValidDate(request.getParameter("validDate"));
 	    card.setBankName(request.getParameter("bankName"));
 
+	    try {
+	        String validDateStr = request.getParameter("validDate");
+	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	        Date validDate = sdf.parse(validDateStr);
+	        card.setValidDate(validDate);
+
+	        card.setCreateDate(new Date());
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    System.out.println("등록된 카드번호: " + card.getCardNum()); // ✅ 확인용 출력
 	    cardDAO.insertCard(card);
 	}
-
+	
 	public void deleteCard(int cardId, int consumerId) {
 	    CardVO card = cardDAO.getCardById(cardId);
 	    if (card != null && card.getConsumerId() == consumerId) {

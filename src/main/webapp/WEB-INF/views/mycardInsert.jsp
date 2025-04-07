@@ -139,7 +139,7 @@
 
 					<!-- 유효기간 -->
 					<div class="form-group">
-					    <label>유효기간 (예: 2025-12-31)</label>
+					    <label>유효기간</label>
 					    <input type="date" name="validDate" required>
 					</div>
 

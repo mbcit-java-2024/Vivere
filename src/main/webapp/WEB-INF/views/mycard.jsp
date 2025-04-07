@@ -143,7 +143,7 @@
 		                            <div class="card-info">
 		                                <p><strong>거래은행:</strong> ${card.bankName}</p>
 		                                <p><strong>카드번호:</strong> ${card.cardNum}</p>
-		                                <p><strong>유효기간:</strong> ${card.validDate}</p>
+		                                <p><strong>유효기간:</strong> <fmt:formatDate value="${card.createDate}" pattern="yy/MM" /></p>
 		                                <p><strong>등록일자:</strong> <fmt:formatDate value="${card.createDate}" pattern="yyyy-MM-dd" /></p>
 		                            </div>
 		                            <form action="/mycardDelete" method="post">

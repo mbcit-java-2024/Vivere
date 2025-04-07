@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -99,18 +100,49 @@
 
 
 		    <div class="main">
-		        <div class="card">
-		            <h3>아이디 / 회원등급</h3>
-		            <a href="/myinfoDetail" class="btn">더보기</a>
-		        </div>
+				<div class="card">
+				    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+				        <div>
+							<p class="info-item"><strong>이름:</strong> ${loginUser.name}</p>
+							<p class="info-item"><strong>생년월일:</strong> ${loginUser.birth}</p>
+							<p class="info-item"><strong>성별:</strong>
+							    <c:choose>
+							        <c:when test="${loginUser.gender == 'MALE'}">남자</c:when>
+							        <c:when test="${loginUser.gender == 'FEMALE'}">여자</c:when>
+							    </c:choose>
+							</p>
+				        </div>
+				        <a href="/myinfoDetail" class="btn">더보기</a>
+				    </div>
+				</div>
 
-		        <div class="card">
-		            <h3>예매내역</h3>
-		            <p>공연포스터, 이름, 날짜, 공연장, 내 좌석번호</p>
-		            <a href="/myBook" class="btn">더보기</a>
-		        </div>
+				<div class="card">
+				    <c:if test="${empty latestBook}">
+				        <h3><strong>예매 내역이 없습니다</strong></h3>
+				    </c:if>
 
-		        <div class="card">
+				    <c:if test="${not empty latestBook}">
+				        <h3>예매 내역</h3>
+				        <div style="display: flex; gap: 20px;">
+				         
+				            <img src="${latestBook.posterUrl}" alt="공연 포스터" style="width: 120px; height: auto; border-radius: 5px;" />
+
+				            
+				            <div style="display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
+				                <div>
+				                    <p><strong>공연명:</strong> ${latestBook.title}</p>
+				                    <p><strong>공연일:</strong> <fmt:formatDate value="${latestBook.concertTime}" pattern="yyyy-MM-dd HH:mm"/></p>
+				                    <p><strong>좌석:</strong> ${latestBook.seatNum}</p>
+				                </div>
+				                <div style="text-align: right;">
+				                    <a href="/myBook" class="btn">더보기</a>
+				                </div>
+				            </div>
+				        </div>
+				    </c:if>
+				</div>		
+										
+				<div class="card">
 		            <h3>지난 공연 </h3>
 		            <a href="/pastBook" class="btn">더보기</a>
 		        </div>

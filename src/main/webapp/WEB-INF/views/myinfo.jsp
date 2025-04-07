@@ -87,37 +87,48 @@
     </style>
 </head>
 <body>
+	<div class="wrapper">
+		<jsp:include page="./include/header.jsp"/>
 
-<div class="container">
-    
-	<div class="sidebar">
-    	<jsp:include page="myinfoMenu.jsp" />
+	<div class="body-main">
+		<div class="container">
+		    
+			<div class="sidebar">
+		    	<jsp:include page="myinfoMenu.jsp" />
+			</div>
+
+
+		    <div class="main">
+		        <div class="card">
+		            <h3>아이디 / 회원등급</h3>
+		            <a href="/myinfoDetail" class="btn">더보기</a>
+		        </div>
+
+		        <div class="card">
+		            <h3>예매내역</h3>
+		            <p>공연포스터, 이름, 날짜, 공연장, 내 좌석번호</p>
+		            <a href="/myBook" class="btn">더보기</a>
+		        </div>
+
+		        <div class="card">
+		            <h3>지난 공연 </h3>
+		            <a href="/pastBook" class="btn">더보기</a>
+		        </div>
+
+		        <div class="card">
+		            <h3>나의 문의</h3>
+		            <a href="/qnaList" class="btn">더보기</a>
+		        </div>
+		    </div>
+		</div>
+	</div>
+
+	<jsp:include page="./include/footer.jsp"/>
+
 	</div>
 
 
-    <div class="main">
-        <div class="card">
-            <h3>아이디 / 회원등급</h3>
-            <a href="/myinfoDetail" class="btn">더보기</a>
-        </div>
 
-        <div class="card">
-            <h3>예매내역</h3>
-            <p>공연포스터, 이름, 날짜, 공연장, 내 좌석번호</p>
-            <a href="/myBook" class="btn">더보기</a>
-        </div>
-
-        <div class="card">
-            <h3>지난 공연 </h3>
-            <a href="/pastBook" class="btn">더보기</a>
-        </div>
-
-        <div class="card">
-            <h3>나의 문의</h3>
-            <a href="/qnaList" class="btn">더보기</a>
-        </div>
-    </div>
-</div>
 
 </body>
 </html>

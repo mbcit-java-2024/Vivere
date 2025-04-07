@@ -89,33 +89,44 @@
     </style>
 </head>
 <body>
+	<div class="wrapper">
+		<jsp:include page="./include/header.jsp"/>
 
-<div class="container">
-    <div class="sidebar">
-        <jsp:include page="myinfoMenu.jsp" />
-    </div>
+	<div class="body-main">
+		<div class="container">
+		    <div class="sidebar">
+		        <jsp:include page="myinfoMenu.jsp" />
+		    </div>
 
-    <div class="main">
-        <h2>내 정보</h2>
-        <div class="content">
-            <p class="info-item"><strong>이름:</strong> ${loginUser.name}</p>
-            <p class="info-item"><strong>생년월일:</strong> ${loginUser.birth}</p>
-            <p class="info-item"><strong>성별:</strong>
-                <c:choose>
-                    <c:when test="${loginUser.gender == 'MALE'}">남자</c:when>
-                    <c:when test="${loginUser.gender == 'FEMALE'}">여자</c:when>
-                </c:choose>
-            </p>
-            <p class="info-item"><strong>등급:</strong> ${loginUser.grade}</p>
-            <p class="info-item"><strong>이메일:</strong> ${loginUser.email}</p>
-            <p class="info-item"><strong>전화번호:</strong> ${loginUser.phone}</p>
-            <p class="info-item"><strong>주소:</strong> ${loginUser.address} ${loginUser.detailAddress}</p>
+		    <div class="main">
+		        <h2>내 정보</h2>
+		        <div class="content">
+		            <p class="info-item"><strong>이름:</strong> ${loginUser.name}</p>
+		            <p class="info-item"><strong>생년월일:</strong> ${loginUser.birth}</p>
+		            <p class="info-item"><strong>성별:</strong>
+		                <c:choose>
+		                    <c:when test="${loginUser.gender == 'MALE'}">남자</c:when>
+		                    <c:when test="${loginUser.gender == 'FEMALE'}">여자</c:when>
+		                </c:choose>
+		            </p>
+		            <p class="info-item"><strong>등급:</strong> ${loginUser.grade}</p>
+		            <p class="info-item"><strong>이메일:</strong> ${loginUser.email}</p>
+		            <p class="info-item"><strong>전화번호:</strong> ${loginUser.phone}</p>
+		            <p class="info-item"><strong>주소:</strong> ${loginUser.address} ${loginUser.detailAddress}</p>
 
-            <a href="/myinfoUpdate" class="btn">수정하기</a>
-        </div>
-    </div>
-</div>
-<!--주석-->
+		            <a href="/myinfoUpdate" class="btn">수정하기</a>
+		        </div>
+		    </div>
+		</div>
+		<!--주석-->
+
+	</div>
+
+	<jsp:include page="./include/footer.jsp"/>
+
+	</div>
+
+
 
 </body>
 </html>

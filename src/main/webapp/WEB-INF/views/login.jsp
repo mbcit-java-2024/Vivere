@@ -88,44 +88,55 @@
 </head>
 
 <body>
-	<c:if test="${not empty message}">
-	    <script>
-	        alert("${message}");
-	    </script>
-	</c:if>
-	
-	<c:if test="${not empty error}">
-	    <script>
-	        alert("${error}");
-	    </script>
-	</c:if>
-	
-	<div class="container1">
-	 	<div class="text-center mb-4">
-		    <img onclick="location.href='/'" style="width: 100px" alt="vivere arthall 로고" src="https://i.imgur.com/GszF5LV.png">
-	 	</div>
-	    <form action="/loginOK" method="post">
-	
-	        <div class="form-group">
-	            <label for="userId">아이디</label>
-	            <input type="text" id="userId" name="userId" required>
-	        </div>
-	
-	        <div class="form-group">
-	            <label for="pw">비밀번호</label>
-	            <input type="password" id="pw" name="pw" required>
-	        </div>
-	
-	       
-	        <button type="submit" class="submit-btn">로그인</button>
-	
-	    
-	        <div class="link-group">
-	            <a href="/signin">회원가입</a> /
-	            <a href="/findIdPassword">아이디/비밀번호 찾기</a>
-	        </div>
-			
-	    </form>
+	<div class="wrapper">
+		<jsp:include page="./include/header.jsp"/>
+
+	<div class="body-main">
+		<c:if test="${not empty message}">
+		    <script>
+		        alert("${message}");
+		    </script>
+		</c:if>
+
+		<c:if test="${not empty error}">
+		    <script>
+		        alert("${error}");
+		    </script>
+		</c:if>
+
+		<div class="container1">
+		 	<div class="text-center mb-4">
+			    <img onclick="location.href='/'" style="width: 100px" alt="vivere arthall 로고" src="https://i.imgur.com/GszF5LV.png">
+		 	</div>
+		    <form action="/loginOK" method="post">
+
+		        <div class="form-group">
+		            <label for="userId">아이디</label>
+		            <input type="text" id="userId" name="userId" required>
+		        </div>
+
+		        <div class="form-group">
+		            <label for="pw">비밀번호</label>
+		            <input type="password" id="pw" name="pw" required>
+		        </div>
+
+		       
+		        <button type="submit" class="submit-btn">로그인</button>
+
+		    
+		        <div class="link-group">
+		            <a href="/signin">회원가입</a> /
+		            <a href="/findIdPassword">아이디/비밀번호 찾기</a>
+		        </div>
+				
+		    </form>
+		</div>
+
 	</div>
+
+	<jsp:include page="./include/footer.jsp"/>
+
+	</div>
+
 </body>
 </html>

@@ -102,46 +102,57 @@
     </style>
 </head>
 <body>
-	<c:if test="${not empty msg}">
-	    <script>
-	        alert("${msg}");
-	    </script>
-	</c:if>
+	<div class="wrapper">
+		<jsp:include page="./include/header.jsp"/>
+
+	<div class="body-main">
+			<c:if test="${not empty msg}">
+			    <script>
+			        alert("${msg}");
+			    </script>
+			</c:if>
 
 
-<div class="container">
-	
-	<div class="sidebar">
-		<jsp:include page="myinfoMenu.jsp" />
+		<div class="container">
+			
+			<div class="sidebar">
+				<jsp:include page="myinfoMenu.jsp" />
+			</div>
+
+
+		    <div class="content">
+				
+		        <h2>예매 내역</h2>
+
+		        <c:if test="${empty bookList}">
+		            <p>예매 내역이 없습니다.</p>
+		        </c:if>
+
+		        <c:forEach var="book" items="${bookList}">
+		            <div class="booking-card">
+
+		                <img src="${book.posterUrl}" alt="공연 포스터" class="poster" />
+		                <h3>${book.title}</h3>
+		                <p><strong>공연일:</strong> <fmt:formatDate value="${book.concertTime}" pattern="yyyy-MM-dd HH:mm" /></p>
+		                <p><strong>좌석:</strong> ${book.seatNum}</p>
+		                <p><strong>예매번호:</strong> ${book.bookNum}</p>
+		                <p><strong>결제금액:</strong> <fmt:formatNumber value="${book.price}" pattern="#,###원" /></p>
+		                <p><strong>예매일자:</strong> <fmt:formatDate value="${book.orderDate}" pattern="yyyy-MM-dd" /></p>
+						<form action="/myBookDelete" method="post">
+						    <input type="hidden" name="id" value="${book.id}" />
+						    <button type="submit" class="btn-delete">예매 취소</button>
+						</form>
+		            </div>
+		        </c:forEach>
+		    </div>
+		</div>
+
 	</div>
 
+	<jsp:include page="./include/footer.jsp"/>
 
-    <div class="content">
-		
-        <h2>예매 내역</h2>
+	</div>
 
-        <c:if test="${empty bookList}">
-            <p>예매 내역이 없습니다.</p>
-        </c:if>
-
-        <c:forEach var="book" items="${bookList}">
-            <div class="booking-card">
-
-                <img src="${book.posterUrl}" alt="공연 포스터" class="poster" />
-                <h3>${book.title}</h3>
-                <p><strong>공연일:</strong> <fmt:formatDate value="${book.concertTime}" pattern="yyyy-MM-dd HH:mm" /></p>
-                <p><strong>좌석:</strong> ${book.seatNum}</p>
-                <p><strong>예매번호:</strong> ${book.bookNum}</p>
-                <p><strong>결제금액:</strong> <fmt:formatNumber value="${book.price}" pattern="#,###원" /></p>
-                <p><strong>예매일자:</strong> <fmt:formatDate value="${book.orderDate}" pattern="yyyy-MM-dd" /></p>
-				<form action="/myBookDelete" method="post">
-				    <input type="hidden" name="id" value="${book.id}" />
-				    <button type="submit" class="btn-delete">예매 취소</button>
-				</form>
-            </div>
-        </c:forEach>
-    </div>
-</div>
 
 </body>
 </html>

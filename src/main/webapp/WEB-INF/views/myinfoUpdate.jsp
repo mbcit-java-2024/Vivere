@@ -152,83 +152,94 @@
     </script>
 </head>
 <body>
-<div class="container">
-    <h2>회원정보 수정</h2>
-    <form action="/myinfoUpdateOK" method="post" onsubmit="makeEmail(); return checkPasswordMatch() && checkPhone() && checkBirth();">
+	<div class="wrapper">
+		<jsp:include page="./include/header.jsp"/>
 
-        <div class="form-group">
-            <label>비밀번호 (변경 시 입력)</label>
-            <input type="password" name="pw" placeholder="변경할 비밀번호">
-        </div>
+	<div class="body-main">
+		<div class="container">
+		    <h2>회원정보 수정</h2>
+		    <form action="/myinfoUpdateOK" method="post" onsubmit="makeEmail(); return checkPasswordMatch() && checkPhone() && checkBirth();">
 
-        <div class="form-group">
-            <label>비밀번호 확인</label>
-            <input type="password" name="pwConfirm">
-        </div>
+		        <div class="form-group">
+		            <label>비밀번호 (변경 시 입력)</label>
+		            <input type="password" name="pw" placeholder="변경할 비밀번호">
+		        </div>
 
-        <div class="form-group">
-            <label>이름</label>
-            <input type="text" name="name" value="${consumer.name}" required>
-        </div>
+		        <div class="form-group">
+		            <label>비밀번호 확인</label>
+		            <input type="password" name="pwConfirm">
+		        </div>
 
-        <div class="form-group">
-            <label>생년월일</label>
-            <input type="text" name="birth" value="${consumer.birth}" required>
-        </div>
+		        <div class="form-group">
+		            <label>이름</label>
+		            <input type="text" name="name" value="${consumer.name}" required>
+		        </div>
 
-        <div class="form-group">
-            <label>성별</label>
-            <div class="radio-group">
-                <div class="radio-option">
-                    <input type="radio" name="gender" value="MALE" <c:if test="${consumer.gender == 'MALE'}">checked</c:if>> <span>남자</span>
-                </div>
-                <div class="radio-option">
-                    <input type="radio" name="gender" value="FEMALE" <c:if test="${consumer.gender == 'FEMALE'}">checked</c:if>> <span>여자</span>
-                </div>
-            </div>
-        </div>
+		        <div class="form-group">
+		            <label>생년월일</label>
+		            <input type="text" name="birth" value="${consumer.birth}" required>
+		        </div>
 
-        <div class="form-group">
-            <label>전화번호</label>
-            <input type="text" name="phone" value="${consumer.phone}" required>
-        </div>
+		        <div class="form-group">
+		            <label>성별</label>
+		            <div class="radio-group">
+		                <div class="radio-option">
+		                    <input type="radio" name="gender" value="MALE" <c:if test="${consumer.gender == 'MALE'}">checked</c:if>> <span>남자</span>
+		                </div>
+		                <div class="radio-option">
+		                    <input type="radio" name="gender" value="FEMALE" <c:if test="${consumer.gender == 'FEMALE'}">checked</c:if>> <span>여자</span>
+		                </div>
+		            </div>
+		        </div>
 
-        <div class="form-group">
-            <label>이메일</label>
-            <div class="email-group">
-                <input type="text" id="emailFront" value="${consumer.email.split('@')[0]}" required> @
-                <select name="emailDomain" id="emailDomain" onchange="checkEmailDomain()">
-                    <option value="naver.com" <c:if test="${consumer.email.endsWith('naver.com')}">selected</c:if>>naver.com</option>
-                    <option value="gmail.com" <c:if test="${consumer.email.endsWith('gmail.com')}">selected</c:if>>gmail.com</option>
-                    <option value="daum.net" <c:if test="${consumer.email.endsWith('daum.net')}">selected</c:if>>daum.net</option>
-                    <option value="custom" <c:if test="${!consumer.email.endsWith('naver.com') && !consumer.email.endsWith('gmail.com') && !consumer.email.endsWith('daum.net')}">selected</c:if>>직접입력</option>
-                </select>
-                <input type="text" name="customEmail" id="customEmail"
-                       value="<c:if test='${!consumer.email.endsWith(\"naver.com\") && !consumer.email.endsWith(\"gmail.com\") && !consumer.email.endsWith(\"daum.net\")}'>${consumer.email.split('@')[1]}</c:if>">
-            </div>
-            
-            <input type="hidden" name="email" id="fullEmail">
-        </div>
+		        <div class="form-group">
+		            <label>전화번호</label>
+		            <input type="text" name="phone" value="${consumer.phone}" required>
+		        </div>
 
-        <div class="form-group">
-            <label>주소</label>
-            <input type="text" name="address" value="${consumer.address}" required>
-        </div>
+		        <div class="form-group">
+		            <label>이메일</label>
+		            <div class="email-group">
+		                <input type="text" id="emailFront" value="${consumer.email.split('@')[0]}" required> @
+		                <select name="emailDomain" id="emailDomain" onchange="checkEmailDomain()">
+		                    <option value="naver.com" <c:if test="${consumer.email.endsWith('naver.com')}">selected</c:if>>naver.com</option>
+		                    <option value="gmail.com" <c:if test="${consumer.email.endsWith('gmail.com')}">selected</c:if>>gmail.com</option>
+		                    <option value="daum.net" <c:if test="${consumer.email.endsWith('daum.net')}">selected</c:if>>daum.net</option>
+		                    <option value="custom" <c:if test="${!consumer.email.endsWith('naver.com') && !consumer.email.endsWith('gmail.com') && !consumer.email.endsWith('daum.net')}">selected</c:if>>직접입력</option>
+		                </select>
+		                <input type="text" name="customEmail" id="customEmail"
+		                       value="<c:if test='${!consumer.email.endsWith(\"naver.com\") && !consumer.email.endsWith(\"gmail.com\") && !consumer.email.endsWith(\"daum.net\")}'>${consumer.email.split('@')[1]}</c:if>">
+		            </div>
+		            
+		            <input type="hidden" name="email" id="fullEmail">
+		        </div>
 
-        <div class="form-group">
-            <label>상세주소</label>
-            <input type="text" name="detailAddress" value="${consumer.detailAddress}" required>
-        </div>
+		        <div class="form-group">
+		            <label>주소</label>
+		            <input type="text" name="address" value="${consumer.address}" required>
+		        </div>
 
-        <a href="#" onclick="confirmDelete()" style="display: block; margin-top: 30px; color: #888; text-align: center; text-decoration: underline;">
-            회원 탈퇴하기
-        </a>
-		
-		<br />
+		        <div class="form-group">
+		            <label>상세주소</label>
+		            <input type="text" name="detailAddress" value="${consumer.detailAddress}" required>
+		        </div>
 
-        <button type="submit" class="submit-btn">수정하기</button>
-    </form>
-	<!--push를 위한 주석-->
+		        <a href="#" onclick="confirmDelete()" style="display: block; margin-top: 30px; color: #888; text-align: center; text-decoration: underline;">
+		            회원 탈퇴하기
+		        </a>
+				
+				<br />
+
+		        <button type="submit" class="submit-btn">수정하기</button>
+		    </form>
+			<!--push를 위한 주석-->
+
+	</div>
+
+	<jsp:include page="./include/footer.jsp"/>
+
+	</div>
+
 
 </div>
 </body>

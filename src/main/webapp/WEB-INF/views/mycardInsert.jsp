@@ -96,55 +96,65 @@
     </style>
 </head>
 <body>
+	<div class="wrapper">
+		<jsp:include page="./include/header.jsp"/>
 
-<div class="container">
-	<div class="sidebar">
-		<jsp:include page="myinfoMenu.jsp" />
+	<div class="body-main">
+		<div class="container">
+			<div class="sidebar">
+				<jsp:include page="myinfoMenu.jsp" />
+			</div>
+		    <div class="content">
+		        <h2>카드 등록</h2>
+
+		        <form id="cardForm" action="/mycardInsertOK" method="post">
+					
+					<div class="form-group">
+					    <label>은행명</label>
+					    <input type="text" name="bankName" placeholder="예: 국민은행" required>
+					</div>
+					
+		            <!-- 카드번호 -->
+		            <div class="form-group">
+		                <label>카드번호</label>
+		                <div class="card-inputs">
+							<input type="text" name="card1" required pattern="\d{4}">
+							<input type="text" name="card2" required pattern="\d{4}">
+							<input type="text" name="card3" required pattern="\d{4}">
+							<input type="text" name="card4" required pattern="\d{4}">
+		                </div>
+		            </div>
+
+		            <!-- 카드 비밀번호 -->
+					<div class="form-group">
+					    <label>카드 비밀번호 (숫자 4자리)</label>
+					    <input type="password" name="pw" maxlength="4" required pattern="\d{4}">
+					</div>
+
+					<!-- CVC -->
+					<div class="form-group">
+					    <label>CVC</label>
+					    <input type="text" name="cvc" required pattern="\d{3}">
+					</div>
+
+					<!-- 유효기간 -->
+					<div class="form-group">
+					    <label>유효기간 (예: 2025-12-31)</label>
+					    <input type="date" name="validDate" required>
+					</div>
+
+		            <button type="submit" class="submit-btn">등록하기</button>
+		        </form>
+		    </div>
+		</div>
+		<!--push를 위한 주석-->
+
 	</div>
-    <div class="content">
-        <h2>카드 등록</h2>
 
-        <form id="cardForm" action="/mycardInsertOK" method="post">
-			
-			<div class="form-group">
-			    <label>은행명</label>
-			    <input type="text" name="bankName" placeholder="예: 국민은행" required>
-			</div>
-			
-            <!-- 카드번호 -->
-            <div class="form-group">
-                <label>카드번호</label>
-                <div class="card-inputs">
-					<input type="text" name="card1" required pattern="\d{4}">
-					<input type="text" name="card2" required pattern="\d{4}">
-					<input type="text" name="card3" required pattern="\d{4}">
-					<input type="text" name="card4" required pattern="\d{4}">
-                </div>
-            </div>
+	<jsp:include page="./include/footer.jsp"/>
 
-            <!-- 카드 비밀번호 -->
-			<div class="form-group">
-			    <label>카드 비밀번호 (숫자 4자리)</label>
-			    <input type="password" name="pw" maxlength="4" required pattern="\d{4}">
-			</div>
+	</div>
 
-			<!-- CVC -->
-			<div class="form-group">
-			    <label>CVC</label>
-			    <input type="text" name="cvc" required pattern="\d{3}">
-			</div>
-
-			<!-- 유효기간 -->
-			<div class="form-group">
-			    <label>유효기간 (예: 2025-12-31)</label>
-			    <input type="date" name="validDate" required>
-			</div>
-
-            <button type="submit" class="submit-btn">등록하기</button>
-        </form>
-    </div>
-</div>
-<!--push를 위한 주석-->
 
 
 </body>

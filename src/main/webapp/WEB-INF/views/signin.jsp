@@ -180,111 +180,122 @@
 </head>
 
 <body>
-<div class="container">
-    <h2>회원가입</h2>
-    <form action="/signinOK" method="post" onsubmit="return checkPasswordMatch() && checkAgreement() && multiIdCheck() && checkPhone()">
+	<div class="wrapper">
+		<jsp:include page="./include/header.jsp"/>
 
-        <div class="form-group">
-            <label>아이디</label>
-            <div class="input-row">
-                <input type="text" name="userId" id="userId" required>
-                <button type="button" class="check-btn" onclick="checkDuplicateId()">중복 확인</button>
-            </div>
-        </div>
+	<div class="body-main">
+		<div class="container">
+		    <h2>회원가입</h2>
+		    <form action="/signinOK" method="post" onsubmit="return checkPasswordMatch() && checkAgreement() && multiIdCheck() && checkPhone()">
 
-        <div class="form-group">
-            <label>비밀번호</label>
-            <input type="password" name="pw" placeholder="8자 이상, 영문+숫자 조합" required>
-        </div>
-
-        <div class="form-group">
-            <label>비밀번호 확인</label>
-            <input type="password" name="pwConfirm" required>
-        </div>
-
-        <div class="form-group">
-            <label>이름</label>
-            <input type="text" name="name" required>
-        </div>
-
-        <div class="form-group">
-            <label>생년월일</label>
-            <input type="date" name="birth" required>
-        </div>
-
-        <div class="form-group">
-            <label>성별</label>
-            <div class="radio-group">
-                <div class="radio-option">
-                    <input type="radio" name="gender" value="MALE" required>
-                    <span>남자</span>
-                </div>
-                <div class="radio-option">
-                    <input type="radio" name="gender" value="FEMALE">
-                    <span>여자</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>전화번호</label>
-            <input type="text" name="phone" placeholder="- 없이 입력하세요" required>
-        </div>
-
-        <div class="form-group">
-            <label>이메일</label>
-            <div class="email-group">
-                <input type="text" name="email" required> @
-                <select name="emailDomain" id="emailDomain" onchange="checkEmailDomain()">
-                    <option value="naver.com">naver.com</option>
-                    <option value="gmail.com">gmail.com</option>
-                    <option value="daum.net">daum.net</option>
-                    <option value="custom">직접입력</option>
-                </select>
-                <input type="text" name="customEmail" id="customEmail" placeholder="도메인 직접입력">
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>주소</label>
-            <input type="text" name="address" required>
-        </div>
-
-        <div class="form-group">
-            <label>상세주소</label>
-            <input type="text" name="detailAddress" required>
-        </div>
-
-		<div class="form-group">
-		    <label>수신 동의</label>
-		    <div class="radio-group">
-		        <div class="radio-option">
-		            <input type="radio" name="receive" value="AGREE">
-		            <span>동의</span>
+		        <div class="form-group">
+		            <label>아이디</label>
+		            <div class="input-row">
+		                <input type="text" name="userId" id="userId" required>
+		                <button type="button" class="check-btn" onclick="checkDuplicateId()">중복 확인</button>
+		            </div>
 		        </div>
-		        <div class="radio-option">
-		            <input type="radio" name="receive" value="DISAGREE">
-		            <span>비동의</span>
-		        </div>
-		    </div>
-		</div>
 
-		<div class="form-group">
-		    <label>개인정보 이용 동의</label>
-		    <div class="radio-group">
-		        <div class="radio-option">
-		            <input type="radio" name="agree" value="AGREE" required>
-		            <span>동의</span>
+		        <div class="form-group">
+		            <label>비밀번호</label>
+		            <input type="password" name="pw" placeholder="8자 이상, 영문+숫자 조합" required>
 		        </div>
-		        <div class="radio-option">
-		            <input type="radio" name="agree" value="DISAGREE">
-		            <span>비동의</span>
+
+		        <div class="form-group">
+		            <label>비밀번호 확인</label>
+		            <input type="password" name="pwConfirm" required>
 		        </div>
-		    </div>
-		</div>
-		
-        <button type="submit" class="submit-btn">가입하기</button>
-    </form>
-	<!--push를 위한 주석-->
+
+		        <div class="form-group">
+		            <label>이름</label>
+		            <input type="text" name="name" required>
+		        </div>
+
+		        <div class="form-group">
+		            <label>생년월일</label>
+		            <input type="date" name="birth" required>
+		        </div>
+
+		        <div class="form-group">
+		            <label>성별</label>
+		            <div class="radio-group">
+		                <div class="radio-option">
+		                    <input type="radio" name="gender" value="MALE" required>
+		                    <span>남자</span>
+		                </div>
+		                <div class="radio-option">
+		                    <input type="radio" name="gender" value="FEMALE">
+		                    <span>여자</span>
+		                </div>
+		            </div>
+		        </div>
+
+		        <div class="form-group">
+		            <label>전화번호</label>
+		            <input type="text" name="phone" placeholder="- 없이 입력하세요" required>
+		        </div>
+
+		        <div class="form-group">
+		            <label>이메일</label>
+		            <div class="email-group">
+		                <input type="text" name="email" required> @
+		                <select name="emailDomain" id="emailDomain" onchange="checkEmailDomain()">
+		                    <option value="naver.com">naver.com</option>
+		                    <option value="gmail.com">gmail.com</option>
+		                    <option value="daum.net">daum.net</option>
+		                    <option value="custom">직접입력</option>
+		                </select>
+		                <input type="text" name="customEmail" id="customEmail" placeholder="도메인 직접입력">
+		            </div>
+		        </div>
+
+		        <div class="form-group">
+		            <label>주소</label>
+		            <input type="text" name="address" required>
+		        </div>
+
+		        <div class="form-group">
+		            <label>상세주소</label>
+		            <input type="text" name="detailAddress" required>
+		        </div>
+
+				<div class="form-group">
+				    <label>수신 동의</label>
+				    <div class="radio-group">
+				        <div class="radio-option">
+				            <input type="radio" name="receive" value="AGREE">
+				            <span>동의</span>
+				        </div>
+				        <div class="radio-option">
+				            <input type="radio" name="receive" value="DISAGREE">
+				            <span>비동의</span>
+				        </div>
+				    </div>
+				</div>
+
+				<div class="form-group">
+				    <label>개인정보 이용 동의</label>
+				    <div class="radio-group">
+				        <div class="radio-option">
+				            <input type="radio" name="agree" value="AGREE" required>
+				            <span>동의</span>
+				        </div>
+				        <div class="radio-option">
+				            <input type="radio" name="agree" value="DISAGREE">
+				            <span>비동의</span>
+				        </div>
+				    </div>
+				</div>
+				
+		        <button type="submit" class="submit-btn">가입하기</button>
+		    </form>
+			<!--push를 위한 주석-->
+
+	</div>
+
+	<jsp:include page="./include/footer.jsp"/>
+
+	</div>
+
 </body>
 </html>

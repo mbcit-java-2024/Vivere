@@ -616,6 +616,12 @@ $(document).ready(function() {
 	    if (isFormValid) {
 	// 조건 3: required 속성이 부여된 input에 값이 있는지 확인
 			if (!$('#myForm')[0].checkValidity()) {
+				const form = $('#myForm')[0];
+				for (const el of form.elements) {
+				  if (!el.checkValidity()) {
+				    console.log("유효성 실패:", el.name, el.validationMessage);
+				  }
+				}
 			   	alert("필수 입력 항목을 채워주세요.");
 			 	return false;
 			}else{
@@ -674,6 +680,7 @@ $(document).ready(function() {
 		        event.preventDefault(); // 제출 방지
 		        return false;
 		    }
+	        alert("조건 0 클리어 (좌석등급 선택완료)");
 	    	
 		    // 조건 1: 생성된 체크박스(좌석)이 모두 선택되었는가?
 			let allSeats = [];
@@ -778,7 +785,7 @@ $(document).ready(function() {
 </style>
 </head>
 <body>
-
+<div class="container">
 <form id="myForm" action="updateConcertOK" method="post" enctype="multipart/form-data" onsubmit="return confirmSubmit()">
 	<input type="hidden" id="concertId" name="concertId" value="${concertVO.id}">
 	<table >
@@ -894,6 +901,7 @@ $(document).ready(function() {
 	<button type="submit" id="submitBtn">저장</button>
 	<button type="button" onclick="location.href='deleteConcert?concertId=${concertVO.id}'">삭제</button>
 </form>
+</div>
 
 </body>
 </html>

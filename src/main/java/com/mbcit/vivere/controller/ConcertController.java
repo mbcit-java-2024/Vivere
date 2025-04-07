@@ -1,5 +1,6 @@
 package com.mbcit.vivere.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mbcit.vivere.service.ConcertService;
 import com.mbcit.vivere.service.ReviewService;
 import com.mbcit.vivere.vo.ConcertTimeVO;
@@ -91,10 +94,10 @@ public class ConcertController {
       concertService.setTimeAndPoster(concertVO);
 //      해당 공연의 시간정보 
       List<ConcertTimeVO> conTimeList = concertService.getConcertTimes(concertId);
-
+      
       // reviewListByConcert
       List<ReviewVO> reviewList = reviewService.reviewListByConcert(concertId);
-
+      
 //      jsp 로 필요한 정보 보내기
       model.addAttribute("concertVO", concertVO);
       model.addAttribute("conTimeList", conTimeList);

@@ -1,5 +1,7 @@
 package com.mbcit.vivere.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -45,28 +47,30 @@ public class BookController {
 	
 	@RequestMapping("/book")
 	public String book(HttpServletRequest request, Model model
-//					, @RequestParam int concertId, @RequestParam int timeIndex
+					, @RequestParam int concertId, @RequestParam("selectedTime") String userSelTime
 					) {
 		System.out.println("BookController 컨트롤러의 book() 메소드 실행");
 		
-		int concertId = 3; // ************ !!!concertId 가져오게 추가해야됨!!! ************ 
-		
 		ConcertVO concertVO = concertService.getConcertById(concertId);
 		
-			List<ConcertTimeVO> conTimes = concertService.getFutureConcertTimes(concertId);
-			Date selDate = conTimes.get(0).getConcertTime(); // ************ selectTime 맞게 들어가려면??? ************ 
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(selDate);
-			Date selectedTime = calendar.getTime();
-			
-			ArrayList<Character> gHall = concertService.getGHallLine();
-			ArrayList<Character> fHall = concertService.getFHallLine();
-			
-			model.addAttribute("gHall", gHall);
-			model.addAttribute("fHall", fHall);
-			model.addAttribute("concertVO", concertVO);
-			model.addAttribute("conTimes", conTimes);
-			model.addAttribute("selectedTime", selectedTime);
+		List<ConcertTimeVO> conTimes = concertService.getFutureConcertTimes(concertId);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+		Date selectedTime = null;
+		try {
+			selectedTime = sdf.parse(userSelTime);
+		} catch (ParseException e) {
+			System.out.println("book컨트롤러 book 요청의 selectedTime 변환 실패");
+		}
+
+		ArrayList<Character> gHall = concertService.getGHallLine();
+		ArrayList<Character> fHall = concertService.getFHallLine();
+		
+		model.addAttribute("gHall", gHall);
+		model.addAttribute("fHall", fHall);
+		model.addAttribute("concertVO", concertVO);
+		model.addAttribute("conTimes", conTimes);
+		model.addAttribute("selectedTime", selectedTime);
 		
 		return "/book";
 	}

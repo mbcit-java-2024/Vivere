@@ -205,6 +205,8 @@ function updateQna(id) {
   </script>
 </head>
 <body>
+<jsp:include page="./include/header.jsp"/>
+<div class="wrapper">
 	<div class="top-bar">
 		<button class="btn" onclick="location.href='/qnaInsert'">✉
 			문의글쓰기</button>
@@ -256,8 +258,8 @@ function updateQna(id) {
     </div>
   </c:if>
 </c:forEach>
+<jsp:include page="./include/footer.jsp"/>
 
-
-
+</div>
 </body>
 </html>

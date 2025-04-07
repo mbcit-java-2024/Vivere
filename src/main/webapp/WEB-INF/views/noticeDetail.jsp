@@ -27,7 +27,8 @@
     </style>
 </head>
 <body class="bg-light">
-
+<jsp:include page="./include/header.jsp"/>
+<div class="wrapper">
 <div class="container my-5">
     <a href="/noticeList" class="btn btn-link text-muted mb-3">
         &larr; 목록으로 돌아가기
@@ -74,6 +75,7 @@
         </tbody>
     </table>
 </div>
-
+<jsp:include page="./include/footer.jsp"/>
+</div>
 </body>
 </html>

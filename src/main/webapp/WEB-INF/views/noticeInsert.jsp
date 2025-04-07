@@ -37,7 +37,9 @@ button {
 
 </head>
 <body>
+<jsp:include page="./include/header.jsp"/>
 
+<div class="wrapper">
 <h2 style="text-align: center;">✍ 공지사항 작성</h2>
 
 <form action="/noticeInsertOK" method="post">
@@ -54,6 +56,7 @@ button {
 
   <button type="submit" >등록하기</button>
 </form>
-
+<jsp:include page="./include/footer.jsp"/>
+</div>
 </body>
 </html>

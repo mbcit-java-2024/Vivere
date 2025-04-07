@@ -302,6 +302,9 @@ function updateReview(id) {
 
 </head>
 <body>
+<jsp:include page="./include/header.jsp"/>
+
+<div class="wrapper">
 	<!-- ✅ 리뷰가 있는 공연 -->
 	<h2 class="section-title">✅ 리뷰 작성 완료된 공연</h2>
 	<c:forEach var="pastBook" items="${pastBook}">
@@ -481,10 +484,8 @@ function updateReview(id) {
 			</div>
 		</c:if>
 	</c:forEach>
-<footer>
-	<jsp:include page="./include/footer.jsp"/>
-</footer>
-
+<jsp:include page="./include/footer.jsp"/>
+</div>
 </body>
 </html>
 

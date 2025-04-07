@@ -37,7 +37,8 @@ th {
 </style>
 </head>
 <body>
-
+<jsp:include page="./include/header.jsp"/>
+<div class="wrapper">
 	<h2>📢 공지사항 리스트</h2>
 	<div style="text-align: right; margin-bottom: 20px;">
 		<button onclick="location.href='/noticeInsert'"
@@ -95,6 +96,7 @@ th {
 		</tbody>
 
 	</table>
-
+<jsp:include page="./include/footer.jsp"/>
+</div>
 </body>
 </html>

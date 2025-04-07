@@ -14,6 +14,9 @@
     </style>
 </head>
 <body class="bg-light">
+<jsp:include page="./include/header.jsp"/>
+
+<div class="wrapper">
 
 <div class="container my-5">
     <h2 class="mb-4">✏ 공지사항 수정</h2>
@@ -56,6 +59,8 @@
             <a href="/noticeList" class="btn btn-secondary ms-2">↩ 목록</a>
         </div>
     </form>
+</div>
+<jsp:include page="./include/footer.jsp"/>
 </div>
 
 </body>

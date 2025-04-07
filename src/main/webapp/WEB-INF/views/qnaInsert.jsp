@@ -71,6 +71,9 @@ textarea {
 
 </head>
 <body>
+<jsp:include page="./include/header.jsp"/>
+
+<div class="wrapper">
 	<form action="/qnaInsertOK" method="post">
 		<div class="form-container">
 			<input type="text" name="qna_title" placeholder="문의 제목 입력칸" required />
@@ -78,6 +81,9 @@ textarea {
 			<button type="submit" class="submit-btn">문의 저장</button>
 		</div>
 	</form>
+	<jsp:include page="./include/footer.jsp"/>
+</div>
+	
 </body>
 </html>
 

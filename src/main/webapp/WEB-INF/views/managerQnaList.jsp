@@ -274,6 +274,8 @@ function updateQnarep(id) {
 </script>
 </head>
 <body>
+<jsp:include page="./include/header.jsp"/>
+<div class="wrapper">
 	<h2>📬 답변이 없는 문의</h2>
 
 <c:forEach var="qna" items="${qnaList}">
@@ -328,8 +330,9 @@ function updateQnarep(id) {
 </c:forEach>
 
 
+<jsp:include page="./include/footer.jsp"/>
 
-
+</div>
 </body>
 </html>
 

@@ -80,7 +80,7 @@
 				</div>
 			</c:if>
 			<!-- 공연 리스트 -->
-			<div class="row row-cols-1 row-cols-md-3 g-4">
+			<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
 				<c:forEach var="concert" items="${concertList}" varStatus="i">
 					<div class="col">
 						<div class="card h-100" style="width:300px">

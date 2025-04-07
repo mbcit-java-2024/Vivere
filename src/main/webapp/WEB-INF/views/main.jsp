@@ -51,7 +51,6 @@
     <span class="carousel-control-next-icon"></span>
   </button>
 </div>
-<a href="/book">공연 예약 book.jsp</a>
 
 <!-- header -->
 <header>

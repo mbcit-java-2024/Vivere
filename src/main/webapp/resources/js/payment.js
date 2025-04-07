@@ -70,6 +70,17 @@ function selectCardId(cardId) {
 	}
 }
 
+function openCardPopup() {
+    const popup = window.open("/mycardInsertToBook", "cardPopup", "width=600,height=500");
+
+    const timer = setInterval(() => {
+        if (popup.closed) {
+            clearInterval(timer);
+            location.reload();
+        }
+    }, 500);
+}
+
 function submitAction() {
 	const payType = document.getElementById("actionPayType").value;
 	const cardId = document.getElementById("actionCardId").value;

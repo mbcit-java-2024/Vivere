@@ -144,6 +144,7 @@ public class BookController {
     	concertVO.setPosterUrl(relativePath);
 		
     	model.addAttribute("conTimeId", conTimeId);
+    	model.addAttribute("selectedTime", selectedTime);
     	model.addAttribute("cardList", cardList);
 		model.addAttribute("selectedSeats", selectedSeats);
 		model.addAttribute("selTime", selTime);

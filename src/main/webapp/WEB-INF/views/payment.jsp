@@ -86,7 +86,7 @@
 									</label>
 								</div>&nbsp;&nbsp;
 							</c:forEach>
-							<a class="creditCard" href="/mycardInsert">
+							<a class="creditCard" href="#" onclick="openCardPopup()">
 								+ 카드 추가 하기
 							</a>
 						</div>

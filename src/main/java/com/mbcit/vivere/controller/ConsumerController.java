@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mbcit.vivere.service.CardService;
@@ -96,6 +97,12 @@ public class ConsumerController {
     	return "/mycardInsert";
     }
     
+    @RequestMapping("/mycardInsertToBook")
+    public String insertCardToBook(Model model, HttpSession session) {
+    	
+    	return "/mycardInsertToBook";
+    }
+    
     
     @RequestMapping("/mycardInsertOK")
     public String insertCard(HttpServletRequest request, HttpSession session, RedirectAttributes re) {
@@ -107,6 +114,18 @@ public class ConsumerController {
 
         re.addFlashAttribute("msg", "카드 등록이 완료되었습니다.");
         return "redirect:/mycard";
+    }
+    
+    @RequestMapping("/mycardInsertOKToBook")
+    @ResponseBody
+    public String insertCardToBook(HttpServletRequest request, HttpSession session, RedirectAttributes re) {
+    	ConsumerVO loginUser = (ConsumerVO) session.getAttribute("loginUser");
+    	
+    	if (loginUser == null) return "redirect:/login";
+    	
+    	cardService.insertCard(request, loginUser.getId());
+    	
+    	return "<script>alert('카드가 등록되었습니다.');window.close();</script>";
     }
     
     @RequestMapping("/mycardDelete")

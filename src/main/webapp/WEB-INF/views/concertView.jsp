@@ -107,7 +107,7 @@
 			<div style="width: 50%">
 				<img alt="공연포스터" src="${concertVO.posterUrl}" style="width: 100%; ">
 			</div>
-			<div style="width: 50%; margin-left: 10px;">
+			<div style="width: 50%; margin-left: 10px; padding-left: 5px; padding-right: 5px;">
 	            <h5 class="mb-2">공연 일정</h5>
 			
 			    <form id="timeForm" method="post" action="/book">
@@ -133,10 +133,9 @@
 			        </div>
 			
 			        <!-- 시간 선택 -->
-			        <div id="timeSelector" class="mb-4">
+			        <div id="timeSelector" class="mb-2 d-grid gap-2">
 			            <h5><label class="form-label">공연 시간</label></h5>
-			            <div id="timeButtons" class="d-flex flex-wrap gap-2"></div>
-			        </div>
+			            <div id="timeButtons" class="d-flex flex-wrap gap-2 mb-4"></div>
 			<script>
 			    const today = new Date();
 			    let currentYear = today.getFullYear();
@@ -167,6 +166,9 @@
 			        const lastDate = new Date(year, month + 1, 0).getDate();
 			        const startWeekday = firstDay.getDay();
 
+			        const today = new Date();
+			        today.setHours(0, 0, 0, 0); // 날짜 비교용 (시간 제거)
+			        
 			        let dayCounter = 1;
 			        let finished = false;
 
@@ -190,18 +192,28 @@
 			                    cell.attr('data-date', dateStr);
 
 			                    if (hasConcert) {
-			                        cell.addClass("has-concert");
-			                        cell.css({
-			                            backgroundColor: "#CDAA39",
-			                            color: "white",
-			                            cursor: "pointer"
-			                        });
+			                    	const concertDate = new Date(dateStr);
+			                        if (concertDate < today) {
+			                            // 지난 공연 날짜: 클릭 불가, 회색 표시
+			                            cell.css({
+			                                backgroundColor: "#e9ecef", // 회색톤
+			                                color: "#6c757d", // 회색 글씨
+			                                cursor: "not-allowed"
+			                            }).addClass("text-muted disabled");
+			                        } else {
+				                        cell.addClass("has-concert");
+				                        cell.css({
+				                            backgroundColor: "#CDAA39",
+				                            color: "white",
+				                            cursor: "pointer"
+				                        });
 
-			                        cell.on("click", function () {
-			                            showTimesForDate(dateStr);
-			                            $(".calendar-cell").removeClass("selected");
-			                            $(this).addClass("selected");
-			                        });
+				                        cell.on("click", function () {
+				                            showTimesForDate(dateStr);
+				                            $(".calendar-cell").removeClass("selected");
+				                            $(this).addClass("selected");
+				                        });
+			                        }
 			                    } else {
 			                        cell.addClass("text-muted");
 			                    }
@@ -261,6 +273,14 @@
 			    });
 			
 			    renderCalendar(currentYear, currentMonth);
+			    
+			    $("#timeForm").on("submit", function (e) {
+			        const selected = $("input[name='selectedTime']:checked").val();
+			        if (!selected) {
+			            e.preventDefault(); // 제출 막기
+			            alert("공연 시간을 선택해주세요!");
+			        }
+			    });
 			</script>
 
 				<!-- 남은 좌석 표시 : Ajax로 실시간으로 꺼내오기 
@@ -268,20 +288,17 @@
 				남은 좌석 : 
 				</div>
 				-->
-				<div class="m-2 text-center">
 				<c:choose>
 			    <c:when test="${sessionScope.loginUser.grade eq 'ADMIN'}">
 					<!-- 관리자 로그인 시에만 보이는 버튼 -->
-					<button type="button" class="btn btn-outline-black"
+					<button  type="button" class="btn btn-outline-black"
 						onclick="location.href='/updateConcert?concertId=${concertVO.id}'">수정</button>
 					<button type="button" class="btn btn-outline-gold"
 						onclick="location.href='/concertData?concertId=${concertVO.id}'">통계</button>
 			    </c:when>
 			    <c:otherwise>
 					<!-- 예매하기 버튼 -->
-					<div class="d-grid gap-2">
-			        <button type="submit" class="btn btn-lg btn-gold" >예매하기</button>
-			        </div>
+			        <button type="submit" class="btn btn-lg btn-gold" style="margin: 0px;">예매하기</button>
 			    </c:otherwise>
 				</c:choose>
 				</div>
@@ -290,33 +307,38 @@
 			</div>
 		</div>
 	</div>
-
-<!-- 공연소개 -->	
-<h3>공연 소개</h3>
-<div>
-	${concertVO.description}
+	
+<div class="container mt-2" >
+	<!-- 공연소개 -->
+	<div class="card p-3 mt-3">
+	<h3>공연 소개</h3>
+	<div>
+		${concertVO.description}
+	</div>
+	</div>	
 </div>
 
-<h2>전체 리뷰 목록</h2>
-
-  <c:forEach var="review" items="${reviewList}">
-    <div class="review-box">
-      <div class="review-header">
-        <div class="review-rate">
-          <c:forEach begin="1" end="${review.rate}" var="i">
-            ★
-          </c:forEach>
-        </div>
-        <div class="consumer">작성자: ${review.userId}</div>
-      </div>
-      <div class="review-content">
-        ${review.content}
-      </div>
-      <div class="review-date">
-        작성일: <fmt:formatDate value="${review.createDate}" pattern="yyyy-MM-dd HH:mm"/>
-      </div>
-    </div>
-  </c:forEach>
+<div class="container mt-4" >
+	<h2>전체 리뷰 목록</h2>
+	
+	  <c:forEach var="review" items="${reviewList}">
+	    <div class="review-box">
+	      <div class="review-header">
+	        <div class="review-rate">
+	          <c:forEach begin="1" end="${review.rate}" var="i">
+	            ★
+	          </c:forEach>
+	        </div>
+	        <div class="consumer">작성자: ${review.userId}</div>
+	      </div>
+	      <div class="review-content">
+	        ${review.content}
+	      </div>
+	      <div class="review-date">
+	        작성일: <fmt:formatDate value="${review.createDate}" pattern="yyyy-MM-dd HH:mm"/>
+	      </div>
+	    </div>
+	  </c:forEach>
 </div>
 
 </body>

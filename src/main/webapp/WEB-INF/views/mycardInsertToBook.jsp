@@ -101,6 +101,9 @@
 
 	<div class="body-main">
 		<div class="container">
+			<div class="sidebar">
+				<jsp:include page="myinfoMenu.jsp" />
+			</div>
 		    <div class="content">
 		        <h2>카드 등록</h2>
 
@@ -136,7 +139,7 @@
 
 					<!-- 유효기간 -->
 					<div class="form-group">
-					    <label>유효기간 (예: 2025-12-31)</label>
+					    <label>유효기간</label>
 					    <input type="date" name="validDate" required>
 					</div>
 
@@ -144,13 +147,13 @@
 		        </form>
 		    </div>
 		</div>
+		<!--push를 위한 주석-->
 
 	</div>
 
 	<jsp:include page="./include/footer.jsp"/>
 
 	</div>
-
 
 
 

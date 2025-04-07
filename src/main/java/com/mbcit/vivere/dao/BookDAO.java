@@ -19,5 +19,6 @@ public interface BookDAO {
 	List<BookVO> getBooksByBookNum(String bookNum);
 	List<BookVO> getBookListByConsumerId(int consumerId);
 	void deleteBookById(int bookId);
+	BookVO getLatestBookByConsumerId(int consumerId);
 
 }

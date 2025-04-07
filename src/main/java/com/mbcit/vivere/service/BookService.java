@@ -166,6 +166,13 @@ public class BookService {
 		bookDAO.deleteBookById(bookId);
 		
 	}
+
+	public BookVO getLatestBookByConsumerId(int consumerId) {
+	    return bookDAO.getLatestBookByConsumerId(consumerId);
+	}
+
+
+
 }
 
 

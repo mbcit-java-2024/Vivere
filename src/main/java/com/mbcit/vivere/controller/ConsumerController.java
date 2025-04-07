@@ -14,9 +14,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mbcit.vivere.service.BookService;
 import com.mbcit.vivere.service.CardService;
+import com.mbcit.vivere.service.ConcertService;
 import com.mbcit.vivere.service.LoginService;
 import com.mbcit.vivere.vo.BookVO;
 import com.mbcit.vivere.vo.CardVO;
+import com.mbcit.vivere.vo.ConcertVO;
 import com.mbcit.vivere.vo.ConsumerVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,14 +33,36 @@ public class ConsumerController {
 	private CardService cardService;
 	@Autowired
 	private BookService bookService;
+	@Autowired
+	private ConcertService concertService;
 	
-    @RequestMapping("/myinfo")
-    public String myinfo() {
-    	
-        return "/myinfo";
-    }
-    
-    @RequestMapping("/myinfoDetail")
+	@RequestMapping("/myinfo")
+	public String myinfo(HttpSession session, Model model) {
+	    ConsumerVO loginUser = (ConsumerVO) session.getAttribute("loginUser");
+	    if (loginUser == null) return "redirect:/login";
+
+	    List<BookVO> bookList = bookService.getBookListByConsumerId(loginUser.getId());
+
+	    if (!bookList.isEmpty()) {
+	        BookVO latestBook = bookList.get(0);
+
+	        ConcertVO concert = concertService.getConcertById(latestBook.getConcertId());
+	        if (concert != null) {
+	            // 포스터 경로 상대 경로로 설정
+	            String relative = concertService.relativePath(concert.getPosterUrl(), "/posters/");
+	            latestBook.setPosterUrl(relative);
+	            latestBook.setTitle(concert.getTitle());
+	        }
+
+	        model.addAttribute("latestBook", latestBook);
+	    }
+
+	    model.addAttribute("loginUser", loginUser);
+	    return "/myinfo";
+	}	
+	
+	
+	@RequestMapping("/myinfoDetail")
     public String myinfodetail() {
     	
     	return "/myinfoDetail";
@@ -146,8 +170,22 @@ public class ConsumerController {
         ConsumerVO loginUser = (ConsumerVO) session.getAttribute("loginUser");
 
         if (loginUser == null) return "redirect:/login";
-
+        
         List<BookVO> bookList = bookService.getBookListByConsumerId(loginUser.getId());
+        
+        
+        for (BookVO book : bookList) {
+            if (book.getPosterUrl() == null) {
+                ConcertVO concert = concertService.getConcertById(book.getConcertId());
+                if (concert != null && concert.getPosterUrl() != null) {
+                    String relative = concertService.relativePath(concert.getPosterUrl(), "/posters/");
+                    book.setPosterUrl(relative);
+                }
+                if (concert.getTitle() != null) {
+                    book.setTitle(concert.getTitle());
+                }
+            }
+        }       
         model.addAttribute("bookList", bookList);
 
         return "/myBook"; 

@@ -72,15 +72,17 @@
 	</insert>
 	
 	<select id="getBookListByConsumerId" resultType="bookVO">
-	    select *
-	    from book
-	    where consumerId = #{consumerId}
-	    order by orderDate desc
+	    select * from book where consumerId = #{consumerId} order by orderDate desc
+	</select>
+	
+	<select id="getLatestBookByConsumerId" parameterType="int" resultType="bookVO">
+	    select * from book where consumerId = #{consumerId} order by orderDate desc limit 1
 	</select>
 	
 	<delete id="deleteBookById" parameterType="int">
 		delete from book where id = #{bookId}
     </delete>
+    
 
 
 </mapper>

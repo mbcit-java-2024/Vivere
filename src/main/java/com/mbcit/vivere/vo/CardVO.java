@@ -15,6 +15,6 @@ public class CardVO {
     private String pw;
     private String cardNum;
     private int cvc;
-    private String validDate;
+    private Date validDate;
     private Date createDate;
 }

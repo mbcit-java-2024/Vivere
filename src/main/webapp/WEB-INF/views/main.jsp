@@ -39,7 +39,7 @@
 		  <div class="carousel-inner">
 		  	<c:forEach var="vo" items="${carouselList }">
 		    <div class="carousel-item active">
-		      <img src="${vo.carouselUrl }" class="d-block w-100" onclick="location.href='/concertView?concertId=${vo.id}'">
+		      <img src="${vo.carouselUrl}" class="d-block w-100" onclick="location.href='/concertView?concertId=${vo.concertId}'">
 		    </div>
 		  	</c:forEach>
 		  </div>

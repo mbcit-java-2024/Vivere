@@ -98,7 +98,9 @@
 <body>
 
 <div class="container">
-    <jsp:include page="myinfoMenu.jsp" />
+	<div class="sidebar">
+		<jsp:include page="myinfoMenu.jsp" />
+	</div>
     <div class="content">
         <h2>카드 등록</h2>
 

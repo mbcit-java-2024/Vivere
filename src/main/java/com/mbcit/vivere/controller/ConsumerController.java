@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.mbcit.vivere.service.BookService;
 import com.mbcit.vivere.service.CardService;
 import com.mbcit.vivere.service.LoginService;
+import com.mbcit.vivere.vo.BookVO;
 import com.mbcit.vivere.vo.CardVO;
 import com.mbcit.vivere.vo.ConsumerVO;
 
@@ -27,6 +29,8 @@ public class ConsumerController {
 	private LoginService loginService;
 	@Autowired
 	private CardService cardService;
+	@Autowired
+	private BookService bookService;
 	
     @RequestMapping("/myinfo")
     public String myinfo() {
@@ -110,7 +114,7 @@ public class ConsumerController {
         
         if (loginUser == null) return "redirect:/login";
 
-        cardService.insertCard(request, loginUser.getId()); // 모든 로직은 Service로!
+        cardService.insertCard(request, loginUser.getId());
 
         re.addFlashAttribute("msg", "카드 등록이 완료되었습니다.");
         return "redirect:/mycard";
@@ -137,11 +141,36 @@ public class ConsumerController {
         re.addFlashAttribute("msg", "카드가 삭제되었습니다.");
         return "redirect:/mycard";
     }
+    @RequestMapping("/myBook")
+    public String myBook(HttpSession session, Model model) {
+        ConsumerVO loginUser = (ConsumerVO) session.getAttribute("loginUser");
 
+        if (loginUser == null) return "redirect:/login";
 
-}
+        List<BookVO> bookList = bookService.getBookListByConsumerId(loginUser.getId());
+        model.addAttribute("bookList", bookList);
+
+        return "/myBook"; 
+    }
     
-//push를 위한 주석
+    @RequestMapping("/myBookDelete")
+    public String deleteBook(HttpSession session, HttpServletRequest request, RedirectAttributes re) {
+
+
+        int bookId = Integer.parseInt(request.getParameter("id"));
+
+        bookService.deleteBookById(bookId); 
+
+        re.addFlashAttribute("msg", "예매가 취소되었습니다.");
+
+        return "redirect:/myBook";
+        
+    }
+    
+}
+
+    
+
     
 
 

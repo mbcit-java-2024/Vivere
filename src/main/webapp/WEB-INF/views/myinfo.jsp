@@ -90,8 +90,9 @@
 
 <div class="container">
     
-
-    <jsp:include page="myinfoMenu.jsp" />
+	<div class="sidebar">
+    	<jsp:include page="myinfoMenu.jsp" />
+	</div>
 
 
     <div class="main">

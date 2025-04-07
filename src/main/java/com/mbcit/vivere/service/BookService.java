@@ -156,6 +156,16 @@ public class BookService {
 		return bookDAO.getBooksByBookNum(bookNum);
 	}
 
+	 public List<BookVO> getBookListByConsumerId(int consumerId) {
+		 
+	        return bookDAO.getBookListByConsumerId(consumerId);
+	        
+	    }
+
+	public void deleteBookById(int bookId) {
+		bookDAO.deleteBookById(bookId);
+		
+	}
 }
 
 

@@ -4,9 +4,8 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>마이페이지</title>
+    <title>회원 정보</title>
     <style>
-        /* 기존 스타일 그대로 유지 */
         body {
             font-family: 'Noto Sans KR', sans-serif;
             background-color: #f8f9fa;
@@ -47,7 +46,7 @@
 
         .content {
             flex-grow: 1;
-            background-color: #fff;
+            background-color: #f1f1f1;
             padding: 40px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
@@ -59,8 +58,18 @@
             margin-bottom: 20px;
         }
 
+        .info-item {
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .info-item strong {
+            display: inline-block;
+            width: 120px;
+            color: #333;
+        }
+
         .btn {
-            margin-top: 30px;
             display: inline-block;
             background-color: black;
             color: white;
@@ -68,6 +77,7 @@
             border-radius: 5px;
             text-decoration: none;
             font-weight: bold;
+            margin-top: 30px;
         }
 
         .btn:hover {
@@ -77,35 +87,35 @@
 </head>
 <body>
 	
-	<c:if test="${not empty msg}">
-	    <script>
-	        alert("${msg}");
-	    </script>
-	</c:if>
+<div style="max-width: 1200px; margin: 50px auto 0; padding-left: 20px;">
+    <h2 style="font-size: 24px; font-weight: bold;">내 정보</h2>
+</div>
 
-    <div class="container">
-   
+<div class="container">
+    <div class="sidebar">
         <jsp:include page="myinfoMenu.jsp" />
-
-        <div class="content">
-            <h2>내 정보</h2>
-
-            <p><strong>이름:</strong> ${loginUser.name}</p>
-            <p><strong>생년월일:</strong> ${loginUser.birth}</p>
-            <p><strong>성별:</strong> 
-                <c:choose>
-                    <c:when test="${loginUser.gender == 'MALE'}">남자</c:when>
-                    <c:when test="${loginUser.gender == 'FEMALE'}">여자</c:when>
-                </c:choose>
-            </p>
-            <p><strong>등급:</strong> ${loginUser.grade}</p>
-            <p><strong>이메일:</strong> ${loginUser.email}</p>
-            <p><strong>전화번호:</strong> ${loginUser.phone}</p>
-            <p><strong>주소:</strong> ${loginUser.address} ${loginUser.detailAddress}</p>			
-
-            <a href="/myinfoUpdate" class="btn">수정하기</a>
-        </div>
     </div>
+
+	
+    <div class="content">
+	    <h2>내 정보</h2>
+
+        <div class="info-item"><strong>이름:</strong> ${loginUser.name}</div>
+        <div class="info-item"><strong>생년월일:</strong> ${loginUser.birth}</div>
+        <div class="info-item"><strong>성별:</strong> 
+            <c:choose>
+                <c:when test="${loginUser.gender == 'MALE'}">남자</c:when>
+                <c:when test="${loginUser.gender == 'FEMALE'}">여자</c:when>
+            </c:choose>
+        </div>
+        <div class="info-item"><strong>등급:</strong> ${loginUser.grade}</div>
+        <div class="info-item"><strong>이메일:</strong> ${loginUser.email}</div>
+        <div class="info-item"><strong>전화번호:</strong> ${loginUser.phone}</div>
+        <div class="info-item"><strong>주소:</strong> ${loginUser.address} ${loginUser.detailAddress}</div>
+
+        <a href="/myinfoUpdate" class="btn">수정하기</a>
+    </div>
+</div>
 
 </body>
 </html>

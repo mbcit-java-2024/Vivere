@@ -17,5 +17,7 @@ public interface BookDAO {
 	int getConcertSeatIdByColums(concertSeatVO concertSeatVO);
 	boolean selectBookYNById(int csId);
 	List<BookVO> getBooksByBookNum(String bookNum);
+	List<BookVO> getBookListByConsumerId(int consumerId);
+	void deleteBookById(int bookId);
 
 }

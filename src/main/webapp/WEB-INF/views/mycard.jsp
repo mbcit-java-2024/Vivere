@@ -48,10 +48,6 @@
 
         .content {
             flex-grow: 1;
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
         }
 
         .content h2 {
@@ -66,10 +62,15 @@
         }
 
         .card-item {
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            margin-bottom: 20px;
         }
 
         .card-info {
@@ -81,7 +82,7 @@
         }
 
         .btn {
-            margin-top: 30px;
+            margin-top: 10px;
             display: inline-block;
             background-color: black;
             color: white;
@@ -108,11 +109,6 @@
             background-color: #333;
         }
 
-        hr {
-            border: 0;
-            border-top: 1px solid #eee;
-            margin: 20px 0;
-        }
     </style>
 </head>
 <body>
@@ -124,7 +120,10 @@
 </c:if>
 
 <div class="container">
-    <jsp:include page="myinfoMenu.jsp" />
+
+    <div class="sidebar">
+        <jsp:include page="myinfoMenu.jsp" />
+    </div>
 
     <div class="content">
         <h2>등록된 카드 정보</h2>
@@ -139,17 +138,16 @@
                     <c:forEach var="card" items="${cardList}">
                         <div class="card-item">
                             <div class="card-info">
-                                <p>거래은행: ${card.bankName}</p>
-                                <p>카드번호: ${card.cardNum}</p>
-                                <p>유효기간: ${card.validDate}</p>
-                                <p>등록일자: <fmt:formatDate value="${card.createDate}" pattern="yyyy-MM-dd" /></p>
+                                <p><strong>거래은행:</strong> ${card.bankName}</p>
+                                <p><strong>카드번호:</strong> ${card.cardNum}</p>
+                                <p><strong>유효기간:</strong> ${card.validDate}</p>
+                                <p><strong>등록일자:</strong> <fmt:formatDate value="${card.createDate}" pattern="yyyy-MM-dd" /></p>
                             </div>
                             <form action="/mycardDelete" method="post">
                                 <input type="hidden" name="id" value="${card.id}" />
                                 <button type="submit" class="btn-delete">삭제</button>
                             </form>
                         </div>
-                        <hr />
                     </c:forEach>
                 </div>
 
@@ -158,8 +156,16 @@
         </c:choose>
     </div>
 </div>
-<!--push를 위한 주석-->
-
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+

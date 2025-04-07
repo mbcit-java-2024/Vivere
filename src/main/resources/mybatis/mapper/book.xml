@@ -70,6 +70,18 @@
 		insert into book (consumerId, concertId, cardId, bookNum, price, seatNum, grade, orderDate, concertTime, payType)
 		values (#{consumerId}, #{concertId}, #{cardId}, #{bookNum}, #{price}, #{seatNum}, #{grade}, #{orderDate}, #{concertTime}, #{payType})
 	</insert>
+	
+	<select id="getBookListByConsumerId" resultType="bookVO">
+	    select *
+	    from book
+	    where consumerId = #{consumerId}
+	    order by orderDate desc
+	</select>
+	
+	<delete id="deleteBookById" parameterType="int">
+		delete from book where id = #{bookId}
+    </delete>
+
 
 </mapper>
 

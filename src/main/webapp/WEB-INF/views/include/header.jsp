@@ -45,19 +45,10 @@
 	
 				<c:if test="${sessionScope.loginUser.grade eq 'ADMIN'}">
 					<a href="/insertConcert">공연등록</a>  
-					<a href="/qnaList">문의답변작성</a>
 				</c:if>
 				
-				<!-- 이용안내 드롭다운 -->
-				<div class="guide-dropdown">
-					<button id="guideButton" class="dropdown-toggle"
-						onclick="toggleGuideDropdown()">이용안내</button>
-					<div id="guideDropdown" class="guide-dropdown-menu">
-						<a href="/cancelNotice">예약/취소 안내</a> 
-						<a href="/map">오시는 길</a> 
-						<a href="/noticeList">공지사항</a>
-					</div>
-				</div>
+				<a href="/map">오시는길</a>
+				<a href="/cancelNotice">자주하는질문</a> 
 			</div>
 			<div>
 				<!-- 로그인 드롭다운 -->

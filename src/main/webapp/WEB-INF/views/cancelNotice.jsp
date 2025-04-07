@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>귤담길 - 고객센터</title>
+<title>Vivere - 자주하는질문</title>
 
 <style>
 .faq-item {
@@ -62,7 +62,7 @@ strong {
 	<jsp:include page="./include/header.jsp"/>
 		<div class="body-main contents">
 			<!-- 제목글 -->
-			<div id="consumerFAQ">&nbsp;&nbsp;환불 및 취소</div>
+			<div id="consumerFAQ">&nbsp;&nbsp;자주하는질문 (FAQ)</div>
 			<div class="faq-item" onclick="toggleAnswer('faq1')">
 			    <strong>Q. 예매한 티켓의 부분 취소가 가능한가요?</strong>
 			    <div id="faq1" class="faq-answer">

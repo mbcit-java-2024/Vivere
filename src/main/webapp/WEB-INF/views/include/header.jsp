@@ -37,63 +37,62 @@
 
 	<nav>
 		<div class="nav-inner">
-			<img onclick="location.href='/'" style="width: 90px" alt="vivere arthall 로고" src="https://i.imgur.com/GszF5LV.png">
-			<a href="/concertList">공연</a> 
-			<a href="/noticeList">공지사항</a>
-
-			<c:if test="${sessionScope.loginUser.grade eq 'ADMIN'}">
-				<a href="/insertConcert">공연 등록</a>  
-				<div class="rep-box" style="text-align: center;">
-					<button onclick="location.href='/qnaList'">문의 답변 쓰러가기</button>
-				</div>
-			</c:if>
-			
-			<!-- 이용안내 드롭다운 -->
-			<div class="guide-dropdown">
-				<button id="guideButton" class="dropdown-toggle"
-					onclick="toggleGuideDropdown()">이용안내</button>
-				<div id="guideDropdown" class="guide-dropdown-menu">
-					<a href="cancel_notice.jsp">예약/취소 안내</a> 
-					<a href="map.jsp">오시는 길</a> 
-					<a href="info.jsp">시설 안내</a> 
-					<c:if test="${sessionScope.loginUser.grade eq 'ADMIN'}">
+			<div>
+				<img onclick="location.href='/'" style="width: 90px" alt="vivere arthall 로고" src="https://i.imgur.com/GszF5LV.png">
+			</div>
+			<div class="hedder-menu">
+				<a href="/concertList">공연</a> 
+				<a href="/noticeList">공지사항</a>
+	
+				<c:if test="${sessionScope.loginUser.grade eq 'ADMIN'}">
+					<a href="/insertConcert">공연등록</a>  
+					<a href="/qnaList">문의답변작성</a>
+				</c:if>
+				
+				<!-- 이용안내 드롭다운 -->
+				<div class="guide-dropdown">
+					<button id="guideButton" class="dropdown-toggle"
+						onclick="toggleGuideDropdown()">이용안내</button>
+					<div id="guideDropdown" class="guide-dropdown-menu">
+						<a href="cancel_notice.jsp">예약/취소 안내</a> 
+						<a href="map.jsp">오시는 길</a> 
+						<a href="info.jsp">시설 안내</a> 
 						<a href="/noticeList">공지사항</a>
-					</c:if>
+					</div>
 				</div>
 			</div>
-
-			<!-- 로그인 드롭다운 -->
-			<div class="dropdown">
-				<button id="dropdownButton" class="dropdown-toggle"
-					onclick="toggleDropdown()">
-					<c:choose>
-						<c:when test="${empty loginUser}">로그인</c:when>
-						<c:otherwise>${loginUser.userId}</c:otherwise>
-					</c:choose>
-				</button>
-				<div id="loginDropdown" class="dropdown-menu">
-					<c:choose>
-						<c:when test="${empty loginUser}">
-							<a href="/login">로그인</a>
-							<a href="signIn">회원가입</a>
-						</c:when>
-						<c:otherwise>
-							<c:choose>
-								<c:when test="${sessionScope.loginUser.grade eq 'ADMIN'}">
-									<a href="/qnaList">문의답변 쓰기</a>
-									<a href="logout">로그아웃</a>
-								</c:when>
-								<c:otherwise>
-									<a href="/myPage">마이페이지</a>
-									<a href="logout">로그아웃</a>
-								</c:otherwise>
-							</c:choose>
-						</c:otherwise>
-					</c:choose>
+			<div>
+				<!-- 로그인 드롭다운 -->
+				<div class="dropdown">
+					<button id="dropdownButton" class="dropdown-toggle"
+						onclick="toggleDropdown()">
+						<c:choose>
+							<c:when test="${empty loginUser}">로그인</c:when>
+							<c:otherwise>${loginUser.userId}님</c:otherwise>
+						</c:choose>
+					</button>
+					<div id="loginDropdown" class="dropdown-menu">
+						<c:choose>
+							<c:when test="${empty loginUser}">
+								<a href="/login">로그인</a>
+								<a href="signin">회원가입</a>
+							</c:when>
+							<c:otherwise>
+								<c:choose>
+									<c:when test="${sessionScope.loginUser.grade eq 'ADMIN'}">
+										<a href="/qnaList">문의답변작성</a>
+										<a href="logout">로그아웃</a>
+									</c:when>
+									<c:otherwise>
+										<a href="/myinfo">마이페이지</a>
+										<a href="logout">로그아웃</a>
+									</c:otherwise>
+								</c:choose>
+							</c:otherwise>
+						</c:choose>
+					</div>
 				</div>
 			</div>
-
-
 		</div>
 	</nav>
 

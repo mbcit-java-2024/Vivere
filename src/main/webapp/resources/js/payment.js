@@ -56,6 +56,18 @@ function changePayType() {
 // 선택한 카드 id 넘기기
 function selectCardId(cardId) {
 	document.getElementById("actionCardId").value = cardId;
+	
+	document.querySelectorAll(".creditCard").forEach(div => {
+		div.style.backgroundColor = "#EFEEED";
+	});
+	
+	const selectedInput = document.querySelector("input[name='selectedCard']:checked");
+	if (selectedInput) {
+		const parentDiv = selectedInput.closest(".creditCard");
+		if (parentDiv) {
+			parentDiv.style.backgroundColor = "#E5CD94";
+		}
+	}
 }
 
 function submitAction() {

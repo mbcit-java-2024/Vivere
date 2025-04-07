@@ -96,6 +96,9 @@
 	justify-content: left;
 	align-items: center;
 }
+.creditCardBox * {
+	cursor: pointer;
+}
 .creditCard {
 	border: 1px solid black;
 	border-radius: 10px;
@@ -111,8 +114,16 @@
 	font-weight: bold;
 	text-decoration: none;
 	color: black;
+	transition: all 0.3s ease-in-out;
 }
-#radioCard, #radioRemit {
+.card-label {
+	width: 240px;
+	height: 160px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+#radioCard, #radioRemit, input[name=selectedCard] {
 	display: none;
 }
 .bookInfo-title {

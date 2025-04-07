@@ -28,6 +28,7 @@ import com.mbcit.vivere.vo.BookVO;
 import com.mbcit.vivere.vo.CardVO;
 import com.mbcit.vivere.vo.ConcertTimeVO;
 import com.mbcit.vivere.vo.ConcertVO;
+import com.mbcit.vivere.vo.ConsumerVO;
 import com.mbcit.vivere.vo.concertSeatVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -45,11 +46,16 @@ public class BookController {
 	@Autowired
 	private CardService cardService;
 	
-	@RequestMapping("/book")
+	@PostMapping("/book")
 	public String book(HttpServletRequest request, Model model
 					, @RequestParam int concertId, @RequestParam("selectedTime") String userSelTime
 					) {
 		System.out.println("BookController 컨트롤러의 book() 메소드 실행");
+		
+		ConsumerVO user = (ConsumerVO) request.getSession().getAttribute("loginUser");
+		if (null == user) {
+			return "/login";
+		}
 		
 		ConcertVO concertVO = concertService.getConcertById(concertId);
 		
@@ -73,6 +79,12 @@ public class BookController {
 		model.addAttribute("selectedTime", selectedTime);
 		
 		return "/book";
+	}
+	
+	// get 요청으로 book 요청을 보내면 home 화면으로 돌려보냄
+	@GetMapping("/book")
+	public String redirectBook() {
+		return "redirect:/";
 	}
 	
 	@GetMapping("/getBookedSeats")
@@ -105,6 +117,11 @@ public class BookController {
 						Model model) {
 		System.out.println("BookController 컨트롤러의 payment() 메소드 실행");
 		
+		ConsumerVO user = (ConsumerVO) request.getSession().getAttribute("loginUser");
+		if (null == user) {
+			return "/login";
+		}
+		
 		String[] seats = selectedSeats.split(", ");
 		for (String seat : seats) {
 //			System.out.println(seat);
@@ -115,23 +132,9 @@ public class BookController {
 			}
 		}
 		
-//		로그인 완료되면 살리기
-//		int consumerId = (int) request.getSession().getAttribute("consumerId");
-		int consumerId = 1;
+		int consumerId = user.getId();
 		
 		List<CardVO> cardList = cardService.getCardListById(consumerId);
-		CardVO card1 = new CardVO(); // ************ !!!Test!!! ************ 
-		CardVO card2 = new CardVO(); // ************ !!!Test!!! ************
-		CardVO card3 = new CardVO(); // ************ !!!Test!!! ************
-		card1.setId(1); // ************ !!!Test!!! ************
-		card2.setId(2); // ************ !!!Test!!! ************
-		card3.setId(3); // ************ !!!Test!!! ************
-		card1.setCardNum("1111111111111111"); // ************ !!!Test!!! ************
-		card2.setCardNum("2222222222222222"); // ************ !!!Test!!! ************
-		card3.setCardNum("3333333333333333"); // ************ !!!Test!!! ************
-		cardList.add(card1); // ************ !!!Test!!! ************
-		cardList.add(card2); // ************ !!!Test!!! ************
-		cardList.add(card3); // ************ !!!Test!!! ************
 		
 		Date selTime = bookService.selectedTime(selectedTime);
 		
@@ -168,6 +171,11 @@ public class BookController {
 						Model model) {
 		System.out.println("BookController 컨트롤러의 bookOK() 메소드 실행");
 		
+		ConsumerVO user = (ConsumerVO) request.getSession().getAttribute("loginUser");
+		if (null == user) {
+			return "/login";
+		}
+		
 		String[] seats = selectedSeats.split(", ");
 		for (String seat : seats) {
 //			System.out.println(seat);
@@ -179,7 +187,7 @@ public class BookController {
 		}
 		
 //		int consumerId = (int) request.getSession().getAttribute("consumerId");
-		int consumerId = 1;
+		int consumerId = user.getId();
 		
 		String bookNum = bookService.insertBook(consumerId, concertId, cardId, price, selectedSeats, selTime, payType, conTimeId);
 		
@@ -200,19 +208,4 @@ public class BookController {
 		return "redirect:/";
 	}
 	
-	@RequestMapping("/test/bookOK")
-	public String test(Model model) {
-		
-		String bookNum = "001001250405142258";
-		List<BookVO> books = bookService.getBooksByBookNum(bookNum);
-		
-		ConcertVO conVO = concertService.getConcertById(books.get(0).getConcertId());
-		conVO.setPosterUrl(concertService.relativePath(conVO.getPosterUrl(),"/posters/"));
-		
-		model.addAttribute("conVO", conVO);
-		model.addAttribute("books", books);
-		return "/bookOK";
-	}
-	
-
 }

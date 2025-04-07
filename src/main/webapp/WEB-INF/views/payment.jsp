@@ -72,18 +72,21 @@
 						결제수단
 					</div><hr class="title-hr"/>
 					<div class="mg-left" style="font-weight: normal;">
-						<input type="radio" name="payType" onchange="changePayType()" value="0"/> 신용카드
-						<input type="radio" name="payType" onchange="changePayType()" value="1"/> 무통장입금
+						<input id="ptCard" type="radio" name="payType" onchange="changePayType()" value="0"/>
+						<label for="ptCard"> 신용카드</label>
+						<input id="ptRemit" type="radio" name="payType" onchange="changePayType()" value="1"/>
+						<label for="ptRemit"> 무통장입금</label>
 						<div id="radioCard" class="creditCardBox payType">
-							<c:forEach items="${cardList}" var="card">
+							<c:forEach items="${cardList}" var="card" varStatus="status">
 								<div class="creditCard">
 									<input type="radio" name="selectedCard" value="${card.id}" id="card${status.index}" onchange="selectCardId(this.value)"/>
-									<label for="card${status.index}">
+									<label class="card-label" for="card${status.index}">
+										${card.bankName}<br/><br/>
 										${fn:substring(card.cardNum, 0, 4)} **** **** ****
 									</label>
 								</div>&nbsp;&nbsp;
 							</c:forEach>
-							<a class="creditCard" href="#">
+							<a class="creditCard" href="/mycardInsert">
 								+ 카드 추가 하기
 							</a>
 						</div>

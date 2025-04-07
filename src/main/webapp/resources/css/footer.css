@@ -55,6 +55,10 @@ footer {
 	text-decoration: none;
 }
 
+.mgb-50 {
+	margin-bottom: 50px;
+}
+
 .sns-icons {
 	display: flex;
 	gap: 10px;

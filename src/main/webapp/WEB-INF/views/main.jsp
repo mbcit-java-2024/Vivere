@@ -11,57 +11,51 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
 <body>
-
-<h1>VIVERE ART HALL</h1>
-<c:if test="${sessionScope.loginUser.grade eq 'ADMIN'}">
-	<div style="display:flex; justify-content: right">
-		<a style="text-decoration: none; color: gray;" href="/carouselList">메인표지 등록/수정</a>
+<div class="wrapper">
+	<jsp:include page="./include/header.jsp"/>
+	<div class="body-main mgb-50">
+		<h1>VIVERE ART HALL</h1>
+		<c:if test="${sessionScope.loginUser.grade eq 'ADMIN'}">
+			<div style="display:flex; justify-content: right">
+				<a style="text-decoration: none; color: gray;" href="/carouselList">메인표지 등록/수정</a>
+			</div>
+		</c:if>
+		<!-- Carousel -->
+		<div id="demo" class="carousel slide" data-bs-ride="carousel">
+		
+		  <!-- Indicators/dots -->
+		  <div class="carousel-indicators">
+		  	<c:forEach varStatus="i" items="${carouselList }">
+		  		<c:if test="${i.index == 0 }">
+				    <button type="button" data-bs-target="#demo" data-bs-slide-to="${i.index }" class="active"></button>
+		  		</c:if>
+		  		<c:if test="${i.index != 0 }">
+				    <button type="button" data-bs-target="#demo" data-bs-slide-to="${i.index }"></button>
+		  		</c:if>
+		  	</c:forEach>
+		  </div>
+		
+		
+		  <!-- The slideshow/carousel -->
+		  <div class="carousel-inner">
+		  	<c:forEach var="vo" items="${carouselList }">
+		    <div class="carousel-item active">
+		      <img src="${vo.carouselUrl }" class="d-block w-100">
+		    </div>
+		  	</c:forEach>
+		  </div>
+		
+		  <!-- Left and right controls/icons -->
+		  <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+		    <span class="carousel-control-prev-icon"></span>
+		  </button>
+		  <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+		    <span class="carousel-control-next-icon"></span>
+		  </button>
+		</div>
+		
 	</div>
-</c:if>
-<!-- Carousel -->
-<div id="demo" class="carousel slide" data-bs-ride="carousel">
-
-  <!-- Indicators/dots -->
-  <div class="carousel-indicators">
-  	<c:forEach varStatus="i" items="${carouselList }">
-  		<c:if test="${i.index == 0 }">
-		    <button type="button" data-bs-target="#demo" data-bs-slide-to="${i.index }" class="active"></button>
-  		</c:if>
-  		<c:if test="${i.index != 0 }">
-		    <button type="button" data-bs-target="#demo" data-bs-slide-to="${i.index }"></button>
-  		</c:if>
-  	</c:forEach>
-  </div>
-
-
-  <!-- The slideshow/carousel -->
-  <div class="carousel-inner">
-  	<c:forEach var="vo" items="${carouselList }">
-    <div class="carousel-item active">
-      <img src="${vo.carouselUrl }" class="d-block w-100">
-    </div>
-  	</c:forEach>
-  </div>
-
-  <!-- Left and right controls/icons -->
-  <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon"></span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
-    <span class="carousel-control-next-icon"></span>
-  </button>
+	<jsp:include page="./include/footer.jsp"/>
 </div>
-
-<!-- header -->
-<header>
-   <jsp:include page="./include/header.jsp"/>
-</header>
-
-<!-- footer -->
-<footer>
-   <jsp:include page="./include/footer.jsp"/>
-</footer>
-
-
 </body>
 </html>

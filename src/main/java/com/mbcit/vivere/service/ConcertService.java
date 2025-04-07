@@ -38,7 +38,7 @@ public class ConcertService {
 		if (!uploadFolder.exists()) {
 			uploadFolder.mkdirs(); // 폴더가 없으면 생성
 		}
-
+		
 		// 고유한 파일명 생성 후 저장
 		String fileName = concertTitle + "_" + file.getOriginalFilename();
 		String filePath = uploadDir + fileName;

@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>📢 공지사항 목록</title>
+<title>Vivere - 공지사항</title>
 <style>
 table {
 	width: 100%;
@@ -26,77 +26,113 @@ th {
 }
 
 .title-link {
+	display: block;
+	text-align: left;
 	text-decoration: none;
 	color: #333;
+	padding-left: 10px;
 }
 
 .title-link:hover {
 	text-decoration: underline;
 	color: #007BFF;
 }
+.body-contents {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 50px;
+}
+.write-notice {
+	padding: 8px 16px; 
+	background-color: #CDAA39; 
+	color: white; 
+	border: none; 
+	border-radius: 4px; 
+	cursor: pointer; 
+	margin-right: 15px;
+}
+.contentBox {
+	width: 80%;
+	min-width: 1000px;
+}
 </style>
 </head>
 <body>
-	<jsp:include page="./include/header.jsp" />
 	<div class="wrapper">
-		<h2>📢 공지사항 리스트</h2>
-		<c:if test="${sessionScope.loginUser.grade eq 'ADMIN'}">
-			<div style="text-align: right; margin-bottom: 20px;">
-				<button onclick="location.href='/noticeInsert'"
-					style="padding: 8px 16px; background-color: #CDAA39; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 15px;">
-					✍ 공지사항 작성</button>
+		<jsp:include page="./include/header.jsp" />
+		<div class="body-main body-contents">
+			<div class="contentBox">
+				<h2>&nbsp;&nbsp;공지사항</h2>
+				<c:if test="${sessionScope.loginUser.grade eq 'ADMIN'}">
+					<div style="text-align: right; margin-bottom: 20px;">
+						<button class="write-notice" onclick="location.href='/noticeInsert'">
+							공지작성
+						</button>
+					</div>
+				</c:if>
+				<table>
+					<thead>
+						<tr>
+							<th style="width:100px;">번호</th>
+							<th>제목</th>
+							<th style="width:180px;">작성일</th>
+							<c:if test="${sessionScope.loginUser.grade eq 'ADMIN'}">
+								<th style="width:150px;">관리</th>
+							</c:if>
+							<c:if test="${sessionScope.loginUser.grade ne 'ADMIN'}">
+								<th style="width:150px;">작성자</th>
+							</c:if>
+						</tr>
+					</thead>
+					<tbody>
+						<c:if test="${not empty noticeList}">
+							<c:forEach var="notice" items="${noticeList}">
+								<c:if test="${notice.status == 1}">
+									<tr>
+										<td><b>공지</b></td>
+										<td>
+											<a class="title-link" href="/noticeDetail/${notice.id}"><b>${notice.title}</b></a>
+										</td>
+										<td><fmt:formatDate value="${notice.createDate}" pattern="yyyy-MM-dd HH:mm" /></td>
+										<c:if test="${sessionScope.loginUser.grade eq 'ADMIN'}">
+											<td>
+												<button onclick="location.href='/noticeEdit/${notice.id}'">✏ 수정</button>
+												<button onclick="location.href='/noticeDelete/${notice.id}'">🗑 삭제</button>
+											</td>
+										</c:if>
+										<c:if test="${sessionScope.loginUser.grade ne 'ADMIN'}">
+											<td>관리자</td>
+										</c:if>
+									</tr>
+								</c:if>
+							</c:forEach>
+							<c:forEach var="notice" items="${noticeList}">
+								<tr>
+									<td>${notice.id}</td>
+									<td><a class="title-link" href="/noticeDetail/${notice.id}">${notice.title} </a></td>
+									<td><fmt:formatDate value="${notice.createDate}" pattern="yyyy-MM-dd HH:mm" /></td>
+									<c:if test="${sessionScope.loginUser.grade eq 'ADMIN'}">
+										<td>
+											<button onclick="location.href='/noticeEdit/${notice.id}'">✏ 수정</button>
+											<button onclick="location.href='/noticeDelete/${notice.id}'">🗑 삭제</button>
+										</td>
+									</c:if>
+									<c:if test="${sessionScope.loginUser.grade ne 'ADMIN'}">
+										<td>관리자</td>
+									</c:if>
+								</tr>
+							</c:forEach>
+						</c:if>
+						<c:if test="${empty noticeList}">
+							<tr>
+								<th colspan="4" style="background-color: white;">작성된 공지사항이 없습니다.</th>
+							</tr>
+						</c:if>
+					</tbody>
+				</table>
 			</div>
-		</c:if>
-		<table>
-			<thead>
-				<tr>
-					<th>번호</th>
-					<th>제목</th>
-					<th>작성일</th>
-					<th>관리</th>
-				</tr>
-			</thead>
-			<tbody>
-				<!-- 🔥 status = 1인 중요 공지 먼저 출력 -->
-				<c:forEach var="notice" items="${noticeList}">
-					<c:if test="${notice.status == 1}">
-						<tr>
-							<td>${notice.id}</td>
-							<td><a class="title-link" href="/noticeDetail/${notice.id}"
-								style="color: red; font-weight: bold;"> 🔥 ${notice.title} </a></td>
-							<td><fmt:formatDate value="${notice.createDate}"
-									pattern="yyyy-MM-dd HH:mm" /></td>
-							<td>
-								<button onclick="location.href='/noticeEdit/${notice.id}'">✏
-									수정</button>
-								<button onclick="location.href='/noticeDelete/${notice.id}'">🗑
-									삭제</button>
-							</td>
-						</tr>
-					</c:if>
-				</c:forEach>
-
-				<!-- 나머지 일반 공지 출력 (status != 1) -->
-				<c:forEach var="notice" items="${noticeList}">
-					<c:if test="${notice.status != 1}">
-						<tr>
-							<td>${notice.id}</td>
-							<td><a class="title-link" href="/noticeDetail/${notice.id}">
-									${notice.title} </a></td>
-							<td><fmt:formatDate value="${notice.createDate}"
-									pattern="yyyy-MM-dd HH:mm" /></td>
-							<td>
-								<button onclick="location.href='/noticeEdit/${notice.id}'">✏
-									수정</button>
-								<button onclick="location.href='/noticeDelete/${notice.id}'">🗑
-									삭제</button>
-							</td>
-						</tr>
-					</c:if>
-				</c:forEach>
-			</tbody>
-
-		</table>
+		</div>
 		<jsp:include page="./include/footer.jsp" />
 	</div>
 </body>

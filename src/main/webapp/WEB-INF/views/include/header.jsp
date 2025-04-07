@@ -55,7 +55,6 @@
 					<div id="guideDropdown" class="guide-dropdown-menu">
 						<a href="cancel_notice.jsp">예약/취소 안내</a> 
 						<a href="map.jsp">오시는 길</a> 
-						<a href="info.jsp">시설 안내</a> 
 						<a href="/noticeList">공지사항</a>
 					</div>
 				</div>

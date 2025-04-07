@@ -74,7 +74,7 @@
 				</c:if>
 			</form>
 			
-			<c:if test="${empty concertList }">
+			<c:if test="${empty concertList}">
 				<div style="height: 300px; display: flex; padding: 100px">
 				  	<marquee> 현재 해당하는 카테고리의 공연이 없습니다.</marquee>
 				</div>

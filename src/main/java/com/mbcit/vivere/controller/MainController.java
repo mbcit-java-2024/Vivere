@@ -151,50 +151,20 @@ public class MainController {
 // ===================== 표지 이미지 (carousel) 끝 ========================
 	@GetMapping("/noticeList")
 	public String noticeList(Model model, NoticeVO noticeVO, HttpServletRequest request) {
-		// 수빈
 		log.info("MainController 의 noticeList() 메소드 실행");
 		String result = "/";
-		ConsumerVO consumerVO = new ConsumerVO();
-		
-		
-		ConsumerVO user = (ConsumerVO) request.getSession().getAttribute("loginUser");
-		if (null == user) {
-			return "/login";
-		}
-		
-//		HttpSession session = request.getSession(false);
-//		if (session != null && session.getAttribute("userType") != null) { 
-//			int userType = (int) session.getAttribute("userType"); 
-
-//		 consumerVO.setGrade(Grade.ADMIN);
 		 result = "/noticeList"; 
-		 List<NoticeVO> noticeList = noticeService.selectNoticeList(noticeVO);
-//		}	
-//		else {
-//			result = "/login"; // 로그인 페이지로
-//		}
-
+		 List<NoticeVO> noticeList = noticeService.selectNoticeList();
 		model.addAttribute("noticeList", noticeList);
 		return result;
 
 	}
 	@GetMapping("/noticeDetail/{id}")
 	public String noticeDetail(Model model, NoticeVO noticeVO, @PathVariable int id, HttpServletRequest request) {
-		// 수빈
 		log.info("MainController 의 noticeDetail() 메소드 실행");
 		String result = "/";
-		ConsumerVO consumerVO = new ConsumerVO();
-		ConsumerVO user = (ConsumerVO) request.getSession().getAttribute("loginUser");
-		if (null == user) {
-			return "/login";
-		}
-//		HttpSession session = request.getSession(false);
-//		if (session != null && session.getAttribute("userType") != null) { 
-//			int userType = (int) session.getAttribute("userType"); 
-
-//		 consumerVO.setGrade(Grade.ADMIN);
-		 result = "/noticeDetail"; 
-		 NoticeVO noticeDetail = noticeService.selectNoticeDetail(id);
+		result = "/noticeDetail"; 
+		NoticeVO noticeDetail = noticeService.selectNoticeDetail(id);
 //		}	
 //		else {
 //			result = "/login"; // 로그인 페이지로

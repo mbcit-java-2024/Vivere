@@ -4,32 +4,26 @@
 
 <mapper namespace="com.mbcit.vivere.dao.NoticeDAO">
 
-	<select id="selectNoticeList" parameterType="noticeVO"
-		resultType="noticeVO">
-		SELECT id, title, content, status, createDate, updateDate
-		FROM vivere.notice
+	<select id="selectNoticeList" resultType="noticeVO">
+		SELECT * FROM notice
 		ORDER BY createDate DESC
 	</select>
-	<select id="selectNoticeDetail" parameterType="int"
-		resultType="noticeVO">
-		SELECT id, title, content, status, createDate, updateDate
-		FROM vivere.notice
+	<select id="selectNoticeDetail" parameterType="int" resultType="noticeVO">
+		SELECT * FROM notice
 		where id = ${id}
 	</select>
 
 	<insert id="insert" parameterType="noticeVO">
-		INSERT INTO notice
-		(title,
-		content, status, createDate)
-		VALUES(#{title}, #{content}, #{status},
-		now())
+		INSERT INTO notice (title, content, status, createDate, updateDate)
+		VALUES(#{title}, #{content}, #{status}, now(), now())
 	</insert>
 
 	<update id="updateNotice" parameterType="noticeVO">
 		UPDATE vivere.notice
-		SET title=#{title}, content=#{content}, status=#{status}, createDate=now(), updateDate=now()
+		SET title=#{title}, content=#{content}, status=#{status}, updateDate=now()
 		WHERE id=#{id};
 	</update>
+	
 	<delete id="noticeDelete" parameterType="int">
 		delete from notice where id = #{id}
 	</delete>

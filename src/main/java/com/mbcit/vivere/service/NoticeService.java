@@ -13,8 +13,8 @@ public class NoticeService {
 	@Autowired
 	private NoticeDAO noticeDAO;
 	
-	public List<NoticeVO> selectNoticeList(NoticeVO noticeVO) {
-		return noticeDAO.selectNoticeList(noticeVO);
+	public List<NoticeVO> selectNoticeList() {
+		return noticeDAO.selectNoticeList();
 	}
 	 public void insert(NoticeVO noticeVO) {
 		 noticeDAO.insert(noticeVO);

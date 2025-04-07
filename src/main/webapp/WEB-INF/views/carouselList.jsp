@@ -178,7 +178,7 @@ $(document).ready(function () {
         });
     });
 
-    $('#deleteBtn').on('click', function () {
+    $('.deleteBtn').on('click', function () {
     	console.log('삭제 클릭')
         const concertId = $(this).data('id');
         const formData = new FormData();
@@ -222,8 +222,8 @@ $(document).ready(function () {
 	<thead >
 		<tr >
               <th style="width: 200px; text-align: center;" > 공연제목 선택 <br/><br/> </th>
-              <th style="width: 600px; display: flex; justify-content: center"> 메인 표지 이미지파일 등록 <br/><br/></th>
-              <td style="width: 200px;"> <br/><br/></td>
+              <th style="width: 600px; text-align: center; "> 메인 표지 이미지파일 등록 <br/><br/></th>
+              <td style="width: 200px text-align: center;"> <br/><br/></td>
 		</tr>
 	</thead>
 <c:forEach var="concertVO" items="${concertList}">
@@ -255,7 +255,7 @@ $(document).ready(function () {
               <td style="width: 600px">메인표지: ${concertVO.carouselUrl}</td>
               <td>
                 <button type="button" style="background-color: #CDAA39; border-color: #CDAA39" class="btn btn-sm btn-primary open-update-btn" data-id="${concertVO.id}">수정</button>
-                <button type="button" style="background-color: #78171C; border-color: #78171C" class="btn btn-sm btn-primary" id="deleteBtn" data-id="${concertVO.id}">삭제</button>
+                <button type="button" style="background-color: #78171C; border-color: #78171C" class="btn btn-sm btn-primary deleteBtn" id="deleteBtn_${concertVO.id}" data-id="${concertVO.id}">삭제</button>
               </td>
             </c:when>
             <c:otherwise>

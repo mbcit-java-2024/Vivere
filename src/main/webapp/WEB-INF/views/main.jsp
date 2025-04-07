@@ -15,7 +15,7 @@
 	<jsp:include page="./include/header.jsp"/>
 	<div class="body-main mgb-50">
 		<c:if test="${sessionScope.loginUser.grade eq 'ADMIN'}">
-			<div style="display:flex; justify-content: right">
+			<div class="mt-2 mb-2" style="display:flex; justify-content: right">
 				<a style="text-decoration: none; color: gray;" href="/carouselList">메인표지 등록/수정</a>
 			</div>
 		</c:if>
@@ -37,10 +37,17 @@
 		
 		  <!-- The slideshow/carousel -->
 		  <div class="carousel-inner">
-		  	<c:forEach var="vo" items="${carouselList }">
-		    <div class="carousel-item active">
-		      <img src="${vo.carouselUrl}" class="d-block w-100" onclick="location.href='/concertView?concertId=${vo.concertId}'">
-		    </div>
+		  	<c:forEach var="vo" items="${carouselList }" varStatus="i">
+		    	<c:if test="${i.index == 0}">
+				    <div class="carousel-item active">
+				      <img src="${vo.carouselUrl}" class="d-block w-100" onclick="location.href='/concertView?concertId=${vo.concertId}'">
+		    		</div>
+		    	</c:if>
+		    	<c:if test="${i.index != 0}">
+				    <div class="carousel-item ">
+				      <img src="${vo.carouselUrl}" class="d-block w-100" onclick="location.href='/concertView?concertId=${vo.concertId}'">
+		    		</div>
+		    	</c:if>
 		  	</c:forEach>
 		  </div>
 		

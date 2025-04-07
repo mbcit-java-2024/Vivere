@@ -62,6 +62,18 @@ public class MainController {
 		model.addAttribute("carouselList", carouselList);
 		return "/main";
 	}
+	
+	@RequestMapping("/cancelNotice")
+	public String cancelNotice(Model model) {
+		log.info("MainController 의 cancelNotice() 메소드 실행");
+		return "/cancelNotice";
+	}
+	
+	@RequestMapping("/map")
+	public String map(Model model) {
+		log.info("MainController 의 map() 메소드 실행");
+		return "/map";
+	}
 
 // ===================== 표지 이미지 (carousel) ========================
 

@@ -57,7 +57,7 @@
 		<div class="container">
 			<!-- 카테고리 메뉴 -->
 			<form id="categoryForm" action="/concertList" method="get" 
-				class="mt-3 mb-3 d-flex align-items-center justify-content-between flex-wrap">
+				class="mt-3 mb-3 d-flex align-items-center justify-content-center flex-wrap">
 			    <div role="group" aria-label="Checkbox group">
 			    <c:set var="categories" value="${{null:'전체', 0:'클래식', 1:'뮤지컬', 2:'재즈', 3:'대중음악', 4:'연극', 5:'무용', 6:'기타'}}" />
 			    <c:forEach var="entry" items="${categories}" varStatus="i">

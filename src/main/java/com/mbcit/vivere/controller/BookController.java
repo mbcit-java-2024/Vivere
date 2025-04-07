@@ -138,7 +138,7 @@ public class BookController {
 		
 		Date selTime = bookService.selectedTime(selectedTime);
 		
-		System.out.println(concertVO.getPosterUrl());
+//		System.out.println(concertVO.getPosterUrl());
     	String relativePath = concertService.relativePath(concertVO.getPosterUrl(), "/posters/");
     	System.out.println(relativePath);
     	concertVO.setPosterUrl(relativePath);

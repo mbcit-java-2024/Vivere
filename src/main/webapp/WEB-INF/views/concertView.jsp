@@ -96,7 +96,7 @@
 			<!-- 공연 정보 -->
 			<div class="card p-3 mt-3">
 				<div class="mb-2">
-				<h2 class="display-4 float-start">${concertVO.title }</h2> &nbsp;&nbsp;&nbsp;
+				<h2 class="display-4 float-start p-3">${concertVO.title }</h2> &nbsp;&nbsp;&nbsp;
 				<fmt:formatDate value="${concertVO.startDate}" pattern="yy.MM.dd" var="startDate"/>
 				<fmt:formatDate value="${concertVO.endDate}" pattern="yy.MM.dd" var="endDate"/>
 				<h5 class="float-end">${startDate} ~ ${endDate}</h5>
@@ -317,8 +317,9 @@
 			</div>	
 		</div>
 		
-		<div class="container mt-4" >
-			<h2>전체 리뷰 목록</h2>
+		<div class="container mb-4 mt-4" >
+			<div class="card p-3 mt-3">
+			<h3>전체 리뷰 목록</h3>
 			
 			  <c:forEach var="review" items="${reviewList}">
 			    <div class="review-box">
@@ -338,8 +339,8 @@
 			      </div>
 			    </div>
 			  </c:forEach>
+			</div>
 		</div>
-
 	</div>
 <jsp:include page="./include/footer.jsp"/>
 </div>

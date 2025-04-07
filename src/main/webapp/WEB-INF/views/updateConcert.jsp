@@ -172,8 +172,14 @@ $(document).ready(function() {
     	  	selectedHall = $("input[name='hallType']:checked").val() === "0" ? "gaudium" : "felice";
     	    
     		if ($(".seatType:checked").val() === "equal") {
-    	            $(".seatType").not($(".seatType:checked")).prop("checked", false).prop("disabled", true);
-    	            $("#seatContainer").empty().append("<div id='seat_equal'><span> 전좌석 동일가: </span> 가격: <input type='number' name='equalPrice' required value='${concertVO.equalPrice}'></div>");
+    	            $(".seatType").not($(".seatType:checked")).prop("checked", false).prop("disabled", true); 
+    	            $("#seatContainer").empty().append(
+                    		"<div id='seat_equal'class=\"container mt-3\">"+
+                    		"<div class=\"d-flex align-items-center gap-3 mb-2\">"+
+                    		"<strong style=\"min-width: 60px;\">전좌석 동일가</strong>"+
+    			            "<div class=\"d-flex align-items-center\">"+ 
+                    		"<span class=\"me-2\">좌석 가격 </span>"+
+                    		"<input class='form-control' type='number' name='equalPrice' value='${concertVO.equalPrice}' style=\"width: 100px;\" required> (원)</div></div></div>");
     	    }else{
     	    	
     	    //	ajax로 기존에 선택된 좌석 배치 selectedSeats[type] 에 넣어주기
@@ -203,8 +209,8 @@ $(document).ready(function() {
     	            // 불러온 selectedSeats 데이터에 맞게 체크 박스 활성화
     	            if (selectedSeats[seatType].length > 0 ){
     	            		
-    	        	    // 좌석개수: <input type="number" name="vipCount" class="seatCount" data-type="vip">
-    	        	    // 가격: <input type="number" name="vipPrice">
+    	        	    // 좌석개수: <input class="form-control" type="number" name="vipCount" class="seatCount" data-type="vip">
+    	        	    // 가격: <input class="form-control" type="number" name="vipPrice">
     	        	    let seatId = "seat_" + seatType;
     	        	    let countName = "count"+seatType.toUpperCase();
     	        	    let priceName = "price"+seatType.toUpperCase();
@@ -213,22 +219,33 @@ $(document).ready(function() {
     	        	    if (seatType === "vip"){
     	        	    	elCount = ${concertVO.countVIP};
     	        			elPrice = ${concertVO.priceVIP};
+    	        			console.log('elCount:'+elCount);
     	        	    } else if (seatType === "r"){
     	        	    	elCount = ${concertVO.countR};
     	        			elPrice = ${concertVO.priceR};
+    	        			console.log('elCount:'+elCount);
     	        	    } else if (seatType === "s"){
     	        	    	elCount = ${concertVO.countS};
     	        			elPrice = ${concertVO.priceS};
+    	        			console.log('elCount:'+elCount);
     	        	    } else if (seatType === "a"){
     	        	    	elCount = ${concertVO.countA};
     	        			elPrice = ${concertVO.priceA};
+    	        			console.log('elCount:'+elCount);
     	        	    }
-    	        	
-    	                let seatForm = "<div id="+seatId+"><span>"+seatType.toUpperCase()+": </span>"+
-    	                " 좌석 개수: <input type=\"number\" name="+ countName +" class=\"seatCount\""+
-    	                	" data-type=\""+seatType+"\" min=\"1\" max=\""+ maxValue+"\" value=\""+elCount+"\"required>"+
-    	                "가격: <input type=\"number\" name=\""+priceName+"\" value=\""+elPrice+"\" required></div>";
-    	                
+    	        		
+    	                let seatForm = "<div id="+seatId+" class=\"container mt-3\">"+
+    	                "<div class=\"d-flex align-items-center gap-3 mb-2\"><strong style=\"min-width: 60px;\">"+seatType.toUpperCase()+ "</strong>"+
+    	                "<div class=\"d-flex align-items-center\">"+ 
+    	                	"<span class=\"me-2\">좌석 개수 </span>"+
+    	                	"<input id=\"sc\" type=\"number\" name="+ countName +" class=\"seatCount form-control\""+
+    	                	"style=\"width: 100px;\" data-type=\""+seatType+"\" min=\"1\" max=\""+ maxValue+"\" value=\""+elCount+
+    	                	"\" required></div>"+
+    	                "<div class=\"d-flex align-items-center\">"+ 
+    	                	"<span class=\"me-2\">좌석 가격 </span>"+
+    	               		"<input id=\"sp\" type=\"number\" name=\""+priceName+"\" value=\""+elPrice+
+    	               		"\" style=\"width: 100px;\" class=\"form-control\" required> (원)</div></div></div>"; 
+    	                	
     	                $("#seatContainer").append(seatForm);
     	        	
     	        		let pick_seatDiv = "<div id=\"pick_seat_"+seatType+"\" class=\"divCard\"></div>";
@@ -402,7 +419,13 @@ $(document).ready(function() {
         if (seatType === "equal") {
             if ($(this).is(":checked")) {
                 $(".seatType").not(this).prop("checked", false).prop("disabled", true);
-                $("#seatContainer").empty().append("<div id='seat_equal'><span> 전좌석 동일가: </span> 가격: <input type='number' name='equalPrice' required></div>");
+                $("#seatContainer").empty().append(
+                		"<div id='seat_equal'class=\"container mt-3\">"+
+                		"<div class=\"d-flex align-items-center gap-3 mb-2\">"+
+                		"<strong style=\"min-width: 60px;\">전좌석 동일가</strong>"+
+			            "<div class=\"d-flex align-items-center\">"+ 
+                		"<span class=\"me-2\">좌석 가격 </span>"+
+                		"<input class='form-control' type='number' name='equalPrice' style=\"width: 100px;\" required> (원)</div></div></div>");
                 $("#seatSelectionContainer").empty(); // 기존 '좌석선택' 제거
                 for (let seatType in selectedSeats){
 					console.log("1. selectedSeats["+seatType+"]: "+ selectedSeats[seatType])
@@ -426,10 +449,16 @@ $(document).ready(function() {
         
         if ($(this).is(":checked")) {
 	        
-            let seatForm = "<div id="+seatId+"><span>"+seatType.toUpperCase()+": </span>"+
-            " 좌석 개수: <input type=\"number\" name="+ countName +" class=\"seatCount\""+
-            	" data-type=\""+seatType+"\" min=\"1\" max=\""+ maxValue+"\"required>"+
-            "가격: <input type=\"number\" name=\""+priceName+"\" required></div>";
+            let seatForm = "<div id="+seatId+" class=\"container mt-3\">"+
+            "<div class=\"d-flex align-items-center gap-3 mb-2\"><strong style=\"min-width: 60px;\">"+seatType.toUpperCase()+ "</strong>"+
+            "<div class=\"d-flex align-items-center\">"+ 
+            	"<span class=\"me-2\">좌석 개수 </span>"+
+            	"<input id=\"sc\" type=\"number\" name="+ countName +" class=\"seatCount form-control\""+
+            	"style=\"width: 100px;\" data-type=\""+seatType+"\" min=\"1\" max=\""+ maxValue+"\"required></div>"+
+            "<div class=\"d-flex align-items-center\">"+ 
+            	"<span class=\"me-2\">좌석 가격 </span>"+
+           		"<input id=\"sp\" type=\"number\" name=\""+priceName+
+           		"\" style=\"width: 100px;\" class=\"form-control\" required> (원)</div></div></div>";
             
             $("#seatContainer").append(seatForm);
             selectedSeats[seatType] = [];
@@ -508,7 +537,7 @@ function addTimeInput() {
     var div = document.createElement("div");
     div.innerHTML = `
         <input type="datetime-local" name="concertDateTime" min="<%= now %>" onchange="addConcertTime(this)" required>
-        <button type="button" onclick="removeInput(this)">삭제</button>
+        <button class="btn btn-sm btn-outline-danger" type="button" onclick="removeInput(this)">삭제</button>
     `;
     document.getElementById("timeInputs").appendChild(div);
 }
@@ -680,7 +709,7 @@ $(document).ready(function() {
 		        event.preventDefault(); // 제출 방지
 		        return false;
 		    }
-	        alert("조건 0 클리어 (좌석등급 선택완료)");
+	        console.log("조건 0 클리어 (좌석등급 선택완료)");
 	    	
 		    // 조건 1: 생성된 체크박스(좌석)이 모두 선택되었는가?
 			let allSeats = [];
@@ -760,6 +789,40 @@ $(document).ready(function() {
 
 <style type="text/css">
 
+	.btn-black {
+	  background-color: black;
+	  color: white;
+	  border-color: black;
+	}
+	
+	.btn-black:hover {
+	  background-color: white;
+	  color: black;
+	  border-color: black;
+	}
+	
+	.btn-gold {
+	  background-color: #CDAA39;
+	  color: white;
+	  border-color: #CDAA39;
+	}
+	
+	.btn-gold:hover {
+	  background-color: white;
+	  color: #CDAA39;
+	  border-color: #CDAA39;
+	}
+	.btn-outline-gold {
+	  background-color: white;
+	  color: #CDAA39;
+	  border-color: #CDAA39;
+	}
+	
+	.btn-outline-gold:hover {
+	  background-color: #CDAA39;
+	  color: white;
+	  border-color: #CDAA39;
+	}
 	.clickable-span {
 	  cursor: pointer; /* 커서를 선택 모양으로 변경 */
 	}
@@ -786,121 +849,144 @@ $(document).ready(function() {
 </head>
 <body>
 <div class="container">
+<div class="card m-4 p-4">
+	<div class="mb-4 text-center" style="color: white; border: medium; background-color: #78171C; border-radius: 6px; padding: 10px; padding-bottom: 7px;">
+		<h5>공연 정보 수정</h5>
+	</div>
 <form id="myForm" action="updateConcertOK" method="post" enctype="multipart/form-data" onsubmit="return confirmSubmit()">
 	<input type="hidden" id="concertId" name="concertId" value="${concertVO.id}">
-	<table >
-		<tr>
-			<td>제목</td>
-			<td> <input type="text" name="title" placeholder="공연 제목입력" value="${concertVO.title }" required></td>
-		</tr>
-		<tr>
-			<td>공연 장르</td>
-			<td> 
+	<div class="mb-3 row">
+		<label for="title" class="col-sm-2 col-form-label">제목</label>
+	    <div class="col-sm-10">
+		<input id="title" class="form-control" type="text" name="title" placeholder="공연 제목입력" value="${concertVO.title }" required>
+	    </div>
+	  </div>
+	  <div class="mb-3 row">
+		<label class="col-sm-2 col-form-label">공연 장르</label>
+	    <div class="col-sm-10">
 			<%
 				String[] category = {"클래식", "뮤지컬", "재즈", "대중음악", "연극", "무용", "기타"};
 				for (int i=0; i<category.length; i++){
 					request.setAttribute("i", i);
 			%>
 			<c:if test="${concertVO.categoryId == i}">
-				<input type="radio" name="categoryId" id="option<%=i%>" value="<%=i%>" checked="checked" required>
-				<label for="option<%=i%>"><%=category[i]%></label> 
+				<input class="btn-check" type="radio" name="categoryId" id="option<%=i%>" value="<%=i%>" checked="checked" required>
+				<label class="btn" for="option<%=i%>"><%=category[i]%></label> 
 			</c:if>
 			<c:if test="${concertVO.categoryId != i}">
-				<input type="radio" name="categoryId" id="option<%=i%>" value="<%=i%>" required>
-				<label for="option<%=i%>"><%=category[i]%></label> 
+				<input class="btn-check" type="radio" name="categoryId" id="option<%=i%>" value="<%=i%>" required>
+				<label class="btn" for="option<%=i%>"><%=category[i]%></label> 
 			</c:if>
 			<%
 				}
 			%>
-			</td>
-		</tr>
-		<tr>
-			<td>공연장(hall)</td>
-			<td>
+	    </div>
+	  </div>
+ 	  <div class="mb-3 row">
+		<label class="col-sm-2 col-form-label">공연장</label>
+	    <div class="col-sm-10">
 			<c:if test="${concertVO.hallType == 0}">
-				<input type="radio" name="hallType" id="hall0" value="0" checked="checked">
-				<label for="hall0">가우디움홀</label> 
-				<input type="radio" name="hallType" id="hall1" value="1">
-				<label for="hall1">펠리체홀</label> 
+				<input class="btn-check" type="radio" name="hallType" id="hall0" value="0" checked="checked">
+				<label class="btn" for="hall0">가우디움홀</label> 
+				<input class="btn-check" type="radio" name="hallType" id="hall1" value="1">
+				<label class="btn" for="hall1">펠리체홀</label> 
 				<input type="hidden" name="totalSeat" id="totalSeat" value="480">
 			</c:if>
 			<c:if test="${concertVO.hallType == 1}">
-				<input type="radio" name="hallType" id="hall0" value="0">
-				<label for="hall0">가우디움홀</label> 
-				<input type="radio" name="hallType" id="hall1" value="1"  checked="checked">
-				<label for="hall1">펠리체홀</label> 
+				<input class="btn-check" type="radio" name="hallType" id="hall0" value="0">
+				<label class="btn" for="hall0">가우디움홀</label> 
+				<input class="btn-check" type="radio" name="hallType" id="hall1" value="1"  checked="checked">
+				<label class="btn" for="hall1">펠리체홀</label> 
 				<input type="hidden" name="totalSeat" id="totalSeat" value="210">
 			</c:if>
-			</td>
-		</tr>
-		<tr>
-			<td>좌석 등급</td>
-			<td>
-				<c:if test="${not empty selectedSeatTypes}">
-					<c:forEach var="seatType" items="${seatTypes}">
-						<c:if test="${selectedSeatTypes.contains(seatType)}">
-						    <label><input type="checkbox" class="seatType" value=${seatType } checked="checked"> ${fn:toUpperCase(seatType)}</label>
-						</c:if>
-						<c:if test="${not selectedSeatTypes.contains(seatType)}">
-						    <label><input type="checkbox" class="seatType" value=${seatType }> ${fn:toUpperCase(seatType)}</label>
-						</c:if>
-					</c:forEach>
-			   		<label><input type="checkbox" class="seatType" value="equal"> equal</label>
-				</c:if>
-				<c:if test="${empty selectedSeatTypes}">
-			    	<label><input type="checkbox" class="seatType" value="vip"> VIP</label>
-				    <label><input type="checkbox" class="seatType" value="r"> R</label>
-				    <label><input type="checkbox" class="seatType" value="s"> S</label>
-				    <label><input type="checkbox" class="seatType" value="a"> A</label>
-				    <label><input type="checkbox" class="seatType" value="equal" checked="checked"> equal</label>
-				</c:if>
-			    <div id="seatContainer"></div>
-	 		</td>
-		</tr>
-		<tr>
-		    <td>좌석 선택</td>
-		    <td>
-		        <div id="seatSelectionContainer"></div> <!-- 동적 좌석 리스트 표시 -->
-		    </td>
-		</tr>
-		<tr>
-			<td>공연 날짜/시간</td>
-			<td>
-		    <div id="timeInputs">
-		            <button type="button" onclick="addTimeInput()">시간 추가</button><br>
+		</div>
+	  </div>
+ 	  <div class="mb-3 row">
+		<label class="col-sm-2 col-form-label">좌석 등급</label>
+	    <div class="col-sm-10">
+			<c:if test="${not empty selectedSeatTypes}">
+				<c:forEach var="seatType" items="${seatTypes}">
+					<c:if test="${selectedSeatTypes.contains(seatType)}">
+					    <input id="${seatType}" type="checkbox" class="seatType btn-check" value=${seatType } checked="checked"> 
+					    <label class="btn" for="${seatType}" >${fn:toUpperCase(seatType)}</label>
+					</c:if>
+					<c:if test="${not selectedSeatTypes.contains(seatType)}">
+					    <input id="${seatType}" type="checkbox" class="seatType btn-check" value=${seatType }> 
+					    <label class="btn" for="${seatType}" >${fn:toUpperCase(seatType)}</label>
+					</c:if>
+				</c:forEach>
+		   		<input id="equal" type="checkbox" class="seatType btn-check" value="equal"> 
+		   		<label class="btn" for="equal">equal</label>
+			</c:if>
+			<c:if test="${empty selectedSeatTypes}">
+		    	<input id="vip" type="checkbox" class="seatType btn-check" value="vip"> 
+		    	<label class="btn" for="vip">VIP</label>
+			    <input id="r" type="checkbox" class="seatType btn-check" value="r"> 
+			    <label class="btn" for="r">R</label> 
+			    <input id="s" type="checkbox" class="seatType btn-check" value="s"> 
+			    <label class="btn" for="s">S</label> 
+			    <input id="a" type="checkbox" class="seatType btn-check" value="a"> 
+			    <label class="btn" for="a">A</label> 
+			    <input id="equal" type="checkbox" class="seatType btn-check" value="equal" checked="checked"> 
+			    <label class="btn" for="equal">equal</label> 
+			</c:if>
+		</div>
+	  </div>
+ 	  <div class="mb-3 row align-items-center">
+		<label class="col-sm-2 col-form-label ">수량/가격</label>
+	    <div class="col-sm-10 pt-1">
+			<div id="seatContainer"></div>
+		</div>
+	  </div>
+ 	  <div class="mb-3 row align-items-center">
+		<label class="col-sm-2 col-form-label ">좌석 선택</label>
+	    <div class="col-sm-10 pt-1">
+	        <div id="seatSelectionContainer"></div> <!-- 동적 좌석 리스트 표시 -->
+		</div>
+	  </div>
+ 	  <div class="mb-3 row">
+		<label class="col-sm-2 col-form-label">공연 날짜/시간</label>
+	    <div class="col-sm-10 pt-1">
+ 	       <button class="btn btn-sm btn-outline-gold mb-2" type="button" onclick="addTimeInput()">시간 추가</button><br>
+		    	<div id="timeInputs">
 		        <c:forEach var="conTime" items="${conTimeList}">
 		        <fmt:formatDate value="${conTime.concertTime}" pattern="yyyy-MM-dd'T'HH:mm" var="dateTime"/>
-		        <div>
+                <%
+	                // 비교를 위해 변수 준비
+	                String conDateTime = (String) pageContext.getAttribute("dateTime");
+	                boolean isPast = conDateTime.compareTo(now) < 0;
+	            %>
+		        <div class="mb-1">
 		        	<input type="hidden" name="concertTimeId" value="${conTime.id}">
-		            <input type="datetime-local" name="concertDateTime" min="<%= now %>" value="${dateTime}" onchange="addConcertTime(this)" required>
-		            <button type="button" onclick="removeInput(this)">삭제</button>
+		            <input type="datetime-local" name="concertDateTime" min="<%= now %>" 
+		            	value="${dateTime}" onchange="addConcertTime(this)" <%= isPast ? "disabled" : "required" %>>
+		            <button class="btn btn-sm btn-outline-danger" type="button" onclick="removeInput(this)">삭제</button>
 		        </div>
 		        </c:forEach>
-		            
-	    
+		    	</div>
 		    </div>
-			</td>
-		</tr>
-		<tr>
-			<td>공연 포스터</td>
-			<td>
-				<img alt="공연포스터" src="${concertVO.posterUrl}" style="width: 300px; ">
-				<input type="file" name="imageUrlUpdate" >
-			</td>
-		</tr>
-		<tr>
-			<td>설명</td>
-			<td>
-				<textarea rows="5" name="description" style="resize: none; width: 99%;" required="required">${concertVO.description }
+		  </div>
+ 	  <div class="mb-3 row">
+		<label class="col-sm-2 col-form-label">공연 포스터</label>
+	    <div class="col-sm-10 pt-1 align-items-center">
+			<input class="form-control mb-2" type="file" name="imageUrlUpdate" >
+			<img alt="공연포스터" src="${concertVO.posterUrl}" style="width: 300px; ">
+		</div>
+	</div>
+	<div class="mb-3 row">
+		<label class="col-sm-2 col-form-label">공연 정보/설명</label>
+	    <div class="col-sm-10 pt-1 align-items-center">			
+	    	<textarea rows="5" name="description" style="resize: none; width: 99%;" required="required">${concertVO.description }
 				</textarea>
-			</td>
-		</tr> 
-	              
-	</table>
+		</div>
+	</div>
 	<input type="hidden" id="isSeatTypeChange" name="isSeatTypeChange" value="false">
-	<button type="submit" id="submitBtn">저장</button>
-	<button type="button" onclick="location.href='deleteConcert?concertId=${concertVO.id}'">삭제</button>
+	<div class="mb-4 text-center">
+		<button class="btn btn-gold" style="width: 200px;" type="submit" id="submitBtn">저장</button>
+		<button class="btn btn-black" style="width: 200px; type="button" onclick="location.href='deleteConcert?concertId=${concertVO.id}'">삭제</button>
+	</div>
 </form>
+</div>
 </div>
 
 </body>

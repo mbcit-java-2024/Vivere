@@ -14,7 +14,6 @@
 <div class="wrapper">
 	<jsp:include page="./include/header.jsp"/>
 	<div class="body-main mgb-50">
-		<h1>VIVERE ART HALL</h1>
 		<c:if test="${sessionScope.loginUser.grade eq 'ADMIN'}">
 			<div style="display:flex; justify-content: right">
 				<a style="text-decoration: none; color: gray;" href="/carouselList">메인표지 등록/수정</a>
@@ -40,7 +39,7 @@
 		  <div class="carousel-inner">
 		  	<c:forEach var="vo" items="${carouselList }">
 		    <div class="carousel-item active">
-		      <img src="${vo.carouselUrl }" class="d-block w-100">
+		      <img src="${vo.carouselUrl }" class="d-block w-100" onclick="location.href='/concertView?concertId=${vo.id}'">
 		    </div>
 		  	</c:forEach>
 		  </div>

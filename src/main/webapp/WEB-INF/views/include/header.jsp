@@ -37,9 +37,17 @@
 
 	<nav>
 		<div class="nav-inner">
-			<a href="/">로고</a> <a href="/concertList">공연</a> 
-			<a href="monthly.jsp">일정(캘린더)</a>
+			<img onclick="location.href='/'" style="width: 90px" alt="vivere arthall 로고" src="https://i.imgur.com/GszF5LV.png">
+			<a href="/concertList">공연</a> 
+			<a href="/noticeList">공지사항</a>
 
+			<c:if test="${sessionScope.loginUser.grade eq 'ADMIN'}">
+				<a href="/insertConcert">공연 등록</a>  
+				<div class="rep-box" style="text-align: center;">
+					<button onclick="location.href='/qnaList'">문의 답변 쓰러가기</button>
+				</div>
+			</c:if>
+			
 			<!-- 이용안내 드롭다운 -->
 			<div class="guide-dropdown">
 				<button id="guideButton" class="dropdown-toggle"
@@ -66,7 +74,7 @@
 				<div id="loginDropdown" class="dropdown-menu">
 					<c:choose>
 						<c:when test="${empty loginUser}">
-							<a href="login">로그인</a>
+							<a href="/login">로그인</a>
 							<a href="signIn">회원가입</a>
 						</c:when>
 						<c:otherwise>
@@ -76,7 +84,7 @@
 									<a href="logout">로그아웃</a>
 								</c:when>
 								<c:otherwise>
-									<a href="myPage">마이페이지</a>
+									<a href="/myPage">마이페이지</a>
 									<a href="logout">로그아웃</a>
 								</c:otherwise>
 							</c:choose>
@@ -86,12 +94,6 @@
 			</div>
 
 
-			<c:if test="${sessionScope.loginUser.grade eq 'ADMIN'}">
-				<a href="/insertConcert">공연 등록</a>  
-				<div class="rep-box" style="text-align: center;">
-					<button onclick="location.href='/qnaList'">문의 답변 쓰러가기</button>
-				</div>
-			</c:if>
 		</div>
 	</nav>
 

@@ -15,7 +15,7 @@
             padding: 0;
         }
 
-        .container {
+        .container1 {
             width: 100%;
             max-width: 500px;
             background: #fff;
@@ -82,6 +82,9 @@
             color: #555; 
         }
     </style>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/js/bootstrap.bundle.min.js"></script>
+   
 </head>
 
 <body>
@@ -97,8 +100,10 @@
 	    </script>
 	</c:if>
 	
-	<div class="container">
-	    <h2>로그인</h2>
+	<div class="container1">
+	 	<div class="text-center mb-4">
+		    <img onclick="location.href='/'" style="width: 100px" alt="vivere arthall 로고" src="https://i.imgur.com/GszF5LV.png">
+	 	</div>
 	    <form action="/loginOK" method="post">
 	
 	        <div class="form-group">

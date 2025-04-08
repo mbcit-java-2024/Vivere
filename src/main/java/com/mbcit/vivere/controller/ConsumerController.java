@@ -1,6 +1,9 @@
 package com.mbcit.vivere.controller;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,10 +19,12 @@ import com.mbcit.vivere.service.BookService;
 import com.mbcit.vivere.service.CardService;
 import com.mbcit.vivere.service.ConcertService;
 import com.mbcit.vivere.service.LoginService;
+import com.mbcit.vivere.service.QnAService;
 import com.mbcit.vivere.vo.BookVO;
 import com.mbcit.vivere.vo.CardVO;
 import com.mbcit.vivere.vo.ConcertVO;
 import com.mbcit.vivere.vo.ConsumerVO;
+import com.mbcit.vivere.vo.QnaVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,32 +40,50 @@ public class ConsumerController {
 	private BookService bookService;
 	@Autowired
 	private ConcertService concertService;
+	@Autowired
+	private QnAService qnaService;
 	
 	@RequestMapping("/myinfo")
 	public String myinfo(HttpSession session, Model model) {
 	    ConsumerVO loginUser = (ConsumerVO) session.getAttribute("loginUser");
 	    if (loginUser == null) return "redirect:/login";
 
-	    List<BookVO> bookList = bookService.getBookListByConsumerId(loginUser.getId());
+	    List<BookVO> allBooks = bookService.getBookListByConsumerId(loginUser.getId());
 
-	    if (!bookList.isEmpty()) {
-	        BookVO latestBook = bookList.get(0);
+	    if (!allBooks.isEmpty()) {
+	        // 예매번호로 묶기
+	        Map<String, BookVO> bookMap = new LinkedHashMap<>();
 
-	        ConcertVO concert = concertService.getConcertById(latestBook.getConcertId());
-	        if (concert != null) {
-	            // 포스터 경로 상대 경로로 설정
-	            String relative = concertService.relativePath(concert.getPosterUrl(), "/posters/");
-	            latestBook.setPosterUrl(relative);
-	            latestBook.setTitle(concert.getTitle());
+	        for (BookVO book : allBooks) {
+	            String bookNum = book.getBookNum();
+	            if (bookMap.containsKey(bookNum)) {
+	                BookVO existing = bookMap.get(bookNum);
+	                existing.setSeatNum(existing.getSeatNum() + ", " + book.getSeatNum());
+	            } else {
+	                ConcertVO concert = concertService.getConcertById(book.getConcertId());
+	                if (concert != null) {
+	                    String relative = concertService.relativePath(concert.getPosterUrl(), "/posters/");
+	                    book.setPosterUrl(relative);
+	                    book.setTitle(concert.getTitle());
+	                }
+	                bookMap.put(bookNum, book);
+	            }
 	        }
 
+	        // 가장 최근 1건
+	        BookVO latestBook = bookMap.values().iterator().next();
 	        model.addAttribute("latestBook", latestBook);
 	    }
+	    
+//	    QnaVO latestQna = qnaService.getLatestQnaByConsumerId(loginUser.getId());
+	    QnaVO latestQna = qnaService.getLatestQnaWithReplyStatus(loginUser.getId());
+//	    model.addAttribute("latestQna", latestQna);
+	    
+	    model.addAttribute("latestQna", latestQna);
 
 	    model.addAttribute("loginUser", loginUser);
 	    return "/myinfo";
 	}	
-	
 	
 	@RequestMapping("/myinfoDetail")
     public String myinfodetail() {
@@ -170,41 +193,50 @@ public class ConsumerController {
         ConsumerVO loginUser = (ConsumerVO) session.getAttribute("loginUser");
 
         if (loginUser == null) return "redirect:/login";
-        
-        List<BookVO> bookList = bookService.getBookListByConsumerId(loginUser.getId());
-        
-        
-        for (BookVO book : bookList) {
-            if (book.getPosterUrl() == null) {
+
+        List<BookVO> allBooks = bookService.getBookListByConsumerId(loginUser.getId());
+
+        // 예매번호 기준으로 묶기
+        Map<String, BookVO> bookMap = new LinkedHashMap<>();
+
+        for (BookVO book : allBooks) {
+            String bookNum = book.getBookNum();
+
+            if (bookMap.containsKey(bookNum)) {
+                // 기존 seatNum에 추가
+                BookVO existing = bookMap.get(bookNum);
+                existing.setSeatNum(existing.getSeatNum() + ", " + book.getSeatNum());
+            } else {
+                // concert 정보 추가
                 ConcertVO concert = concertService.getConcertById(book.getConcertId());
-                if (concert != null && concert.getPosterUrl() != null) {
+                if (concert != null) {
                     String relative = concertService.relativePath(concert.getPosterUrl(), "/posters/");
                     book.setPosterUrl(relative);
-                }
-                if (concert.getTitle() != null) {
                     book.setTitle(concert.getTitle());
                 }
+                bookMap.put(bookNum, book);
             }
-        }       
-        model.addAttribute("bookList", bookList);
+        }
 
-        return "/myBook"; 
+        List<BookVO> bookList = new ArrayList<>(bookMap.values());
+
+        model.addAttribute("bookList", bookList);
+        return "/myBook";
     }
+    
     
     @RequestMapping("/myBookDelete")
-    public String deleteBook(HttpSession session, HttpServletRequest request, RedirectAttributes re) {
+    public String deleteBook(HttpServletRequest request, HttpSession session, RedirectAttributes re) {
+        ConsumerVO loginUser = (ConsumerVO) session.getAttribute("loginUser");
+        if (loginUser == null) return "redirect:/login";
 
+        String bookNum = request.getParameter("bookNum"); // JSP에서 넘어오는 예매번호
 
-        int bookId = Integer.parseInt(request.getParameter("id"));
-
-        bookService.deleteBookById(bookId); 
+        bookService.cancelBooking(bookNum); // 예약 취소 + 좌석 해제
 
         re.addFlashAttribute("msg", "예매가 취소되었습니다.");
-
         return "redirect:/myBook";
-        
-    }
-    
+    }    
 }
 
     

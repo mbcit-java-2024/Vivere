@@ -43,6 +43,15 @@
 		WHERE id = #{id} 
 		AND consumerId = #{consumerId};
 	</delete>
+	
+	<select id="getLatestQnaByConsumerId" parameterType="int" resultType="qnaVO">
+	    select * from qna where consumerId = #{consumerId} order by createDate desc limit 1
+	</select>
+	
+
+	<select id="hasReply" parameterType="int" resultType="boolean">
+	    select count(*) > 0 from qnarep where qnaId = #{qnaId}
+	</select>
 
 </mapper>
 

@@ -20,4 +20,10 @@ public interface QnaDAO {
 
 	void delete(QnaVO qnaVO);
 
+	QnaVO getLatestQnaByConsumerId(int consumerId);
+
+	boolean hasReply(int id);
+	
+	
+
 }

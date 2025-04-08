@@ -35,6 +35,18 @@ public class QnAService {
 		qnaDAO.delete(qnaVO);
 	}
 
+	public QnaVO getLatestQnaByConsumerId(int consumerId) {
+	    return qnaDAO.getLatestQnaByConsumerId(consumerId);
+	}
+	
+	public QnaVO getLatestQnaWithReplyStatus(int consumerId) {
+	    QnaVO latestQna = qnaDAO.getLatestQnaByConsumerId(consumerId);
+	    if (latestQna != null) {
+	        boolean hasReply = qnaDAO.hasReply(latestQna.getId());
+	        latestQna.setHasReply(hasReply);
+	    }
+	    return latestQna;
+	}
 
 
 

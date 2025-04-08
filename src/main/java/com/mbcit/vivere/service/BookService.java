@@ -170,8 +170,41 @@ public class BookService {
 	public BookVO getLatestBookByConsumerId(int consumerId) {
 	    return bookDAO.getLatestBookByConsumerId(consumerId);
 	}
+	
+	public void cancelBooking(String bookNum) {
+	    List<BookVO> books = bookDAO.getBooksByBookNum(bookNum); 
 
+	    if (books.isEmpty()) return;
 
+	    BookVO firstBook = books.get(0);
+	    int concertId = firstBook.getConcertId();
+	    Date concertTime = firstBook.getConcertTime();
+
+	    ConcertTimeVO timeVO = new ConcertTimeVO();
+	    timeVO.setConcertId(concertId);
+	    timeVO.setConcertTime(concertTime);
+	    ConcertTimeVO concertTimeVO = concertDAO.getConcertTimeByConcertIdAndTime(timeVO);
+
+	    if (concertTimeVO == null) return;
+
+	    int conTimeId = concertTimeVO.getId();
+
+	    for (BookVO book : books) {
+	        String seat = book.getSeatNum();
+	        char lineNum = seat.charAt(0);
+	        int seatNum = Integer.parseInt(seat.substring(1));
+
+	        // 좌석 예약 해제
+	        concertSeatVO seatVO = new concertSeatVO();
+	        seatVO.setConcertId(concertId);
+	        seatVO.setConcertTimeId(conTimeId);
+	        seatVO.setLineNum(lineNum);
+	        seatVO.setSeatNum(seatNum);
+
+	        concertDAO.resetBookYN(seatVO);
+	        bookDAO.deleteBookById(book.getId());
+	    }
+	}
 
 }
 

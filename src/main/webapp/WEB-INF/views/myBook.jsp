@@ -133,11 +133,11 @@
                                 <p><strong>결제금액:</strong> <fmt:formatNumber value="${book.price}" pattern="#,###원" /></p>
                                 <p><strong>예매일자:</strong> <fmt:formatDate value="${book.orderDate}" pattern="yyyy-MM-dd" /></p>
 
-                                <form action="/myBookDelete" method="post">
-                                    <input type="hidden" name="id" value="${book.id}" />
-                                    <button type="submit" class="btn-delete">예매 취소</button>
-                                </form>
-                            </div>
+								<form action="/myBookDelete" method="post">
+								    <input type="hidden" name="bookNum" value="${book.bookNum}" />
+								    <button type="submit" class="btn-delete">예매 취소</button>
+								</form>
+							</div>
                         </div>
                     </div>
                 </c:forEach>

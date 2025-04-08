@@ -24,4 +24,9 @@ public class QnaVO {
     private String qna_content;
     private Date qna_createDate; 
     private Date qna_updateDate;
+    
+    
+    
+    //댓글 유무(추가)
+	private boolean hasReply; 
 }

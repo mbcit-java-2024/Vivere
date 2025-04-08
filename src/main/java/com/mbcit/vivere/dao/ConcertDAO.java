@@ -37,6 +37,7 @@ public interface ConcertDAO {
 	void update(ConcertVO vo);
 	String getGrade(concertSeatVO concertSeatVO);
 	void updateBookYN(concertSeatVO concertSeatVO);
+	void resetBookYN(concertSeatVO concertSeatVO);
 //	carousel
 	CarouselVO getCarouselByConcertId(int concertId);
 	void insertCarousel(CarouselVO carVO);

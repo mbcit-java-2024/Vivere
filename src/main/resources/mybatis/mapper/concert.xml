@@ -118,6 +118,15 @@
 		and seatNum = #{seatNum}
 	</update>
 	
+	<update id="resetBookYN" parameterType="concertSeatVO">
+		update concertSeat 
+		set bookYN = false
+		where concertId = #{concertId} 
+		and concertTimeId = #{concertTimeId} 
+		and lineNum = #{lineNum} 
+		and seatNum = #{seatNum}
+	</update>
+	
 	<update id="updateCarouselUrl" parameterType="carouselVO">
 		update carousel 
 		set carouselUrl = #{carouselUrl}

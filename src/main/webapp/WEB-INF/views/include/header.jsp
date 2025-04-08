@@ -13,11 +13,6 @@
             menu.style.display = (menu.style.display === "block") ? "none" : "block";
         }
 
-        function toggleGuideDropdown() {
-            const menu = document.getElementById("guideDropdown");
-            menu.style.display = (menu.style.display === "block") ? "none" : "block";
-        }
-
         document.addEventListener("click", function(event) {
             const loginMenu = document.getElementById("loginDropdown");
             const loginButton = document.getElementById("dropdownButton");
@@ -25,11 +20,6 @@
                 loginMenu.style.display = "none";
             }
 
-            const guideMenu = document.getElementById("guideDropdown");
-            const guideButton = document.getElementById("guideButton");
-            if (!guideMenu.contains(event.target) && !guideButton.contains(event.target)) {
-                guideMenu.style.display = "none";
-            }
         });
     </script>
 </head>
